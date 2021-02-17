@@ -20,4 +20,4 @@ jobs:
           if [[ -f rest-api/src/requirements.txt ]]; then pip install -r rest-api/src/requirements.txt; fi
           
       - name: run unittest
-        run: python -m unittest discover src/
+        run: python -m unittest discover rest-api/src/
