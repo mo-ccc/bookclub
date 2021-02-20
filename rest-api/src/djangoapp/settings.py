@@ -31,7 +31,8 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    'rest-framework',
+    'django_tenants',
+    'rest_framework',
 
     'django.contrib.admin',
     'django.contrib.auth',
@@ -41,19 +42,28 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'users',
+    'customers',
 ]
 
-SHARED_APPS = [
+SHARED_APPS = (
     'tenant_schemas',  # mandatory, should always be before any django app
-    'tenants', # you must list the app where your tenant model resides in
+    'customers', # you must list the app where your tenant model resides in
 
     'users'
-]
+)
+
+TENANT_APPS = (
+    'django.contrib.contenttypes',
+)
 
 AUTH_USER_MODEL = 'users.CustomUser'
 
+TENANT_MODEL = "customers.Client" # app.Model
+
+TENANT_DOMAIN_MODEL = "customers.Domain"  # app.Model
+
 MIDDLEWARE = [
-    'tenant_schemas.middleware.TenantMiddleware',
+    'django_tenants.middleware.TenantMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -89,13 +99,18 @@ WSGI_APPLICATION = 'djangoapp.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django_tenants.postgresql_backend',
+        'HOST': 'localhost',
+        'NAME': 'postgres',
+        'USER': 'postgres',
+        'PASSWORD': 'postgres',
+        'DBNAME': 'django',
+
     }
 }
 
 DATABASE_ROUTERS = (
-    'tenant_schemas.routers.TenantSyncRouter',
+    'django_tenants.routers.TenantSyncRouter',
 )
 
 # Password validation
