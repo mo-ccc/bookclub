@@ -1,5 +1,6 @@
 from .models import Client
-from rest_framework import Domain
+from .models import Domain
+from rest_framework import serializers
 
 class ClientSerializer(serializers.ModelSerializer):
     class Meta:

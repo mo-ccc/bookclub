@@ -25,36 +25,28 @@ SECRET_KEY = '5*yz4tswiz6t16!ahha+b3(h-i1vx-q4n+ntu1^xaizzp_-*k&'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
-
-
-# Application definition
-
-INSTALLED_APPS = [
-    'django_tenants',
-    'rest_framework',
-
-    'django.contrib.admin',
-    'django.contrib.auth',
-    'django.contrib.contenttypes',
-    'django.contrib.sessions',
-    'django.contrib.messages',
-    'django.contrib.staticfiles',
-
-    'users',
-    'customers',
-]
+ALLOWED_HOSTS = ['*']
 
 SHARED_APPS = (
-    'tenant_schemas',  # mandatory, should always be before any django app
+    'django_tenants',  # mandatory, should always be before any django app
     'customers', # you must list the app where your tenant model resides in
 
-    'users'
+    'django.contrib.contenttypes',
+
+    'django.contrib.auth',
 )
 
 TENANT_APPS = (
     'django.contrib.contenttypes',
+
+    'django.contrib.sessions',
+
+    'rest_framework',
+
+    'users',
 )
+
+INSTALLED_APPS = list(SHARED_APPS) + [app for app in TENANT_APPS if app not in SHARED_APPS]
 
 AUTH_USER_MODEL = 'users.CustomUser'
 
@@ -101,11 +93,9 @@ DATABASES = {
     'default': {
         'ENGINE': 'django_tenants.postgresql_backend',
         'HOST': 'localhost',
-        'NAME': 'postgres',
+        'NAME': 'django',
         'USER': 'postgres',
         'PASSWORD': 'postgres',
-        'DBNAME': 'django',
-
     }
 }
 
