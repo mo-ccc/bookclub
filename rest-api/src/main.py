@@ -9,8 +9,8 @@ ma = flask_marshmallow.Marshmallow()
 import flask_migrate
 migrate = flask_migrate.Migrate()
 
-from flask.ext.bcrypt import Bcrypt
-bcrypt = Bcrypt()
+import flask_bcrypt
+bcrypt = flask_bcrypt.Bcrypt()
 
 
 def create_app():
