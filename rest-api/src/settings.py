@@ -21,11 +21,13 @@ class Production(Config):
     SQLALCHEMY_DB_URI = os.getenv('DB_URI')
 
 
-if os.getenv('FLASK_ENV') == 'development':
+environment = os.getenv('FLASK_ENV')
+
+if environment == 'development':
     configuration = Development()
-elif os.getenv('FLASK_ENV') == 'testing':
+elif environment == 'testing':
     configuration = Testing()
-elif os.getenv('FLASK_ENV') == 'production':
+elif environment == 'production':
     configuration = Production()
 else:
     raise Exception('FLASK_ENV is not set. use development, testing or production')
