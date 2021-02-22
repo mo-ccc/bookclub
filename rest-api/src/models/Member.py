@@ -12,7 +12,7 @@ class Member(db.Model):
     is_owner = db.Column(db.Boolean(), nullable=False, default=False)
     created_at = db.Column(db.DateTime(), nullable=False, server_default=now())
     
-    domain = db.Column(db.Integer, db.ForeignKey('tenants.id'), nullable=False)
+    domain_id = db.Column(db.Integer, db.ForeignKey('tenants.id'), nullable=False)
 
     def __repr__(self):
         return f"{self.email} -- {self.id}"

@@ -8,6 +8,8 @@ class Config():
     DEBUG = False
     TESTING = False
 
+    SERVER_NAME = 'localhost:5000'
+
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
 class Development(Config):
