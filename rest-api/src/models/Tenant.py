@@ -10,7 +10,7 @@ class Tenant(db.Model):
     primary_color = db.Column(db.String(8))
     secondary_color = db.Column(db.String(8))
 
-    members = db.relationship('Member', backref='tenant', passive_deletes='all')
+    users = db.relationship('User', backref='tenant', passive_deletes='all')
 
     def __repr__(self):
         return f"{self.domain_name} -- {self.id}"
