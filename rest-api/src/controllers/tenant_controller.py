@@ -3,6 +3,7 @@ from main import db
 
 from models.Tenant import Tenant
 from models.User import User
+from models.Facility import Facility
 
 from schemas.UserSchema import UserSchema
 from schemas.TenantSchema import TenantSchema
@@ -36,7 +37,6 @@ def create_domain():
 def get_sub(domain_name):
     tenant = Tenant.query.filter_by(domain_name=domain_name).first_or_404()
     members = User.query.filter_by(domain_id=tenant.id).all()
-    print(members)
     return str(members)
 
 # Method to create a user

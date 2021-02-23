@@ -12,6 +12,7 @@ class Tenant(db.Model):
     open_registration = db.Column(db.Boolean())
 
     users = db.relationship('User', backref='tenant', passive_deletes='all')
+    facilities = db.relationship('Facility', backref='tenant', passive_deletes='all')
 
     def __repr__(self):
         return f"{self.domain_name} -- {self.id}"
