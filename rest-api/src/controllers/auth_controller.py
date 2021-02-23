@@ -12,7 +12,7 @@ def register(domain_name):
     tenant = Tenant.query.filter_by(domain_name=domain_name).first_or_404()
     data = UserSchema(exclude=["is_admin",]).load(flask.request.json)
     user = User(**data)
-    user.domain_id = tenant.id
+    user.tenant_id = tenant.id
     user.is_admin = False
     db.session.add(user)
     db.session.commit()

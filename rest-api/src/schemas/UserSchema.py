@@ -14,6 +14,7 @@ class UserSchema(ma.SQLAlchemyAutoSchema):
 
     @pre_load
     def normalize_data(self, data, **kwargs):
+        data["email"] = data["email"].lower()
         data["password"] = bcrypt.generate_password_hash(data["password"]).decode('utf-8')
         return data
 
