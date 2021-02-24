@@ -10,5 +10,12 @@ class Test_tenant(Test_base):
                 "tenant": {"domain_name": "first"}
             }
         )
-        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.status_code, 201)
         self.assertIn("is_owner", response.json)
+
+    def test_get(self):
+        response = self.client.get(
+            "http://tenant1.localhost:5000/"
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertIn("primary_color", response.json)

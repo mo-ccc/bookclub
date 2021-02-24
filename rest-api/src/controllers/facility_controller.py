@@ -16,9 +16,9 @@ facilities = flask.Blueprint("facilities", __name__)
 @facilities.route('/facility', subdomain='<domain_name>', methods=["POST"])
 @jwt.jwt_required()
 def make_facility(domain_name):
-    print(jwt.current_user)
-    if not jwt.current_user.is_admin:
+    if not jwt.current_user.is_admin or not jwt.current_user.is_owner:
         return flask.abort(401)
+
     tenant = Tenant.query.filter_by(domain_name=domain_name).first_or_404()
     data = FacilitySchema().load(flask.request.json)
     facility = Facility(**data)
@@ -31,7 +31,6 @@ def make_facility(domain_name):
 
 # Method to retrieve all facilities
 @facilities.route('/facility', methods=["GET"], subdomain="<domain_name>")
-@jwt.jwt_required()
 def get_facilities(domain_name):
     tenant = Tenant.query.filter_by(domain_name=domain_name).first_or_404()
     facilities = Facility.query.filter_by(tenant_id=tenant.id)

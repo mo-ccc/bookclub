@@ -19,7 +19,7 @@ def register(domain_name):
     user.is_admin = False
     db.session.add(user)
     db.session.commit()
-    return UserSchema().dump(user)
+    return UserSchema().dump(user), 201
 
 
 @auth.route('/login', methods=['POST'], subdomain="<domain_name>")

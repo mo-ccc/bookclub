@@ -42,13 +42,10 @@ def create_domain():
     db.session.add(user)
     db.session.commit()
     
-    return UserSchema().dump(user)
+    return flask.jsonify(UserSchema().dump(user)), 201
 
-@tenants.route('/', subdomain='<domain_name>', methods=["GET"])
-def get_sub(domain_name):
+
+@tenants.route("/", subdomain="<domain_name>", methods=["GET"])
+def get_subdomain(domain_name):
     tenant = Tenant.query.filter_by(domain_name=domain_name).first_or_404()
-    members = User.query.filter_by(domain_id=tenant.id).all()
-    return str(members)
-
-
-
+    return TenantSchema().dump(tenant)

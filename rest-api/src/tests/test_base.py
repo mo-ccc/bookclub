@@ -15,8 +15,8 @@ class Test_base(unittest.TestCase):
         db.create_all()
         
         # invokes 'flask db_cli seed' in console
-        # runner = cls.app.test_cli_runner()
-        # runner.invoke(args=["db_cli", "seed"])
+        runner = cls.app.test_cli_runner()
+        runner.invoke(args=["db_cli", "seed"])
         
     # ran after every test
     @classmethod
