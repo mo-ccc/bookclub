@@ -4,7 +4,10 @@ on: push
     
 jobs:
   test-suite:
-    runs-on: ubuntu-latest    
+    runs-on: ubuntu-latest
+    env:
+      FLASK_APP: main.py
+      FLASK_ENV: testing    
     steps:
       - name: checkout
         uses: actions/checkout@v2
@@ -21,3 +24,4 @@ jobs:
           
       - name: run unittest
         run: python -m unittest discover rest-api/src/
+        
