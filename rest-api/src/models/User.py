@@ -19,4 +19,4 @@ class User(db.Model):
     tenant_id = db.Column(db.Integer, db.ForeignKey('tenants.id'), nullable=False)
 
     def __repr__(self):
-        return f"{self.email} -- {self.id}"
+        return f"email:{self.email} -- id:{self.id} -- tenant_id:{self.tenant_id}"

@@ -12,3 +12,6 @@ class Facility(db.Model):
     max_guests = db.Column(db.Integer, nullable=False, default=0)
 
     tenant_id = db.Column(db.Integer, db.ForeignKey('tenants.id'), nullable=False)
+
+    def __repr__(self):
+        return f"name:{self.name} -- id:{self.id} -- tenant:{self.tenant_id}"

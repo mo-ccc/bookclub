@@ -7,6 +7,7 @@ from models.Facility import Facility
 
 from schemas.UserSchema import UserSchema
 from schemas.TenantSchema import TenantSchema
+from schemas.FacilitySchema import FacilitySchema
 
 tenants = flask.Blueprint('tenants', __name__)
 
@@ -16,6 +17,16 @@ def get_main():
 
 @tenants.route('/', methods=["POST"])
 def create_domain():
+    """
+        user: {
+            email: "",
+            password: ""
+        }
+        tenant: {
+            domain_name: ""
+        }
+    """
+
     domain_data = TenantSchema().load(flask.request.json["tenant"])
     user_data = UserSchema(exclude=["is_admin",]).load(flask.request.json["user"])
 
@@ -39,13 +50,5 @@ def get_sub(domain_name):
     members = User.query.filter_by(domain_id=tenant.id).all()
     return str(members)
 
-# Method to create a user
-@tenants.route('/users', subdomain='<domain_name>', methods=["POST"])
-def make_user(domain_name):
-    data = UserSchema().load(flask.request.json)
-    return UserSchema().dump(data)
 
-# Method to create a facility
-@tenants.route('/facilties', subdomain='<domain_name>', methods=["POST"])
-def make_facility(domain_name):
-    pass
+
