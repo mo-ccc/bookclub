@@ -34,8 +34,3 @@ def create_app():
         app.register_blueprint(bp)
 
     return app
-
-
-
-def test(a, b):
-    return a + b

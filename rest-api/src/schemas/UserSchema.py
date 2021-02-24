@@ -7,6 +7,7 @@ class UserSchema(ma.SQLAlchemyAutoSchema):
     class Meta:
         model = User
         load_only = ("password",)
+        exclude = ("_password",)
     
     email = fields.Email(required=True)
     password = fields.String(required=True, validate=validate.Length(min=6))
@@ -15,7 +16,5 @@ class UserSchema(ma.SQLAlchemyAutoSchema):
     @pre_load
     def normalize_data(self, data, **kwargs):
         data["email"] = data["email"].lower()
-        data["password"] = bcrypt.generate_password_hash(data["password"]).decode('utf-8')
         return data
-
     
