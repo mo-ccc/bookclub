@@ -7,7 +7,7 @@ class Test_base(unittest.TestCase):
     @classmethod
     def setUp(cls):
         cls.app = create_app() # creates an app
-        cls.app.config.from_object('default_settings.Testing') # uses testing configuration
+        cls.app.config.from_object('default_settings.Testing') # forces testing configuration
         cls.app_context = cls.app.app_context() # app_context is retrieved
         cls.app_context.push() # binds app context to the current context
         cls.client = cls.app.test_client() # test client is made using the app context
