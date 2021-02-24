@@ -12,7 +12,7 @@ class User(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     email = db.Column(db.String(120), nullable=False)
-    _password = db.Column(db.String(), nullable=False)
+    _password = db.Column("password", db.String(), nullable=False)
     is_admin = db.Column(db.Boolean(), nullable=False)
     is_owner = db.Column(db.Boolean(), nullable=False, default=False)
     created_at = db.Column(db.DateTime(), nullable=False, server_default=now())

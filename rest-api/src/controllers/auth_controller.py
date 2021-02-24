@@ -1,9 +1,12 @@
 import flask
-from flask_jwt_extended import create_access_token
+from main import db, bcrypt
+import flask_jwt_extended as jwt
+import datetime
+
 from models.User import User
 from models.Tenant import Tenant
+
 from schemas.UserSchema import UserSchema
-from main import db, jwt, bcrypt
 
 auth = flask.Blueprint('auth', __name__)
 
@@ -23,12 +26,20 @@ def register(domain_name):
 def login(domain_name):
     tenant = Tenant.query.filter_by(domain_name=domain_name).first_or_404()
     data = UserSchema(exclude=["is_admin",]).load(flask.request.json)
-    print(data)
     user = User.query.filter(
         User.email==data["email"],
         User.tenant_id==tenant.id
-    ).first_or_404()
+    ).first()
+
+    if not user or not bcrypt.check_password_hash(user.password, data["password"]):
+        return flask.abort(401)
     
-    if bcrypt.check_password_hash(user.password, data["password"]):
-        return 'success'
-    return 'fail'
+    token = jwt.create_access_token(
+        identity = user.id,
+        expires_delta=datetime.timedelta(days=1)
+    )
+    response = flask.Response()
+    jwt.set_access_cookies(response, token)
+    return response
+
+    

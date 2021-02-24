@@ -34,3 +34,5 @@ def create_app():
         app.register_blueprint(bp)
 
     return app
+
+from services import lookup_loader # lookup loader service
