@@ -35,8 +35,10 @@ def login(domain_name):
         return flask.abort(401)
     
     token = jwt.create_access_token(
-        identity = user.id,
-        expires_delta=datetime.timedelta(days=1)
+        identity = user.id, 
+        expires_delta=datetime.timedelta(days=1), # jwt token is invalidated after one day
+        additional_claims={"is_admin":user.is_admin, "is_owner":user.is_owner} 
+        # adds is_admin and is_owner claims to jwt token
     )
     response = flask.Response()
     jwt.set_access_cookies(response, token)

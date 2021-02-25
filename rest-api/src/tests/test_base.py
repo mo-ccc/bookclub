@@ -25,3 +25,14 @@ class Test_base(unittest.TestCase):
         db.drop_all()
         db.create_all()
         cls.app_context.pop() # app context is popped from the context
+
+    def get_token_for_user(self, user_id, tenant_id=1):
+        response = self.client.post(
+            f'http://tenant{tenant_id}.localhost:5000/login',
+            json={
+                "email":f"user{user_id}@test.com",
+                "password":"123456"
+            }
+        )
+        
+        return response.headers.get("Set-Cookie")
