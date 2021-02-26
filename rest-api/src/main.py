@@ -35,4 +35,4 @@ def create_app():
 
     return app
 
-from services import lookup_loader # lookup loader service
+from services import jwt_behaviour # custom encode/decode methods/handlers

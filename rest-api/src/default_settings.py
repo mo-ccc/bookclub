@@ -11,7 +11,6 @@ class Config():
     SERVER_NAME = 'localhost:5000'
 
     SQLALCHEMY_TRACK_MODIFICATIONS = False
-    JWT_SECRET_KEY = os.getenv('JWT_SECRET_KEY')
     JWT_TOKEN_LOCATION = ['cookies']
     JWT_COOKIE_CSRF_PROTECT = False # come back to this later
     
