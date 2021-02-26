@@ -15,6 +15,9 @@ bcrypt = flask_bcrypt.Bcrypt()
 import flask_jwt_extended
 jwt = flask_jwt_extended.JWTManager()
 
+import flask_cors
+cors = flask_cors.CORS()
+
 
 def create_app():
     app = flask.Flask(__name__)
@@ -25,6 +28,7 @@ def create_app():
     migrate.init_app(app, db)
     bcrypt.init_app(app)
     jwt.init_app(app)
+    cors.init_app(app)
 
     from commands import db_cli
     app.register_blueprint(db_cli)
