@@ -9,7 +9,7 @@ class Tenant(db.Model):
     domain_name = db.Column(db.String(10), nullable=False, unique=True)
     primary_color = db.Column(db.String(8))
     secondary_color = db.Column(db.String(8))
-    open_registration = db.Column(db.Boolean())
+    open_registration = db.Column(db.Boolean(), default=True)
 
     users = db.relationship('User', backref='tenant', passive_deletes='all')
     facilities = db.relationship('Facility', backref='tenant', passive_deletes='all')
