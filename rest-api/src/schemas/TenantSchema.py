@@ -10,6 +10,7 @@ class TenantSchema(ma.SQLAlchemyAutoSchema):
 
     @pre_load
     def normalize_data(self, data, **kwargs):
-        data["domain_name"] = data["domain_name"].lower()
+        if "domain_name" in data:
+            data["domain_name"] = data["domain_name"].lower()
         return data
         

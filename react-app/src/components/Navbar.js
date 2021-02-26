@@ -2,9 +2,13 @@ import React from 'react';
 import {Navbar, Nav, NavDropdown} from 'react-bootstrap'
 
 
-const NavBar = () => {
+const NavBar = ({primary}) => {
+    let styles = {
+        backgroundColor: primary ? primary : "#FFFFFF",
+    }
+
     return (
-        <Navbar bg="light" expand="lg">
+        <Navbar style={styles} expand="lg">
             <Navbar.Brand href="#home">React-Bootstrap</Navbar.Brand>
             <Navbar.Toggle aria-controls="basic-navbar-nav" />
             <Navbar.Collapse id="basic-navbar-nav">

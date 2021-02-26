@@ -49,3 +49,12 @@ def create_domain():
 def get_subdomain(domain_name):
     tenant = Tenant.query.filter_by(domain_name=domain_name).first_or_404()
     return TenantSchema().dump(tenant)
+
+@tenants.route("/", subdomain="<domain_name>", methods=["PATCH"])
+def update_subdomain(domain_name):
+    tenant = Tenant.query.filter_by(domain_name=domain_name).first_or_404()
+    data = TenantSchema(partial=True).load(flask.request.json)
+    for key, value in data.items():
+        setattr(tenant, key, value)
+    db.session.commit()
+    return flask.jsonify(TenantSchema().dump(tenant)), 200
