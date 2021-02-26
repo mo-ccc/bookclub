@@ -11,7 +11,8 @@ class Test_tenant(Test_base):
             }
         )
         self.assertEqual(response.status_code, 201)
-        self.assertIn("is_owner", response.json)
+        self.assertIn("id", response.json)
+        self.assertEqual(True, response.json["is_owner"])
 
     def test_get(self):
         response = self.client.get(

@@ -13,6 +13,8 @@ auth = flask.Blueprint('auth', __name__)
 @auth.route('/register', methods=['POST'], subdomain="<domain_name>")
 def register(domain_name):
     tenant = Tenant.query.filter_by(domain_name=domain_name).first_or_404()
+    if not tenant.open_registration:
+        flask.abort(401)
     data = UserSchema(exclude=["is_admin",]).load(flask.request.json)
     user = User(**data)
     user.tenant_id = tenant.id
@@ -37,7 +39,10 @@ def login(domain_name):
     token = jwt.create_access_token(
         identity = user.id, 
         expires_delta=datetime.timedelta(days=1), # jwt token is invalidated after one day
-        additional_claims={"is_admin":user.is_admin, "is_owner":user.is_owner} 
+        additional_claims={
+            "is_admin":user.is_admin,
+            "is_owner":user.is_owner
+        } 
         # adds is_admin and is_owner claims to jwt token
     )
     response = flask.Response()

@@ -11,7 +11,8 @@ class Test_auth(Test_base):
             }
         )
         self.assertEqual(response.status_code, 201)
-        self.assertIn("is_owner", response.json)
+        self.assertIn("id", response.json)
+        self.assertEqual(response.json["is_admin"], False)
 
     def test_login(self):
         response = self.client.post(

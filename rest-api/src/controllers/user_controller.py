@@ -19,8 +19,18 @@ users = flask.Blueprint("users", __name__)
 @jwt.jwt_required()
 @jwt_services.admin_required()
 def make_user(domain_name):
-    data = UserSchema().load(flask.request.json)
-    return UserSchema().dump(data)
+    tenant = Tenant.query.filter_by(domain_name=domain_name).first_or_404()
+    if not jwt.current_user.is_owner:
+        data = UserSchema(exclude=("is_admin",)).load(flask.request.json)
+        user = User(**data)
+        user.is_admin = False
+    else:
+        data = UserSchema().load(flask.request.json)
+        user = User(**data)
+    user.tenant_id = tenant.id
+    db.session.add(user)
+    db.session.commit()
+    return flask.jsonify(UserSchema().dump(user)), 201
 
 # Method to retrieve all users
 @users.route('/user', subdomain='<domain_name>', methods=["GET"])
@@ -28,5 +38,25 @@ def make_user(domain_name):
 @jwt_services.admin_required()
 def get_users(domain_name):
     tenant = Tenant.query.filter_by(domain_name=domain_name).first_or_404()
+    if jwt.current_user.tenant_id != tenant.id:
+        return "holdup"
     members = User.query.filter_by(tenant_id=tenant.id).all()
     return flask.jsonify(UserSchema(many=True).dump(members))
+
+# Method to update a user
+@users.route('/user/<user_id>', subdomain='<domain_name>', methods=["PATCH"])
+@jwt.jwt_required()
+@jwt_services.admin_required()
+def update_user(user_id, domain_name):
+    tenant = Tenant.query.filter_by(domain_name=domain_name).first_or_404()
+    user = User.query.filter(User.id==user_id, User.tenant_id==tenant.id).first_or_404()
+
+    if not jwt.current_user.is_owner:
+        data = UserSchema(exclude=("is_admin",), partial=True).load(flask.request.json)
+    else:
+        data = UserSchema(partial=True).load(flask.request.json)
+
+    for key, value in data.iteritems():
+        setattr(user, key, value)
+    db.session.commit()
+    return flask.jsonify(UserSchema().dump(user))
