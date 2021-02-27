@@ -1,9 +1,8 @@
 import React, {useState, useEffect} from 'react';
-import logo from './logo.svg';
 import './App.css';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import NavBar from './components/Navbar.js'
-import Landing from './views/landing.js'
+import Landing from './views/Landing.js'
 
 const App = () => {
   const x = window.location.hostname.split(".")[0]
@@ -16,17 +15,14 @@ const App = () => {
 
   return (
     <div className="App">
-      <NavBar primary={TenantInfo.primary_color}/>
+      <NavBar tenantInfo={TenantInfo}/>
       <BrowserRouter>
         <Switch>
-          <Route path="/home">
-            <Landing/>
+          <Route exact path="/">
+            <Landing tenantInfo={TenantInfo}/>
           </Route>
         </Switch>
       </BrowserRouter>
-      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
-      crossOrigin="anonymous"
-      />
     </div>
   );
 }
