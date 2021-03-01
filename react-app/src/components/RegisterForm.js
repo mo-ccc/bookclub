@@ -8,22 +8,23 @@ const RegisterForm = () => {
 
   const domain = window.location.hostname.split(".")[0]
   const onSubmit = (data) => {
+    console.log(JSON.stringify(data))
     fetch(`http://${domain}.localhost:5000/register`, {
       method: 'POST',
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json',
       },
-      credentials: "include",
       body: JSON.stringify(data)
     }).then(response => response.ok ? setSuccess("registered"):setSuccess("registration failed"))
+    .catch(() => setSuccess("error"))
   }
 
   return(
     <form onSubmit={handleSubmit(onSubmit)} >
       <div className="form-group">
         <label>Name</label>
-        <input className="form-control" name="email" placeholder="Enter Name" ref={register({ required: true })} />
+        <input className="form-control" name="name" placeholder="Enter Name" ref={register({ required: true })} />
         {errors.email && <small className="form-text text-muted">Name is required</small>}
       </div>
       <div className="form-group">

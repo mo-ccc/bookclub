@@ -6,7 +6,7 @@ class Test_tenant(Test_base):
         response = self.client.post(
             "http://localhost:5000/",
             json={
-                "user": {"email": "test1@test.com", "password": "123456"},
+                "user": {"name": "owner of", "email": "test1@test.com", "password": "123456"},
                 "tenant": {"domain_name": "first"}
             }
         )

@@ -1,5 +1,6 @@
 import flask
 from main import db
+import datetime
 
 from models.Tenant import Tenant
 from models.User import User
@@ -38,6 +39,7 @@ def create_domain():
     user.tenant_id = tenant.id
     user.is_admin = True
     user.is_owner = True
+    user.expires_on = datetime.datetime.now() + datetime.timedelta(weeks=4000) # expiry is set to a lifetime
 
     db.session.add(user)
     db.session.commit()

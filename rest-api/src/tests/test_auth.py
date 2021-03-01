@@ -6,6 +6,7 @@ class Test_auth(Test_base):
         response = self.client.post(
             "http://tenant1.localhost:5000/register",
             json={
+                "name": "test user",
                 "email": "testauth@test.com",
                 "password": "123456"
             }

@@ -22,8 +22,8 @@ def make_user(domain_name):
     tenant = Tenant.query.filter_by(domain_name=domain_name).first_or_404()
     if not jwt.current_user.is_owner:
         data = UserSchema(exclude=("is_admin",)).load(flask.request.json)
-        user = User(**data)
-        user.is_admin = False
+        if data["is_admin"]:
+            return flask.abort(401, description="only owners can create admins")
     else:
         data = UserSchema().load(flask.request.json)
         user = User(**data)
@@ -38,8 +38,6 @@ def make_user(domain_name):
 @jwt_services.admin_required()
 def get_users(domain_name):
     tenant = Tenant.query.filter_by(domain_name=domain_name).first_or_404()
-    if jwt.current_user.tenant_id != tenant.id:
-        return "holdup"
     members = User.query.filter_by(tenant_id=tenant.id).all()
     return flask.jsonify(UserSchema(many=True).dump(members))
 

@@ -14,7 +14,11 @@ class Test_user(Test_base):
         response = self.client.post(
             "http://tenant1.localhost:5000/user",
             headers={"Authorization":f"Bearer {self.get_token_for_user(1)}"},
-            json={"email":"testcreate@test.com", "password":"123456", "is_admin":True}
+            json={
+                "name": "admin user",
+                "email":"testcreate@test.com",
+                "password":"123456", "is_admin":True,
+            }
         )
         self.assertEqual(response.status_code, 201)
         self.assertIn("id", response.json)

@@ -16,7 +16,6 @@ const LoginForm = () => {
         'Accept': 'application/json',
         'Content-Type': 'application/json',
       },
-      credentials: "include",
       body: JSON.stringify(data)
     }).then(response => {
       response.ok ? setSuccess("logged in"):setSuccess("invalid credentials")

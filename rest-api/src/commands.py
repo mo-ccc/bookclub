@@ -1,5 +1,6 @@
 import flask
 from main import db
+from datetime import datetime, timedelta
 
 db_cli = flask.Blueprint('db_cli', __name__)
 
@@ -19,13 +20,13 @@ def seed_db():
 
     from models.User import User
     for x in range(1, 4):
-        u = User(email="user1@test.com", password="123456", is_owner=True, is_admin=True, tenant_id=x)
+        u = User(email="user1@test.com", password="123456", is_owner=True, is_admin=True, tenant_id=x, name="default name")
         db.session.add(u)
     db.session.flush()
 
     for y in range(1, 4):
         for x in range(1, 3):
-            u = User(email=f"user{x+1}@test.com", password="123456", tenant_id=y, is_admin=False)
+            u = User(email=f"user{x+1}@test.com", password="123456", tenant_id=y, is_admin=False, name="default name")
             db.session.add(u)
     db.session.flush()
 

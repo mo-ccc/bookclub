@@ -5,9 +5,22 @@ on: push
 jobs:
   test-suite:
     runs-on: ubuntu-latest
-    env:
-      FLASK_APP: main.py
-      FLASK_ENV: testing    
+
+    services: # adding postgres to flow file for testing
+      postgres:
+        image: postgres
+        env:
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: testing
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 2
+        ports:
+          # Maps tcp port 5432 on service to host
+          - 5432:5432
+  
     steps:
       - name: checkout
         uses: actions/checkout@v2
@@ -24,4 +37,7 @@ jobs:
           
       - name: run unittest
         run: python -m unittest discover rest-api/src/
+        env:
+          FLASK_APP: main.py
+          FLASK_ENV: testing  
         

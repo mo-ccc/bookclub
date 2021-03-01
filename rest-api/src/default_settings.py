@@ -15,14 +15,14 @@ class Config():
     
 class Development(Config):
     DEBUG = True
-    SQLALCHEMY_DATABASE_URI = 'sqlite:////tmp/development.db' # a temporary sqlite database
+    SQLALCHEMY_DATABASE_URI = f"postgresql+psycopg2://{os.getenv('DB_URI')}/development" # a temporary sqlite database
 
 class Testing(Config):
     TESTING = True
-    SQLALCHEMY_DATABASE_URI = 'sqlite:////tmp/test.db' # a separate database for tests only
+    SQLALCHEMY_DATABASE_URI = f"postgresql+psycopg2://{os.getenv('DB_URI')}/testing" # a separate database for tests only
 
 class Production(Config):
-    SQLALCHEMY_DB_URI = f"postgresql+psycopg2://{os.getenv('DB_URI')}"
+    SQLALCHEMY_DB_URI = f"postgresql+psycopg2://{os.getenv('DB_URI')}/production"
     # production postgresql database
 
 
