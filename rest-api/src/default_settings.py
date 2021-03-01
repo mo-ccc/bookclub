@@ -13,6 +13,7 @@ class Config():
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     JWT_TOKEN_LOCATION = ['cookies']
     JWT_COOKIE_CSRF_PROTECT = False # come back to this later
+    RENDER_AS_BATCH = True
     
 class Development(Config):
     DEBUG = True

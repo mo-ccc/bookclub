@@ -3,7 +3,8 @@ import {Button, Modal, Tab, Nav, Row, Col} from 'react-bootstrap'
 import RegisterForm from './RegisterForm.js'
 import LoginForm from './LoginForm.js'
 
-const ModalForm = ({tenantInfo}) => {
+const ModalForm = ({children}) => {
+  console.log(children)
   const [show, setShow] = useState(false);
 
   const handleClose = () => setShow(false);

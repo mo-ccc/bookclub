@@ -1,13 +1,17 @@
 import React from 'react'
 import {Button} from 'react-bootstrap'
 
-const Banner = ({name, description}) => {
-    console.log(name)
+const Banner = ({name, paragraph}) => {
+    const styles = {
+        border: "2px solid grey",
+        width: "100%",
+        height: "200px"
+    }
+
     return(
-        <div>
+        <div style={styles}>
             <h1>{name}</h1>
-            <p>{description}</p>
-            <Button>Contact</Button>
+            <p>{paragraph}</p>
         </div>
     )
 }

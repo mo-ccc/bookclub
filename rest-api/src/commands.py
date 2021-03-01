@@ -13,7 +13,7 @@ def drop_db():
 def seed_db():
     from models.Tenant import Tenant
     for x in range(1, 4):
-        t = Tenant(domain_name=f"tenant{x}")
+        t = Tenant(domain_name=f"tenant{x}", )
         db.session.add(t)
     db.session.flush()
 

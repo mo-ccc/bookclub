@@ -10,6 +10,11 @@ class Tenant(db.Model):
     primary_color = db.Column(db.String(7))
     secondary_color = db.Column(db.String(7))
     open_registration = db.Column(db.Boolean(), nullable=False, default=True)
+    default_account_expiry_time = db.Column(db.Integer, default=365)
+    statement = db.Column(db.String())
+    description = db.Column(db.String())
+    location = db.Column(db.String())
+    phone = db.Column(db.String(15))
 
     users = db.relationship('User', backref='tenant', passive_deletes='all')
     facilities = db.relationship('Facility', backref='tenant', passive_deletes='all')
