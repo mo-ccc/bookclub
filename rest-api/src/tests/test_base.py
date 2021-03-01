@@ -35,4 +35,4 @@ class Test_base(unittest.TestCase):
             }
         )
         
-        return response.headers.get("Set-Cookie")
+        return response.json

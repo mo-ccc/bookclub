@@ -29,9 +29,9 @@ const ModalTabbed = ({children, name}) => {
                 </Nav>
               </Row>
               <Row>
-                  <Tab.Content style={{padding: "10px"}}>
+                  <Tab.Content style={{padding: "10px", width: "100%"}}>
                     {children.map(i => (
-                      <Tab.Pane key={i[0]} eventKey={i[0]}>
+                      <Tab.Pane key={i[0]} eventKey={i[0]} style={{width: "100%"}}>
                         {i[1]}
                       </Tab.Pane>
                     ))}

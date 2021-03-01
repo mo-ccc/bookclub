@@ -27,7 +27,13 @@ def register(domain_name):
 @auth.route('/login', methods=['POST'], subdomain="<domain_name>")
 def login(domain_name):
     tenant = Tenant.query.filter_by(domain_name=domain_name).first_or_404()
-    data = UserSchema(exclude=["is_admin",]).load(flask.request.json)
+
+    # try except so that failed validation returns 401 rather than 500
+    try:
+        data = UserSchema(exclude=["is_admin",]).load(flask.request.json)
+    except:
+        return flask.abort(401)
+
     user = User.query.filter(
         User.email==data["email"],
         User.tenant_id==tenant.id
@@ -47,6 +53,6 @@ def login(domain_name):
     )
     # response = flask.Response()
     # jwt.set_access_cookies(response, token) # using cookie is unpreffered
-    return token
+    return flask.jsonify(token)
 
     

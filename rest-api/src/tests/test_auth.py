@@ -23,4 +23,4 @@ class Test_auth(Test_base):
             }
         )
         self.assertEqual(response.status_code, 200)
-        self.assertIsNotNone(response.headers.get('Set-Cookie'))
+        self.assertIsNotNone(response.json)
