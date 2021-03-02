@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import { Route, Switch, useHistory } from 'react-router-dom';
 
 import {createDispatchHook, useSelector} from 'react-redux'
 import store from './redux/store.js'
@@ -11,21 +11,25 @@ import Landing from './views/Landing.js'
 import AdminPage from './views/AdminPage.js'
 import UserPage from './views/UserPage.js'
 import FacilitiesPage from './views/FacilitiesPage.js'
+import BookingPage from './views/BookingPage.js'
+
+import RecentlyBooked from './layouts/RecentlyBooked.js'
 
 const Main = () =>{
   const [TenantInfo, setTenantInfo] = useState("")
   const [Facilities, setFacilities] = useState("")
+  const history = useHistory()
 
   const x = window.location.hostname.split(".")[0]
   useEffect(() => {
-    fetch(`http://${x}.localhost:5000/`)
+    fetch(`http://${x}.${process.env.REACT_APP_HOST}:5000/`)
     .then(response => response.json())
     .then(json => {
       store.dispatch(setTenant(json))
       setTenantInfo(json)
-    });
+    }).catch(error => history.push('/404'));
 
-    fetch(`http://${x}.localhost:5000/facility`)
+    fetch(`http://${x}.${process.env.REACT_APP_HOST}:5000/facility`)
     .then(response => response.json())
     .then(json => {
       console.log(json)
@@ -44,22 +48,31 @@ const Main = () =>{
 
   return (
     <div>
-      <BrowserRouter>
-        <NavBar tenantInfo={TenantInfo} token={token}/>
-        <Switch>
-          <Route exact path="/">
-            <Landing tenantInfo={TenantInfo} facilities={Facilities}/>
-          </Route>
-          {token &&
+      <NavBar tenantInfo={TenantInfo} token={token}/>
+      <Switch>
+        <Route exact path="/">
+          <Landing tenantInfo={TenantInfo} facilities={Facilities}/>
+        </Route>
+        {token &&
+          <>
           <Route exact path="/settings">
             {token.is_admin ? <AdminPage/>:<UserPage/>}
           </Route>
-          }
-          <Route exact path="/book">
-            <FacilitiesPage/>
+          <Route exact path={["/book", "/book/:id"]}>
+            <RecentlyBooked>
+              <Route exact path="/book">
+                <FacilitiesPage facilities={Facilities}/>
+              </Route>
+              <Route exact path="/book/:id">
+                <BookingPage/>
+              </Route>
+            </RecentlyBooked>
           </Route>
-        </Switch>
-      </BrowserRouter>
+          
+          </>
+        }
+        <Route path="/404" render={() => <h1>404</h1>}/>
+      </Switch>
     </div>
   )
 }

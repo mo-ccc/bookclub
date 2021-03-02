@@ -1,6 +1,7 @@
 import React from 'react'
 import Button from 'react-bootstrap/Button'
 import placeholder from '../statics/images/placeholder.jpg'
+import {Link} from 'react-router-dom'
 
 const Facility = ({facility}) => {
   const style = {
@@ -11,7 +12,7 @@ const Facility = ({facility}) => {
       maxWidth: "100%"
     }
   }
-  console.log(facility)
+  const linkto = `/book/${facility.id}`
   return(
       <div className="col-lg-4 col-md-7 col-sm-8">
         <div style={style.padding}>
@@ -21,7 +22,7 @@ const Facility = ({facility}) => {
           <div className="text-center">
             <h4>{facility.name}</h4>
             <p>{facility.description}</p>
-            <Button>Book</Button>
+            <Link to={linkto}><Button>Book</Button></Link>
           </div>
         </div>
       </div>

@@ -10,7 +10,7 @@ const LoginForm = () => {
 
   const domain = window.location.hostname.split(".")[0]
   const onSubmit = (data) => {
-    fetch(`http://${domain}.localhost:5000/login`, {
+    fetch(`http://${domain}.${process.env.REACT_APP_HOST}:5000/login`, {
       method: 'POST',
       headers: {
         'Accept': 'application/json',

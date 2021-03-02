@@ -3,7 +3,7 @@ import {Navbar, Nav, Button} from 'react-bootstrap'
 import ModalTabbed from './ModalTabbed.js'
 import LoginForm from './LoginForm.js'
 import RegisterForm from './RegisterForm.js'
-import {Link} from 'react-router-dom'
+import {Link, NavLink} from 'react-router-dom'
 import store from '../redux/store.js'
 import {setAuth} from '../redux'
 
@@ -29,9 +29,9 @@ const NavBar = ({tenantInfo, token}) => {
           {!token && modal}
           {token &&
           <>
-            <Link to="/bookings"><a className="nav-link">My Bookings</a></Link>
-            <Link to="/book"><a className="nav-link">New booking</a></Link>
-            <Link to="/settings"><a className="nav-link">Settings</a></Link>
+            <NavLink to="/bookings"><a className="nav-link">My Bookings</a></NavLink>
+            <NavLink to="/book"><a className="nav-link">New booking</a></NavLink>
+            <NavLink to="/settings"><a className="nav-link">Settings</a></NavLink>
             <Button variant="outline-dark" onClick={handleLogout}>Logout</Button>
           </>
           }
