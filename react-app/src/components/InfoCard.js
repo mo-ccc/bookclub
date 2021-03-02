@@ -1,25 +1,20 @@
-import React, {useEffect} from 'react'
+import React from 'react'
 
 const InfoCard = ({location, phone}) => {
-    const styles={
-        flexi: {
-            display: "flex"
-        }
-    }
-    return (
-        <div style={styles.flexi}>
-            <div>
-                <div style={styles.flexi}>
-                    <img src="https://lh3.googleusercontent.com/proxy/ElQn0_zWqxQSCXnqgeHzS4UFAnUaJcNR7hqKc8cNsAGKfhB-gKQ5mgaSfWmx-Vci6J0V6a2pP0qw-ysGY4pDGthjtKgCYIWXQg" width="3%"/>
-                    <h5>{location}</h5>
-                </div>
-                <div style={styles.flexi}>
-                    <img src="https://lh3.googleusercontent.com/proxy/ElQn0_zWqxQSCXnqgeHzS4UFAnUaJcNR7hqKc8cNsAGKfhB-gKQ5mgaSfWmx-Vci6J0V6a2pP0qw-ysGY4pDGthjtKgCYIWXQg" width="3%"/>
-                    <h5>{phone}</h5>
-                </div>
-            </div>
+	const style = {
+		backgroundColor: "#f6f8fc",
+		maxWidth: "760px"
+	}
 
-        </div>
-    )
+  return (
+    <div style={style} className="lead-form-wrapper mx-auto rounded p-5 m-5">
+			<h3>Contact Info</h3>
+			<hr/>
+			<div>
+				<p>📍 :  {location}</p>
+				<p>📞:  {phone}</p>
+			</div>
+		</div>
+  )
 }
 export default InfoCard

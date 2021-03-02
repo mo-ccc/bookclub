@@ -29,9 +29,9 @@ const NavBar = ({tenantInfo, token}) => {
           {!token && modal}
           {token &&
           <>
-            <Link to="/bookings"><a class="nav-link">My Bookings</a></Link>
-            <Link to="/new"><a class="nav-link">New booking</a></Link>
-            <Link to="/settings"><a class="nav-link">Settings</a></Link>
+            <Link to="/bookings"><a className="nav-link">My Bookings</a></Link>
+            <Link to="/book"><a className="nav-link">New booking</a></Link>
+            <Link to="/settings"><a className="nav-link">Settings</a></Link>
             <Button variant="outline-dark" onClick={handleLogout}>Logout</Button>
           </>
           }
