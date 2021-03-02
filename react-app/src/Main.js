@@ -1,11 +1,15 @@
 import React, {useState, useEffect} from 'react';
 import './App.css';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
-import NavBar from './components/Navbar.js'
-import Landing from './views/Landing.js'
-import {useSelector} from 'react-redux'
+
+import {createDispatchHook, useSelector} from 'react-redux'
 import store from './redux/store.js'
 import {setTenant} from './redux'
+
+import NavBar from './components/Navbar.js'
+import Landing from './views/Landing.js'
+import AdminPage from './views/AdminPage'
+import UserPage from './views/UserPage'
 
 const Main = () =>{
   const [TenantInfo, setTenantInfo] = useState("")
@@ -20,21 +24,31 @@ const Main = () =>{
     });
   }, [])
 
-  const token = useSelector(state => state.token)
+  const token = useSelector(state => {
+    try {
+      return JSON.parse(atob(state.token.split('.')[1]))
+    }catch(e) {
+      return ""
+    }
+  })
+
 
   return (
     <div>
-      <NavBar tenantInfo={TenantInfo}/>
-      <div>
-        <h1>toek:{token}</h1>
-        <BrowserRouter>
-          <Switch>
-            <Route exact path="/">
-              <div>hello</div>
-            </Route>
-          </Switch>
-        </BrowserRouter>
-      </div>
+      <BrowserRouter>
+        <NavBar tenantInfo={TenantInfo} token={token}/>
+        <Switch>
+          <Route exact path="/">
+            <Landing tenantInfo={TenantInfo}/>
+          </Route>
+          {token &&
+          <Route exact path="/settings">
+            {token.is_admin ? <AdminPage/>:<UserPage/>}
+          </Route>
+          }
+
+        </Switch>
+      </BrowserRouter>
     </div>
   )
 }
