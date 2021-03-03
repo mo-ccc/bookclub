@@ -1,6 +1,7 @@
 import flask
 from main import db
 from .Availability import Availability
+from .Booking import Booking
 
 class Facility(db.Model):
     __tablename__ = "facilities"
@@ -20,6 +21,9 @@ class Facility(db.Model):
     availabilities = db.relationship(
         'Availability', uselist=False, backref='facility', passive_deletes='all'
     )
+
+    bookings = db.relationship("Booking")
+
 
     def __repr__(self):
         return f"name:{self.name} -- id:{self.id} -- tenant:{self.tenant_id}"

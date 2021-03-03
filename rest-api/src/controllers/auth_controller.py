@@ -39,7 +39,7 @@ def login(domain_name):
         User.tenant_id==tenant.id
     ).first()
 
-    if not user or not bcrypt.check_password_hash(user.password, data["password"]) or datetime.datetime.now() > user.expires_on:
+    if not user or not bcrypt.check_password_hash(user.password, data["password"]) or datetime.datetime.utcnow() > user.expires_on:
         return flask.abort(401)
     
     token = jwt.create_access_token(

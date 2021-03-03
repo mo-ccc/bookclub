@@ -10,7 +10,7 @@ def get_expiry(context):
     from models.Tenant import Tenant
     tenant = Tenant.query.get(context.get_current_parameters()['tenant_id'])
     x = tenant.default_account_expiry_time
-    return datetime.datetime.now() + datetime.timedelta(days=x)
+    return datetime.datetime.utcnow() + datetime.timedelta(days=x)
 
 
 class User(db.Model):
@@ -26,7 +26,7 @@ class User(db.Model):
     _password = db.Column("password", db.String(), nullable=False)
     is_admin = db.Column(db.Boolean(), nullable=False)
     is_owner = db.Column(db.Boolean(), nullable=False, default=False)
-    created_at = db.Column(db.DateTime(), nullable=False, server_default=now())
+    created_at = db.Column(db.DateTime(timezone=False), nullable=False, server_default=now())
     expires_on = db.Column(db.DateTime(), nullable=False, default=get_expiry)
     
     tenant_id = db.Column(

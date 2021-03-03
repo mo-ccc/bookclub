@@ -2,20 +2,25 @@ import flask
 from main import db
 import flask_jwt_extended as jwt
 
+from services import jwt_services
+
 from models.Tenant import Tenant
 from models.User import User
 from models.Facility import Facility
 from models.Availability import Availability
+from models.Booking import Booking
 
 from schemas.UserSchema import UserSchema
 from schemas.TenantSchema import TenantSchema
 from schemas.FacilitySchema import FacilitySchema
+from schemas.BookingSchema import BookingSchema
 
 facilities = flask.Blueprint("facilities", __name__)
 
 # Method to create a facility
 @facilities.route('/facility', subdomain='<domain_name>', methods=["POST"])
 @jwt.jwt_required()
+@jwt_services.admin_required()
 def make_facility(domain_name):
     if not jwt.current_user.is_admin or not jwt.current_user.is_owner:
         return flask.abort(401)
@@ -39,13 +44,30 @@ def make_facility(domain_name):
     return FacilitySchema().dump(facility)
 
 # Method to retrieve all facilities
-@facilities.route('/facility', methods=["GET"], subdomain="<domain_name>")
+@facilities.route('/facility', subdomain="<domain_name>", methods=["GET"])
+@jwt.jwt_required()
 def get_facilities(domain_name):
     tenant = Tenant.query.filter_by(domain_name=domain_name).first_or_404()
     facilities = Facility.query.filter_by(tenant_id=tenant.id)
     return flask.jsonify(FacilitySchema(many=True).dump(facilities))
 
+# Method to make a booking
+@facilities.route('/facility/<id>', subdomain="<domain_name>", methods=["POST"])
+@jwt.jwt_required()
+def make_booking(domain_name, id):
+    tenant = Tenant.query.filter_by(domain_name=domain_name).first_or_404()
+    facility = Facility.query.get(id)
+    data = BookingSchema().load(flask.request.json)
+    booking = Booking(**data)
+    booking.user = jwt.current_user
+    facility.bookings.append(booking)
+    db.session.commit()
+    return flask.jsonify(BookingSchema().dump(booking)), 201
+
+
+
 # Detail get method
-@facilities.route('/facility/<id>', methods=["GET"], subdomain="<domain_name>")
-def detail_get_facility
+@facilities.route('/facility/<id>', subdomain="<domain_name>", methods=["GET"])
+def detail_get_facility(domain_name):
+    pass
 
