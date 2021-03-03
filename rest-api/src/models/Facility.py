@@ -1,5 +1,6 @@
 import flask
 from main import db
+from .Availability import Availability
 
 class Facility(db.Model):
     __tablename__ = "facilities"
@@ -11,7 +12,14 @@ class Facility(db.Model):
     max_capacity = db.Column(db.Integer, default=30)
     max_guests = db.Column(db.Integer, nullable=False, default=0)
 
-    tenant_id = db.Column(db.Integer, db.ForeignKey('tenants.id'), nullable=False)
+    tenant_id = db.Column(
+        db.Integer, db.ForeignKey('tenants.id', ondelete="CASCADE"),
+        nullable=False
+    )
+
+    availabilities = db.relationship(
+        'Availability', uselist=False, backref='facility', passive_deletes='all'
+    )
 
     def __repr__(self):
         return f"name:{self.name} -- id:{self.id} -- tenant:{self.tenant_id}"

@@ -29,7 +29,11 @@ class User(db.Model):
     created_at = db.Column(db.DateTime(), nullable=False, server_default=now())
     expires_on = db.Column(db.DateTime(), nullable=False, default=get_expiry)
     
-    tenant_id = db.Column(db.Integer, db.ForeignKey('tenants.id'), nullable=False)
+    tenant_id = db.Column(
+        db.Integer, 
+        db.ForeignKey('tenants.id', ondelete="CASCADE"),
+        nullable=False
+    )
 
     @hybrid_property
     def password(self):
