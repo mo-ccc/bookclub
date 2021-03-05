@@ -12,6 +12,7 @@ const BookingPage = () => {
     let iso = d.toISOString()
     let d2 = new Date(iso.substring(0, iso.indexOf("T")))
     console.log(d2.toISOString())
+    console.log(state.availabilities)
 
     const values = [["mondayStart", "mondayEnd"], ["tuesdayStart", "tuesdayEnd"], ["wednesdayStart", "wednesdayEnd"], ["thursdayStart", "thursdayEnd"], ["fridayStart", "fridayEnd"], ["saturdayStart", "saturdayEnd"], ["sundayStart", "sundayEnd"]]
     const days = ["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"]
