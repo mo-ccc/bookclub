@@ -18,38 +18,40 @@ const DayPicker = ({fid}) => {
       setTimeslot(selected)
   }
 
-  const updateTimes = (setTBool) => {
-    const iso = selectedDay.toISOString()
+  const handleDayChange = (day) =>{
+    setSelectedDay(day)
+    const iso = day.toISOString()
     const requestParam = iso.substring(0, iso.indexOf("T"))
     getNoToken(`facility/${fid}/${requestParam}`)
     .then(request => request.json())
     .then(data => {
       console.log(data)
       setFetchData(data)
-      setTBool && setTimeslot(data.facility.availabilities.open)
       return data
     })
   }
 
-  const handleDayChange = (day) =>{
-    console.log(day)
-    setSelectedDay(day)
-    console.log(selectedDay)
-    updateTimes(true)
-  }
-
   const handleSubmit = () => {
     setSuccess("")
-    const iso = selectedDay.toISOString()
-    const requestParam = iso.substring(0, iso.indexOf("T"))
+    console.log(selectedDay)
+    let new_date = new Date(selectedDay.valueOf())
     console.log(timeslot)
+    let d = new Date()
+    let n = d.getTimezoneOffset()/30
+    console.log(n)
+    new_date.setMinutes(new_date.getMinutes() + n)
+    const iso = new_date.toISOString()
+    const requestParam = iso.substring(0, iso.indexOf("T"))
+    console.log(requestParam)
+    if (timeslot < 0){
+      timeslot = 48 + timeslot
+    }
     postWithToken(
       `facility/${fid}`, 
       {"date": requestParam, "timeslot": timeslot}, token
       ).then(response => {
       response.ok ? setSuccess("Booked"):setSuccess("Booking failed")
     }).catch(error => console.log(error))
-    updateTimes(false)
   }
 
   return (
