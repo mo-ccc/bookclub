@@ -89,6 +89,7 @@ def detail_get_facility(domain_name, id, date):
     weekdays = ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"]
     weekday_num = datetime.datetime.fromisoformat(date).weekday()
     weekday_strings = [f"{weekdays[weekday_num]}Start", f"{weekdays[weekday_num]}End"]
+    print(weekday_strings)
 
     facility_data = FacilitySchema().dump(facility)
     if facility_data["availabilities"]:

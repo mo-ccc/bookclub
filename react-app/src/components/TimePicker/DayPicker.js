@@ -18,24 +18,19 @@ const DayPicker = ({fid}) => {
       setTimeslot(selected)
   }
 
-  const updateTimes = (setTBool) => {
-    const iso = selectedDay.toISOString()
+  const handleDayChange = (day) =>{
+    setSelectedDay(day)
+    const iso = day.toISOString()
     const requestParam = iso.substring(0, iso.indexOf("T"))
+    console.log(requestParam)
     getNoToken(`facility/${fid}/${requestParam}`)
     .then(request => request.json())
     .then(data => {
       console.log(data)
       setFetchData(data)
-      setTBool && setTimeslot(data.facility.availabilities.open)
+      setTimeslot(data.facility.availabilities.open)
       return data
     })
-  }
-
-  const handleDayChange = (day) =>{
-    console.log(day)
-    setSelectedDay(day)
-    console.log(selectedDay)
-    updateTimes(true)
   }
 
   const handleSubmit = () => {
@@ -49,7 +44,6 @@ const DayPicker = ({fid}) => {
       ).then(response => {
       response.ok ? setSuccess("Booked"):setSuccess("Booking failed")
     }).catch(error => console.log(error))
-    updateTimes(false)
   }
 
   return (
