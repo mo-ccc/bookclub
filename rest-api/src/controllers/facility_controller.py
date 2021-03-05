@@ -1,6 +1,7 @@
 import flask
 from main import db
 import flask_jwt_extended as jwt
+import datetime
 
 from services import jwt_services
 
@@ -43,9 +44,8 @@ def make_facility(domain_name):
 
     return FacilitySchema().dump(facility)
 
-# Method to retrieve all facilities
+# Method to retrieve all facilities in a subdomain
 @facilities.route('/facility', subdomain="<domain_name>", methods=["GET"])
-@jwt.jwt_required()
 def get_facilities(domain_name):
     tenant = Tenant.query.filter_by(domain_name=domain_name).first_or_404()
     facilities = Facility.query.filter_by(tenant_id=tenant.id)
@@ -57,17 +57,53 @@ def get_facilities(domain_name):
 def make_booking(domain_name, id):
     tenant = Tenant.query.filter_by(domain_name=domain_name).first_or_404()
     facility = Facility.query.get(id)
-    data = BookingSchema().load(flask.request.json)
+    schema = BookingSchema(exclude=("user_id", "facility_id"))
+
+    schema.context["fid"] = facility # a context is passed for one of the validators
+    # the context is the facility the booking is made on
+    data = schema.load(flask.request.json)
+
     booking = Booking(**data)
     booking.user = jwt.current_user
     facility.bookings.append(booking)
     db.session.commit()
     return flask.jsonify(BookingSchema().dump(booking)), 201
 
-
-
 # Detail get method
-@facilities.route('/facility/<id>', subdomain="<domain_name>", methods=["GET"])
-def detail_get_facility(domain_name):
-    pass
+@facilities.route('/facility/<id>/<date>', subdomain="<domain_name>", methods=["GET"])
+def detail_get_facility(domain_name, id, date):
+    tenant = Tenant.query.filter_by(domain_name=domain_name).first_or_404()
+    facility = Facility.query.filter_by(id=id).first_or_404()
+    bookings = Booking.query.filter(
+        Booking.facility_id==id, 
+        Booking.date==datetime.datetime.fromisoformat(date)
+    ).all()
+    counts = {}
+    for x in bookings:
+        if x.timeslot not in counts:
+            counts[x.timeslot] = 1
+        else:
+            counts[x.timeslot] = counts[x.timeslot] + 1
+    
+
+    weekdays = ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"]
+    weekday_num = datetime.datetime.fromisoformat(date).weekday()
+    weekday_strings = [f"{weekdays[weekday_num]}Start", f"{weekdays[weekday_num]}End"]
+
+    facility_data = FacilitySchema().dump(facility)
+    if facility_data["availabilities"]:
+        availabilities = facility_data.pop("availabilities")
+        new_availability_dict = {
+            "open":availabilities.get(weekday_strings[0], 0), 
+            "close":availabilities.get(weekday_strings[1], 48)
+        }
+    else:
+        new_availability_dict = {
+            "open":0, 
+            "close":48
+        }
+
+    facility_data["availabilities"] = new_availability_dict
+    return flask.jsonify({"counts":counts, "facility":facility_data})
+
 

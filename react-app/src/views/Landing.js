@@ -20,9 +20,9 @@ const Landing = ({tenantInfo, facilities}) => {
     </div>
     <hr/>
       <div className="container">
-        <div className="row justify-content-center">
-          {facilities && facilities.map((i) => {
-            return <Facility facility={i}/>
+        <div className="row">
+          {facilities && facilities.map((f, i) => {
+            return <Facility key={i} data={f}/>
           })}
         </div>
       </div>

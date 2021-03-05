@@ -3,7 +3,7 @@ import Button from 'react-bootstrap/Button'
 import placeholder from '../statics/images/placeholder.jpg'
 import {Link} from 'react-router-dom'
 
-const Facility = ({facility}) => {
+const Facility = ({data}) => {
   const style = {
     padding: {
       padding: "50px 30px"
@@ -12,17 +12,17 @@ const Facility = ({facility}) => {
       maxWidth: "100%"
     }
   }
-  const linkto = `/book/${facility.id}`
+  const linkto = `/book/${data.id}`
   return(
       <div className="col-lg-4 col-md-7 col-sm-8">
         <div style={style.padding}>
           <div >
-            {facility.img ? <img src={facility.img} style={style.maxwidth}/>:<img src={placeholder} style={style.maxwidth}/>}
+            {data.img ? <img src={data.img} style={style.maxwidth}/>:<img src={placeholder} style={style.maxwidth}/>}
           </div>
           <div className="text-center">
-            <h4>{facility.name}</h4>
-            <p>{facility.description}</p>
-            <Link to={linkto}><Button>Book</Button></Link>
+            <h4>{data.name}</h4>
+            <p>{data.description}</p>
+            <Link to={{pathname:linkto, state:data}}><Button>Book</Button></Link>
           </div>
         </div>
       </div>

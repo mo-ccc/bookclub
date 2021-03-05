@@ -5,8 +5,16 @@ import Main from './Main.js'
 import {BrowserRouter} from 'react-router-dom'
 
 const App = () => {
+  if (!(window.location.hostname.includes("."))){
+    return(
+      <div>
+        <h1>not a subdomain</h1>
+      </div>
+    )
+  }
   return (
     <Provider store={store}>
+      
       <BrowserRouter>
         <div className="App">
           <Main/>
