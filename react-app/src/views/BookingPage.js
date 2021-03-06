@@ -8,7 +8,9 @@ const BookingPage = () => {
     let {id} = useParams()
     let {state} = useLocation()
 
+
     let times = []
+
     const values = [["mondayStart", "mondayEnd"], ["tuesdayStart", "tuesdayEnd"], ["wednesdayStart", "wednesdayEnd"], ["thursdayStart", "thursdayEnd"], ["fridayStart", "fridayEnd"], ["saturdayStart", "saturdayEnd"], ["sundayStart", "sundayEnd"]]
     console.log(state.availabilities)
     if (!state.availabilities) {

@@ -27,15 +27,19 @@ const DayPicker = ({fid}) => {
     .then(data => {
       console.log(data)
       setFetchData(data)
+
       setTimeslot(data.facility.availabilities.open)
+
       return data
     })
   }
 
   const handleSubmit = () => {
     setSuccess("")
+
     const iso = selectedDay.toISOString()
     const requestParam = iso.substring(0, iso.indexOf("T"))
+
     postWithToken(
       `facility/${fid}`, 
       {"date": requestParam, "timeslot": timeslot}, token
