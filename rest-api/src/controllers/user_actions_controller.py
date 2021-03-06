@@ -1,6 +1,7 @@
 import flask
 from main import db
 import flask_jwt_extended as jwt
+import datetime
 
 from models.Tenant import Tenant
 from models.User import User
@@ -47,3 +48,16 @@ def make_booking(domain_name, id):
     facility.bookings.append(booking)
     db.session.commit()
     return flask.jsonify(BookingSchema().dump(booking)), 201
+
+@actions.route('/booking/<id>', subdomain="<domain_name>", methods=["DELETE"])
+@jwt.jwt_required()
+def delete_booking(domain_name, id):
+    booking = Booking.query.get(id)
+    from schemas.BookingSchema import convert_time
+
+    if not jwt.current_user.id == booking.user_id or \
+    convert_time(booking.date, booking.timeslot) < datetime.datetime.utcnow():
+        flask.abort(401)
+    db.session.delete(booking)
+    db.session.commit()
+    return flask.jsonify(BookingSchema().dump(booking))

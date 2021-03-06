@@ -25,7 +25,6 @@ const NavBar = ({tenantInfo, token}) => {
       <Navbar.Toggle aria-controls="basic-navbar-nav" />
       <Navbar.Collapse id="basic-navbar-nav">
         <Nav className="mr-auto">
-          <Nav.Link href="#link">Contact</Nav.Link>
           {!token && modal}
           {token &&
           <>

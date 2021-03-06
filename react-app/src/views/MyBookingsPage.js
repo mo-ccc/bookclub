@@ -10,7 +10,7 @@ const MyBookingsPage = ({facilities}) => {
   const [activeBookings, setActiveBookings] = useState("")
   const [inActiveBookings, setInActiveBookings] = useState("")
 
-  useEffect(() => {
+  const getData = () => {
     getWithToken('booking-history', token)
     .then(
       response => (response.json())
@@ -28,7 +28,12 @@ const MyBookingsPage = ({facilities}) => {
         setActiveBookings(activeList)
         setInActiveBookings(inactiveList)
         return data
-  })}, [])
+      })
+  }
+
+  useEffect(() => {
+    getData()
+  }, [])
 
   const locateFacility = (id) => {
     for (let x of facilities) {
@@ -39,6 +44,7 @@ const MyBookingsPage = ({facilities}) => {
     return "unknown"
   }
   const sortBookings = (event, [state, stateSetter]) => {
+    getData()
     let method = Number(event.target.value)
     let list = [...state]
     switch (method) {
@@ -75,7 +81,7 @@ const MyBookingsPage = ({facilities}) => {
       </div>
       <div className="row">
         {activeBookings && activeBookings.map((item, i)=>{
-          return (<div className="col-4"><Booking key={i} name={locateFacility(item.facility_id)} date={item.date} timeslot={item.timeslot} showCancelButton={true}/></div>)
+          return (<div className="col-4"><Booking key={i} name={locateFacility(item.facility_id)} data={item} showCancelButton={true} getData={getData} /></div>)
         })}
       </div>
       <hr/>
@@ -85,7 +91,7 @@ const MyBookingsPage = ({facilities}) => {
       </div>
       <div className="row">
         {inActiveBookings && inActiveBookings.map((item, i)=>{
-          return (<div className="col-4"><Booking key={i} name={locateFacility(item.facility_id)} date={item.date} timeslot={item.timeslot}/></div>)
+          return (<div className="col-4"><Booking key={i} name={locateFacility(item.facility_id)} data={item} getData={getData} /></div>)
         })}
       </div>
     </div>

@@ -39,7 +39,7 @@ const RecentlyBooked = (props) => {
           <h4 className="mb-3 mt-3">Recently Booked</h4>
           {lastThree && lastThree.map((item, i) =>{
             return (
-              <Booking key={i} name={locateFacility(item.facility_id)} date={item.date} timeslot={item.timeslot}/>
+              <Booking key={i} name={locateFacility(item.facility_id)} data={item}/>
             )
           })}
           <Link to="/history"><Button className="d-block mx-auto">View full history</Button></Link>
