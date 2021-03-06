@@ -51,24 +51,6 @@ def get_facilities(domain_name):
     facilities = Facility.query.filter_by(tenant_id=tenant.id)
     return flask.jsonify(FacilitySchema(many=True).dump(facilities))
 
-# Method to make a booking
-@facilities.route('/facility/<id>', subdomain="<domain_name>", methods=["POST"])
-@jwt.jwt_required()
-def make_booking(domain_name, id):
-    tenant = Tenant.query.filter_by(domain_name=domain_name).first_or_404()
-    facility = Facility.query.get(id)
-    schema = BookingSchema(exclude=("user_id", "facility_id"))
-
-    schema.context["fid"] = facility # a context is passed for one of the validators
-    # the context is the facility the booking is made on
-    data = schema.load(flask.request.json)
-
-    booking = Booking(**data)
-    booking.user = jwt.current_user
-    facility.bookings.append(booking)
-    db.session.commit()
-    return flask.jsonify(BookingSchema().dump(booking)), 201
-
 # Detail get method
 @facilities.route('/facility/<id>/<date>', subdomain="<domain_name>", methods=["GET"])
 def detail_get_facility(domain_name, id, date):
@@ -89,7 +71,6 @@ def detail_get_facility(domain_name, id, date):
     weekdays = ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"]
     weekday_num = datetime.datetime.fromisoformat(date).weekday()
     weekday_strings = [f"{weekdays[weekday_num]}Start", f"{weekdays[weekday_num]}End"]
-    print(weekday_strings)
 
     facility_data = FacilitySchema().dump(facility)
     if facility_data["availabilities"]:
@@ -103,6 +84,16 @@ def detail_get_facility(domain_name, id, date):
             "open":0, 
             "close":48
         }
+
+    """
+        facility: {
+            availabilities: {open:0, close:48}
+            ...
+        }
+        counts: {
+            1: 8,
+        }
+    """
 
     facility_data["availabilities"] = new_availability_dict
     return flask.jsonify({"counts":counts, "facility":facility_data})
