@@ -12,6 +12,7 @@ import AdminPage from './views/AdminPage.js'
 import UserPage from './views/UserPage.js'
 import FacilitiesPage from './views/FacilitiesPage.js'
 import BookingPage from './views/BookingPage.js'
+import MyBookingsPage from './views/MyBookingsPage.js'
 
 import RecentlyBooked from './layouts/RecentlyBooked.js'
 
@@ -59,7 +60,7 @@ const Main = () =>{
             {token.is_admin ? <AdminPage/>:<UserPage/>}
           </Route>
           <Route exact path={["/book", "/book/:id"]}>
-            <RecentlyBooked>
+            <RecentlyBooked facilities={Facilities}>
               <Route exact path="/book">
                 <FacilitiesPage facilities={Facilities}/>
               </Route>
@@ -67,6 +68,9 @@ const Main = () =>{
                 <BookingPage/>
               </Route>
             </RecentlyBooked>
+          </Route>
+          <Route exact path="/history">
+            <MyBookingsPage facilities={Facilities}/>
           </Route>
           
           </>

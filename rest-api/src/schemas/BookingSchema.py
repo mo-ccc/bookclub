@@ -28,7 +28,7 @@ class BookingSchema(ma.SQLAlchemyAutoSchema):
         # this next block ensures booking is within bounds
         facility = self.context.get("fid") # a facility object context is required
         weekdays = ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"]
-        weekday_num = data["date"].weekday()
+        weekday_num = data["date"].weekday() # gets datetime from the user sent data
         weekday_strings = [f"{weekdays[weekday_num]}Start", f"{weekdays[weekday_num]}End"]
         if facility.availabilities.__dict__[weekday_strings[0]]:
             if facility.availabilities.__dict__[weekday_strings[0]] > data["timeslot"]:

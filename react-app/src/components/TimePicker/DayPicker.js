@@ -27,25 +27,19 @@ const DayPicker = ({fid}) => {
     .then(data => {
       console.log(data)
       setFetchData(data)
+
+      setTimeslot(data.facility.availabilities.open)
+
       return data
     })
   }
 
   const handleSubmit = () => {
     setSuccess("")
-    console.log(selectedDay)
-    let new_date = new Date(selectedDay.valueOf())
-    console.log(timeslot)
-    let d = new Date()
-    let n = d.getTimezoneOffset()/30
-    console.log(n)
-    new_date.setMinutes(new_date.getMinutes() + n)
-    const iso = new_date.toISOString()
+
+    const iso = selectedDay.toISOString()
     const requestParam = iso.substring(0, iso.indexOf("T"))
-    console.log(requestParam)
-    if (timeslot < 0){
-      timeslot = 48 + timeslot
-    }
+
     postWithToken(
       `facility/${fid}`, 
       {"date": requestParam, "timeslot": timeslot}, token
@@ -54,16 +48,17 @@ const DayPicker = ({fid}) => {
     }).catch(error => console.log(error))
   }
 
+
   return (
     <div className="row">
-      <div className="col">
+      <div className="col-10 col-md-5 mb-3">
         {selectedDay && <p>Day: {selectedDay.toLocaleDateString()}</p>}
         {!selectedDay && <p>Choose a day</p>}
-        <DayPickerInput onDayChange={handleDayChange} />
+        <DayPickerInput showOverlay={true} hideOnDayClick={false} onDayChange={handleDayChange} dayPickerProps={{disabledDays:{before: new Date()}}}/>
       </div>
-      <div className="col">
+      <div className="col-10 col-md-5 mb-2">
         <TimePicker data={fetchData} timeslot={timeslot} setTimeSlot={handleSetTimeslot}/>
-        <Button onClick={handleSubmit}>Book</Button>
+        <Button className="mt-3" onClick={handleSubmit}>Book</Button>
         <h4>{success}</h4>
       </div>
     </div>

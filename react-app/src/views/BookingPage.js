@@ -1,52 +1,63 @@
 import React, {useState} from 'react';
 import {useParams, useLocation} from 'react-router-dom'
 import DayPicker from '../components/TimePicker/DayPicker.js'
+import placeholder from '../statics/images/placeholder.jpg'
 
 
 const BookingPage = () => {
     let {id} = useParams()
     let {state} = useLocation()
 
-    let d = new Date();
-    d.setUTCDate(d.getUTCDate() + (7 - d.getUTCDay()) % 7 + 1);
-    let iso = d.toISOString()
-    let d2 = new Date(iso.substring(0, iso.indexOf("T")))
-    console.log(d2.toISOString())
-    console.log(state.availabilities)
+
+    let times = []
 
     const values = [["mondayStart", "mondayEnd"], ["tuesdayStart", "tuesdayEnd"], ["wednesdayStart", "wednesdayEnd"], ["thursdayStart", "thursdayEnd"], ["fridayStart", "fridayEnd"], ["saturdayStart", "saturdayEnd"], ["sundayStart", "sundayEnd"]]
-    const days = ["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"]
-
-    let new_times = []
-    for (let x of values) {
-        for (let y of x) {
-            let d3 = new Date(d2.valueOf())
-            if (y in state.availabilities) {
-                d3.setMinutes(d3.getMinutes() + 30*state.availabilities[y])
-                let d4 = new Date(d3.toLocaleString())
-                new_times.push([d4.getDay(), d3.toLocaleString().substring(d3.toLocaleString().indexOf(" "))])
-            }
-            else {
-                let d4 = new Date(d3.toLocaleString())
-                new_times.push([d4.getDay(), d3.toLocaleString().substring(d3.toLocaleString().indexOf(" "))])
-            }
-        }
-        d2.setDate(d2.getDate() + 1)
+    console.log(state.availabilities)
+    if (!state.availabilities) {
+        times = Array(7).fill("everyday: 12:00 AM - 11:59 PM", 0, 9)
     }
-    console.log(new_times)
-    const availabilities = () => {
-        let elements=[]
-        for (let x=0; x<new_times.length; x+=2) {
-            elements.push(<p key={x}>{days[new_times[x][0]]},{[new_times[x][1]]} - {days[new_times[x+1][0]]},{[new_times[x+1][1]]}</p>)
+    else {
+        for (let x of values) {
+            let stringfrmt = x[0].slice(0, -5) + ": "
+            let count = 0
+            for (let y of x){
+                let d = new Date()
+                d.setHours(0, 0, 0, 0,)
+                if (y in state.availabilities) {
+                    d.setMinutes(30 * state.availabilities[y])
+                }else {
+                    if (count === 0) {
+                        d.setMinutes(0)
+                    }else {
+                        d.setMinutes((30 * 48) - 1)
+                    }
+                }
+                if (count === 0) {
+                    stringfrmt += d.toLocaleString().substring(d.toLocaleString().indexOf(" ")) + " - "
+                }else{
+                    stringfrmt += d.toLocaleString().substring(d.toLocaleString().indexOf(" "))
+                }
+                count += 1
+            }
+            times.push(stringfrmt)
         }
-        return elements
     }
+    console.log(times)
 
     return(
-        <div className="container">
-            <h1>{state.name}</h1>
-            <h3>availabilities:</h3>
-            {availabilities()}
+        <div className="container" style={{marginBottom: 250}}>
+            <div className="row pt-3">
+                <div className="col-10 col-md-4 mx-auto mt-3">
+                    <img className="w-75 d-block mx-auto" src={placeholder}/>
+                    <h1 className="text-center mt-2">{state.name}</h1>
+                </div>
+                <div className="col-10 col-md-6 mx-auto">
+                    <h3>availabilities:</h3>
+                    {times.map((item, i)=>{
+                        return <p key={i}>{item}</p>
+                    })}
+                </div>
+            </div>
             <hr/>
             <DayPicker fid={id}/>
         </div>

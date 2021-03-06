@@ -1,5 +1,5 @@
 import React from 'react'
-import times from './times.json'
+import times from '../../statics/json/times.json'
 
 const TimePicker = ({data, timeslot, setTimeSlot}) => {
   const handleOnChange = (event) => {
@@ -30,7 +30,13 @@ const TimePicker = ({data, timeslot, setTimeSlot}) => {
       )
     }
   }
-  return (<h1>select a date</h1>)
+  return (
+  <div>
+    <select>
+      <option>Choose a date first</option>
+    </select>
+  </div>
+  )
 
 }
 export default TimePicker

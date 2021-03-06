@@ -23,6 +23,7 @@ def get_main():
 def create_domain():
     """
         user: {
+            name: "",
             email: "",
             password: ""
         }
