@@ -8,7 +8,8 @@ class UserSchema(ma.SQLAlchemyAutoSchema):
     class Meta:
         model = User
         load_only = ("password",)
-        exclude = ("_password", "expires_on")
+        exclude = ("_password",)
+        dump_only = ("expires_on",)
     
     email = fields.Email(required=True)
     password = fields.String(required=True, validate=validate.Length(min=6))

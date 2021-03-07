@@ -17,6 +17,20 @@ from services import jwt_services
 
 actions = flask.Blueprint("actions", __name__)
 
+@actions.route("/myuser", subdomain="<domain_name>", methods=["GET"])
+@jwt.jwt_required()
+def get_self(domain_name):
+    return flask.jsonify(UserSchema().dump(jwt.current_user))
+
+@actions.route("/myuser", subdomain="<domain_name>", methods=["PATCH"])
+@jwt.jwt_required()
+def patch_self(domain_name):
+    data = UserSchema(exclude=("is_admin", "expires_in")).load(flask.request.json)
+    for key, value in data.items():
+        setattr(jwt.current_user, key, value)
+    db.session.commit()
+    return flask.jsonify(UserSchema().dump(jwt.current_user))
+
 @actions.route("/booking-history", subdomain="<domain_name>", methods=["GET"])
 @actions.route("/booking-history/<num>", subdomain="<domain_name>", methods=["GET"])
 @jwt.jwt_required()
