@@ -6,14 +6,14 @@ import patchWithToken from '../api/patchWithToken.js'
 import Alert from 'react-bootstrap/Alert'
 import {useForm} from 'react-hook-form'
 
-const UserInfoTab = () => {
+const SiteInfoTab = () => {
   const [ data, setData ] = useState()
   const [ success, setSuccess ] = useState()
   const useform = useForm()
 
   const token = useSelector(state => state.token)
   const fetchData = () => {
-    getWithToken('myuser', token)
+    getWithToken('', token)
     .then(response => response.json())
     .then(data => {setData(data); return data})
     .catch(error => console.log(error))
@@ -24,24 +24,19 @@ const UserInfoTab = () => {
   }, [])
 
   const onSubmit = (data) => {
-    patchWithToken('myuser', data,token)
+    data.open_registration = data.open_registration.value
+    patchWithToken('', data, token)
     .then(response => {
       setSuccess(response.status)
       useform.reset()
-      if (response.status === 200) {
-        setData(response.json())
-      }
+      fetchData()
       return response
-    })}
-
+  })}
   return (
     <div className="w-50 p-3 ml-5">
       <h2>Edit account info</h2>
       <hr/>
-      <PatchFormBase fields={["name", "email", "password"]} useForm={useform} defaultData={data} onSubmit={onSubmit}/>
-      <div className="card p-2 m-4 mt-5">
-        <h6>Your membership expires: {data && data.expires_on.substring(0, data.expires_on.indexOf("T"))}</h6>
-      </div>
+      <PatchFormBase fields={["domain_name", "description", "statement", "location", ["open_registration", 1], "phone", "default_account_expiry_time"]} useForm={useform} defaultData={data} onSubmit={onSubmit}/>
       {success &&
         <Alert variant="primary" onClose={() => setSuccess("")} dismissible>
           <p>
@@ -52,5 +47,4 @@ const UserInfoTab = () => {
     </div>
   )
 }
-
-export default UserInfoTab
+export default SiteInfoTab
