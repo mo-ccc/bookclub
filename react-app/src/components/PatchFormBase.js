@@ -8,6 +8,7 @@ const PatchFormBase = ({defaultData, onSubmit, useForm, fields}) => {
     {value:true,label:"true" }, {value:"false",label:"false" }
   ]
 
+  // function to render a true or false select
   const renderSelect = (item) => {
     if (defaultData) {
       const def = defaultData && {value: defaultData[item[0]].toString(),label: defaultData[item[0]].toString()}

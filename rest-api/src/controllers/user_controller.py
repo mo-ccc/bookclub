@@ -50,11 +50,11 @@ def update_user(user_id, domain_name):
     user = User.query.filter(User.id==user_id, User.tenant_id==tenant.id).first_or_404()
 
     if not jwt.current_user.is_owner:
-        data = UserSchema(exclude=("is_admin",), partial=True).load(flask.request.json)
+        data = UserSchema(exclude=("is_admin", "email", "password"), partial=True).load(flask.request.json)
     else:
-        data = UserSchema(partial=True).load(flask.request.json)
+        data = UserSchema(exclude=("email", "password"), partial=True).load(flask.request.json)
 
-    for key, value in data.iteritems():
+    for key, value in data.items():
         setattr(user, key, value)
     db.session.commit()
     return flask.jsonify(UserSchema().dump(user))

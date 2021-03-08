@@ -57,7 +57,7 @@ const Main = () =>{
         {token &&
           <>
           <Route exact path="/settings">
-            {token.is_admin ? <AdminPage/>:<UserPage/>}
+            {token.is_admin ? <AdminPage permissions={token}/>:<UserPage/>}
           </Route>
           <Route exact path={["/book", "/book/:id"]}>
             <RecentlyBooked facilities={Facilities}>

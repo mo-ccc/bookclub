@@ -29,7 +29,9 @@ const SiteInfoTab = () => {
     .then(response => {
       setSuccess(response.status)
       useform.reset()
-      fetchData()
+      if (response.status === 200) {
+        setData(response.json())
+      }
       return response
   })}
   return (
