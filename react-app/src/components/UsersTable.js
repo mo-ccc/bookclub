@@ -16,7 +16,6 @@ const UsersTable = ({users, setUsers, setSuccess}) => {
       patchWithToken(`user/${idOfUser}`, data ,token)
       .then(response => {
         setSuccess(response.status)
-        useform.reset()
         if (response.status === 200) {
           setUsers() // refreshes table with latest get data
         }

@@ -1,6 +1,7 @@
 import React, {useState} from 'react'
 import {useForm} from 'react-hook-form'
 import Alert from 'react-bootstrap/Alert'
+import postNoToken from '../api/postWithToken'
 
 const RegisterForm = () => {
   const { register, handleSubmit, errors } = useForm()
@@ -8,15 +9,8 @@ const RegisterForm = () => {
 
   const domain = window.location.hostname.split(".")[0]
   const onSubmit = (data) => {
-    console.log(JSON.stringify(data))
-    fetch(`http://${domain}.localhost:5000/register`, {
-      method: 'POST',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(data)
-    }).then(response => response.ok ? setSuccess("registered"):setSuccess("registration failed"))
+    postNoToken('register', data)
+    .then(response => response.ok ? setSuccess("registered"):setSuccess("registration failed"))
     .catch(() => setSuccess("error"))
   }
 

@@ -30,7 +30,7 @@ const PatchFormBase = ({defaultData, onSubmit, useForm, fields}) => {
           return renderSelect(item)
         }
         return (
-          <div className="form-group">
+          <div className="form-group" key={i}>
             <label>{item}</label>
             <input className="form-control" name={item} type={item} defaultValue={defaultData && defaultData[item]} ref={register()} />
           </div>

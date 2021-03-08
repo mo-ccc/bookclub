@@ -1,14 +1,13 @@
-const patchWithToken = (endpoint, body, token) => {
+const postNoToken = (endpoint, body) => {
     const domain = window.location.hostname.split(".")[0]
     return fetch(`http://${domain}.${process.env.REACT_APP_HOST}/${endpoint}`, {
-        method: 'PATCH',
+        method: 'POST',
         headers: {
             'Accept': 'application/json',
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${token}`
+            'Content-Type': 'application/json'
         },
         body: JSON.stringify(body)
     })
 }
 
-export default patchWithToken
+export default postNoToken

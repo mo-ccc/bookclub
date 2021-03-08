@@ -2,9 +2,12 @@ import React, {useState, useEffect} from 'react'
 import {useSelector} from 'react-redux'
 import getWithToken from '../api/getWithToken.js'
 import PatchFormBase from '../components/PatchFormBase.js'
+import deleteWithToken from '../api/deleteWithToken.js'
 import patchWithToken from '../api/patchWithToken.js'
 import Alert from 'react-bootstrap/Alert'
 import {useForm} from 'react-hook-form'
+import ModalCustom from '../components/ModalCustom.js'
+import Button from 'react-bootstrap/Button'
 
 const SiteInfoTab = () => {
   const [ data, setData ] = useState()
@@ -26,17 +29,27 @@ const SiteInfoTab = () => {
   const onSubmit = (data) => {
     data.open_registration = data.open_registration.value
     patchWithToken('', data, token)
-    .then(response => {
+    .then(response => response.json()
+    .then(data => {
       setSuccess(response.status)
       useform.reset()
       if (response.status === 200) {
-        setData(response.json())
+        setData(data)
       }
       return response
-  })}
+  }))}
+
+  const handleDelete = () => {
+    deleteWithToken('', token)
+    .then(response => {
+      if (response.status === 200) {
+        window.location.replace(`http://${process.env.REACT_APP_DOMAIN}`)
+      }
+    })
+  }
   return (
     <div className="w-50 p-3 ml-5">
-      <h2>Edit account info</h2>
+      <h2>Edit site info</h2>
       <hr/>
       <PatchFormBase fields={["domain_name", "description", "statement", "location", ["open_registration", 1], "phone", "default_account_expiry_time"]} useForm={useform} defaultData={data} onSubmit={onSubmit}/>
       {success &&
@@ -46,6 +59,10 @@ const SiteInfoTab = () => {
           </p>
         </Alert>
       }
+      <hr/>
+      <ModalCustom label="delete domain" title="are you sure you want to delete?">
+        <Button variant="danger" onClick={handleDelete}>Yes</Button>
+      </ModalCustom>
     </div>
   )
 }

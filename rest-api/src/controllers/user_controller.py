@@ -22,11 +22,10 @@ def make_user(domain_name):
     tenant = Tenant.query.filter_by(domain_name=domain_name).first_or_404()
     if not jwt.current_user.is_owner:
         data = UserSchema(exclude=("is_admin",)).load(flask.request.json)
-        if data["is_admin"]:
-            return flask.abort(401, description="only owners can create admins")
+        data["is_admin"] = False
     else:
         data = UserSchema().load(flask.request.json)
-        user = User(**data)
+    user = User(**data)
     user.tenant_id = tenant.id
     db.session.add(user)
     db.session.commit()

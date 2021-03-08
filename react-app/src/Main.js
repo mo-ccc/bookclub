@@ -23,14 +23,14 @@ const Main = () =>{
 
   const x = window.location.hostname.split(".")[0]
   useEffect(() => {
-    fetch(`http://${x}.${process.env.REACT_APP_HOST}:5000/`)
+    fetch(`http://${x}.${process.env.REACT_APP_HOST}/`)
     .then(response => response.json())
     .then(json => {
       store.dispatch(setTenant(json))
       setTenantInfo(json)
     }).catch(error => history.push('/404'));
 
-    fetch(`http://${x}.${process.env.REACT_APP_HOST}:5000/facility`)
+    fetch(`http://${x}.${process.env.REACT_APP_HOST}/facility`)
     .then(response => response.json())
     .then(json => {
       console.log(json)

@@ -3,6 +3,7 @@ import Alert from 'react-bootstrap/Alert'
 import {useForm} from 'react-hook-form'
 import {setAuth} from '../redux'
 import store from '../redux/store.js'
+import postNoToken from '../api/postWithToken'
 
 const LoginForm = () => {
   const { register, handleSubmit, errors } = useForm()
@@ -10,14 +11,8 @@ const LoginForm = () => {
 
   const domain = window.location.hostname.split(".")[0]
   const onSubmit = (data) => {
-    fetch(`http://${domain}.${process.env.REACT_APP_HOST}:5000/login`, {
-      method: 'POST',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(data)
-    }).then(response => {
+    postNoToken('login', data)
+    .then(response => {
       response.ok ? setSuccess("logged in"):setSuccess("invalid credentials")
       return response.json()
     }).then(data => store.dispatch(setAuth(data)))
