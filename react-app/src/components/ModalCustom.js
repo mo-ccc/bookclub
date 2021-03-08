@@ -1,23 +1,32 @@
 import React, {useState} from 'react'
 import {Button, Modal} from 'react-bootstrap'
 
-const ModalCustom = (props) => {
+const ModalCustom = ({label, title, size, variant, children}) => {
   const [show, setShow] = useState(false);
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
+
+  const buttonStyle = {
+    padding: 40,
+    paddingLeft:45,
+    paddingRight:45,
+    margin: 50,
+    marginTop: 10,
+    display: "block",
+  }
   return (
     <div>
-      <Button  onClick={handleShow}>
-          {props.label}
+      <Button style={variant && buttonStyle} variant={variant} onClick={handleShow}>
+          {label}
       </Button>
 
-      <Modal show={show} onHide={handleClose}>
+      <Modal size={size} show={show} onHide={handleClose}>
         <Modal.Header closeButton>
-          <Modal.Title>{props.title}</Modal.Title>
+          <Modal.Title>{title}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          {props.children}
+          {children}
         </Modal.Body>
       </Modal>
     </div>

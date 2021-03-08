@@ -2,11 +2,13 @@ import React from 'react'
 import Button from 'react-bootstrap/Button'
 import placeholder from '../statics/images/placeholder.jpg'
 import {Link} from 'react-router-dom'
+import ModalCustom from './ModalCustom.js'
 
-const Facility = ({data}) => {
+const Facility = ({data, edit, children}) => {
   const style = {
     padding: {
-      padding: "50px 30px"
+      padding: 50,
+      paddingTop: 10
     },
     maxwidth: {
       maxWidth: "100%"
@@ -22,7 +24,8 @@ const Facility = ({data}) => {
           <div className="text-center">
             <h4>{data.name}</h4>
             <p>{data.description}</p>
-            <Link to={{pathname:linkto, state:data}}><Button>Book</Button></Link>
+            {!edit && <Link to={{pathname:linkto, state:data}}><Button>Book</Button></Link>}
+            {children}
           </div>
         </div>
       </div>

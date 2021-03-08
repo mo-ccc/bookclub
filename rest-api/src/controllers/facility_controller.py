@@ -23,9 +23,6 @@ facilities = flask.Blueprint("facilities", __name__)
 @jwt.jwt_required()
 @jwt_services.admin_required()
 def make_facility(domain_name):
-    if not jwt.current_user.is_admin or not jwt.current_user.is_owner:
-        return flask.abort(401)
-
     tenant = Tenant.query.filter_by(domain_name=domain_name).first_or_404()
     data = FacilitySchema().load(flask.request.json)
     availability_data = data.pop("availabilities") # pops out the availability nested fields
@@ -48,8 +45,31 @@ def make_facility(domain_name):
 @facilities.route('/facility', subdomain="<domain_name>", methods=["GET"])
 def get_facilities(domain_name):
     tenant = Tenant.query.filter_by(domain_name=domain_name).first_or_404()
-    facilities = Facility.query.filter_by(tenant_id=tenant.id)
+    facilities = Facility.query.filter_by(tenant_id=tenant.id).all()
     return flask.jsonify(FacilitySchema(many=True).dump(facilities))
+
+@facilities.route('/facility/<id>', subdomain="<domain_name>", methods=["PATCH"])
+@jwt.jwt_required()
+@jwt_services.admin_required()
+def patch_facility(domain_name, id):
+    tenant = Tenant.query.filter_by(domain_name=domain_name).first_or_404()
+    facility = Facility.query.filter_by(id=id).first_or_404()
+    data = FacilitySchema().load(flask.request.json)
+    availability_data = data.pop("availabilities") # pops out the availability nested fields
+    for key, value in data.items():
+        setattr(facility, key, value)
+
+    db.session.flush()
+
+    if availability_data:
+        availability_for_facility = Availability.query.filter_by(facility_id=facility.id).first()
+        for key, value in availability_data.items():
+            setattr(availability_for_facility, key, value)
+    db.session.commit()
+    return flask.jsonify(FacilitySchema().dump(facility))
+    
+
+
 
 # Detail get method
 @facilities.route('/facility/<id>/<date>', subdomain="<domain_name>", methods=["GET"])
@@ -69,36 +89,28 @@ def detail_get_facility(domain_name, id, date):
             counts[x.timeslot] = 1
         else:
             counts[x.timeslot] = counts[x.timeslot] + 1
-    
-    # generates some strings to use as keys for the next block
-    weekdays = ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"]
-    weekday_num = datetime.datetime.fromisoformat(date).weekday()
-    yesterday_key = f"{weekdays[weekday_num-1]}End"
-    current_day_keys = [f"{weekdays[weekday_num]}Start", f"{weekdays[weekday_num]}End"]
-    if weekday_num == 6:
-        tomorrow_day_key = "mondayStart"
-    else:
-        tomorrow_day_key = f"{weekdays[weekday_num+1]}Start"
 
     # dump the facility
     facility_data = FacilitySchema().dump(facility)
-    # check if there are an time bounds
+    # check if there are any time bounds
     if facility_data["availabilities"]:
         # if there are pop them out
         availabilities = facility_data.pop("availabilities")
+
+        # generates some strings to use as keys for the next block
+        weekdays = ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"]
+        weekday_num = datetime.datetime.fromisoformat(date).weekday()
+        current_day_keys = [f"{weekdays[weekday_num]}Start", f"{weekdays[weekday_num]}End"]
+
         # parse the values needed from the availability
         new_availability_dict = {
-            "yesterday_close":availabilities.get(yesterday_key, 48),
             "open":availabilities.get(current_day_keys[0], 0), 
             "close":availabilities.get(current_day_keys[1], 48),
-            "tomorrow_open":availabilities.get(tomorrow_day_key, 0)
         }
     else:
         new_availability_dict = {
-            "yesterday_close":48,
             "open":0, 
             "close":48,
-            "tomorrow_open":0
         }
 
     """

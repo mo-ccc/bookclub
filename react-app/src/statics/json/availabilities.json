@@ -1,0 +1,6 @@
+[
+    ["mondayStart", "mondayEnd"], ["tuesdayStart", "tuesdayEnd"],
+    ["wednesdayStart", "wednesdayEnd"], ["thursdayStart", "thursdayEnd"],
+    ["fridayStart", "fridayEnd"], ["saturdayStart", "saturdayEnd"],
+    ["sundayStart", "sundayEnd"]
+]
