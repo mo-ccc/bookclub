@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react'
 import {useSelector} from 'react-redux'
 import getWithToken from '../api/getWithToken.js'
-import PatchFormBase from '../components/PatchFormBase.js'
+import FormBase from '../components/FormBase.js'
 import deleteWithToken from '../api/deleteWithToken.js'
 import patchWithToken from '../api/patchWithToken.js'
 import Alert from 'react-bootstrap/Alert'
@@ -51,7 +51,7 @@ const SiteInfoTab = () => {
     <div className="w-50 p-3 ml-5">
       <h2>Edit site info</h2>
       <hr/>
-      <PatchFormBase fields={["domain_name", "description", "statement", "location", ["open_registration", 1], "phone", "default_account_expiry_time"]} useForm={useform} defaultData={data} onSubmit={onSubmit}/>
+      <FormBase fields={["domain_name", "description", "statement", "location", ["open_registration", 1], "phone", "default_account_expiry_time"]} useForm={useform} defaultData={data} onSubmit={onSubmit}/>
       {success &&
         <Alert variant="primary" onClose={() => setSuccess("")} dismissible>
           <p>

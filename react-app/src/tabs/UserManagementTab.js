@@ -4,7 +4,7 @@ import {useSelector} from 'react-redux'
 import UsersTable from '../components/UsersTable.js'
 import Alert from 'react-bootstrap/Alert'
 import ModalCustom from '../components/ModalCustom.js'
-import PostFormBase from '../components/PostFormBase.js'
+import FormBase from '../components/FormBase.js'
 import postWithToken from '../api/postWithToken.js'
 import {useForm} from 'react-hook-form'
 
@@ -41,7 +41,7 @@ const UserManagementTab = () => {
     <div>
       <div className="text-center p-3">
         <ModalCustom label="add new user" title="Creating a new user">
-          <PostFormBase fields={["name", "email", "password", "expires_in"]} useForm={useform} onSubmit={onSubmit}/>
+          <FormBase fields={["name", "email", "password", "expires_in"]} useForm={useform} onSubmit={onSubmit} is_post={true}/>
         </ModalCustom>
       </div>
       <div>

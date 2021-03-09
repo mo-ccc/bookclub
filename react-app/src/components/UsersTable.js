@@ -1,7 +1,7 @@
 import React from 'react'
 import ModalCustom from './ModalCustom.js'
 import {useForm} from 'react-hook-form'
-import PatchFormBase from './PatchFormBase.js'
+import FormBase from './FormBase.js'
 import patchWithToken from '../api/patchWithToken.js'
 import {useSelector} from 'react-redux'
 
@@ -54,7 +54,7 @@ const UsersTable = ({users, setUsers, setSuccess}) => {
                 <td>{user.expires_on.substring(0, user.expires_on.indexOf("T"))}</td>
                 <td className="text-center">
                   <ModalCustom label="edit" title={user.email}>
-                    <PatchFormBase fields={permissions.is_owner ? ["name", "is_admin", "expires_in"] : ["name", "expires_in"]} useForm={useform} defaultData={{"name":user.name, "is_admin": user.is_admin, "expires_in": processExpireOn(user.expires_on)}} onSubmit={d => onSubmit(d, user.id)}/>
+                    <FormBase fields={permissions.is_owner ? ["name", "is_admin", "expires_in"] : ["name", "expires_in"]} useForm={useform} defaultData={{"name":user.name, "is_admin": user.is_admin, "expires_in": processExpireOn(user.expires_on)}} onSubmit={d => onSubmit(d, user.id)}/>
                   </ModalCustom>
                 </td>
               </tr>

@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react'
 import {useSelector} from 'react-redux'
 import getWithToken from '../api/getWithToken.js'
-import PatchFormBase from '../components/PatchFormBase.js'
+import FormBase from '../components/FormBase.js'
 import patchWithToken from '../api/patchWithToken.js'
 import Alert from 'react-bootstrap/Alert'
 import {useForm} from 'react-hook-form'
@@ -38,7 +38,7 @@ const UserInfoTab = () => {
     <div className="w-50 p-3 ml-5">
       <h2>Edit account info</h2>
       <hr/>
-      <PatchFormBase fields={["name", "email", "password"]} useForm={useform} defaultData={data} onSubmit={onSubmit}/>
+      <FormBase fields={["name", "email", "password"]} useForm={useform} defaultData={data} onSubmit={onSubmit}/>
       <div className="card p-2 m-4 mt-5">
         <h6>Your membership expires: {data && data.expires_on.substring(0, data.expires_on.indexOf("T"))}</h6>
       </div>

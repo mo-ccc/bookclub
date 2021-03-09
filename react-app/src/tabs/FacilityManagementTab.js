@@ -3,7 +3,7 @@ import Alert from 'react-bootstrap/Alert'
 import getNoToken from '../api/getNoToken.js'
 import Facility from '../components/Facility.js'
 import ModalCustom from '../components/ModalCustom.js'
-import PatchFormBase from '../components/PatchFormBase.js'
+import FormBase from '../components/FormBase.js'
 import patchWithToken from '../api/patchWithToken.js'
 import {useForm} from 'react-hook-form'
 import {useSelector} from 'react-redux'
@@ -14,7 +14,7 @@ const FacilityManagementTab = () => {
   const patchForm = useForm()
   const postForm = useForm()
   const token = useSelector(state => state.token)
-  const [success, setSuccess] = useState()
+  const [patchSuccess, setPatchSuccess] = useState()
 
   const fetchData = () => {
     getNoToken('facility')
@@ -28,19 +28,20 @@ const FacilityManagementTab = () => {
   
   const patchSubmit = (data, id) => {
     data.disabled = data.disabled.value
+    Object.keys(data.availabilities).forEach(item => data.availabilities[item] = data.availabilities[item].value)
+    console.log(data)
     patchWithToken(`facility/${id}`, data, token)
       .then(response => {
-        setSuccess(response.status)
+        setPatchSuccess(response.status)
         if (response.status === 200) {
           fetchData()
+        }else {
+          patchForm.reset()
         }
         return response
       })
   }
 
-  const fieldAdditional = [
-    ["availabilities", item.availabilities, availabilitiesJson]
-  ]
 
   return(
     <div>
@@ -51,7 +52,14 @@ const FacilityManagementTab = () => {
           {facilities && facilities.map((item, i) => (
             <Facility key={i} data={item} edit={true}>
               <ModalCustom label="edit" title={item.name} size="lg">
-                <PatchFormBase fields={["name", "description", ["disabled", 1], "max_capacity"]} useForm={patchForm} defaultData={item} nestedData={fieldAdditional} onSubmit={d => patchSubmit(d, item.id)}/>
+                <FormBase fields={["name", "description", ["disabled", 1], "max_capacity"]} useForm={patchForm} defaultData={item} nestedData={[["availabilities", item.availabilities, availabilitiesJson]]} onSubmit={d => patchSubmit(d, item.id)}/>
+                {patchSuccess &&
+                <Alert variant="primary" onClose={() => setPatchSuccess("")} dismissible>
+                  <p>
+                    {patchSuccess}
+                  </p>
+                </Alert>
+                }
               </ModalCustom>
             </Facility>
           ))}
@@ -59,13 +67,7 @@ const FacilityManagementTab = () => {
             <h1>hi</h1>
           </ModalCustom>
         </div>
-        {success &&
-        <Alert variant="primary" onClose={() => setSuccess("")} dismissible>
-          <p>
-            {success}
-          </p>
-        </Alert>
-        }
+        
       </div>
     </div>
   )

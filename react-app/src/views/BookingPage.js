@@ -18,28 +18,27 @@ const BookingPage = () => {
     }
     else {
         for (let x of values) {
-            let stringfrmt = x[0].slice(0, -5) + ": "
+            let stringfrmt = x[0].slice(0, -5) + ": " // string to start with. a day in the week
             let count = 0
             for (let y of x){
                 let d = new Date()
-                d.setHours(0, 0, 0, 0,)
+                d.setHours(0, 0, 0, 0,) //initialize a new date to 12AM
                 if (y in state.availabilities) {
-                    d.setMinutes(30 * state.availabilities[y])
+                    d.setMinutes(30 * state.availabilities[y]) //
                 }else {
                     if (count === 0) {
-                        d.setMinutes(0)
+                        d.setMinutes(0) // if a start time set to 12AM
                     }else {
-                        d.setMinutes((30 * 48) - 1)
+                        d.setMinutes((30 * 48) - 1) // if an end time set to 11:59PM
                     }
                 }
-                if (count === 0) {
-                    stringfrmt += d.toLocaleString().substring(d.toLocaleString().indexOf(" ")) + " - "
-                }else{
-                    stringfrmt += d.toLocaleString().substring(d.toLocaleString().indexOf(" "))
+                stringfrmt += d.toLocaleString().substring(d.toLocaleString().indexOf(" ")) // add the time to the string
+                if (count === 0) { // if it's a start time add - to the end i.e. 12AM+' - '+12PM
+                    stringfrmt += " - "
                 }
                 count += 1
             }
-            times.push(stringfrmt)
+            times.push(stringfrmt) // push the time onto the times array
         }
     }
     console.log(times)
