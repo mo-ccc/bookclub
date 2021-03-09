@@ -23,6 +23,7 @@ const UserManagementTab = () => {
 
   const onSubmit = (data) => {
     data.expires_in = parseInt(data.expires_in)
+    data.is_admin = data.is_admin.value
     postWithToken("user", data, token)
     .then(response => {
       setSuccess(response.status)
@@ -41,7 +42,7 @@ const UserManagementTab = () => {
     <div>
       <div className="text-center p-3">
         <ModalCustom label="add new user" title="Creating a new user">
-          <FormBase fields={["name", "email", "password", "expires_in"]} useForm={useform} onSubmit={onSubmit} is_post={true}/>
+          <FormBase fields={["name", "email", "password", ["expires_in",2]]} useForm={useform} onSubmit={onSubmit} is_post={true}/>
         </ModalCustom>
       </div>
       <div>

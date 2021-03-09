@@ -52,7 +52,6 @@ def get_facilities(domain_name):
 @jwt.jwt_required()
 @jwt_services.admin_required()
 def patch_facility(domain_name, id):
-    tenant = Tenant.query.filter_by(domain_name=domain_name).first_or_404()
     facility = Facility.query.filter_by(id=id).first_or_404()
     data = FacilitySchema().load(flask.request.json)
     availability_data = data.pop("availabilities") # pops out the availability nested fields
@@ -67,9 +66,15 @@ def patch_facility(domain_name, id):
             setattr(availability_for_facility, key, value)
     db.session.commit()
     return flask.jsonify(FacilitySchema().dump(facility))
-    
 
-
+@facilities.route('/facility/<id>', subdomain="<domain_name>", methods=["DELETE"])
+@jwt.jwt_required()
+@jwt_services.admin_required()
+def delete_facility(domain_name, id):
+    facility = Facility.query.filter_by(id=id).first_or_404()
+    db.session.delete(facility)
+    db.session.commit()
+    return flask.jsonify(FacilitySchema().dump(facility))
 
 # Detail get method
 @facilities.route('/facility/<id>/<date>', subdomain="<domain_name>", methods=["GET"])
