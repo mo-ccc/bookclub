@@ -42,8 +42,7 @@ def get_users(domain_name):
 @jwt.jwt_required()
 @jwt_services.admin_required()
 def update_user(user_id, domain_name):
-    tenant = Tenant.query.filter_by(domain_name=domain_name).first_or_404()
-    user = User.query.filter(User.id==user_id, User.tenant_id==tenant.id).first_or_404()
+    user = User.query.filter_by(id=user_id).first_or_404()
 
     if not jwt.current_user.is_owner:
         data = UserSchema(exclude=("is_admin", "email", "password"), partial=True).load(flask.request.json)
@@ -52,5 +51,17 @@ def update_user(user_id, domain_name):
 
     for key, value in data.items():
         setattr(user, key, value)
+    db.session.commit()
+    return flask.jsonify(UserSchema().dump(user))
+
+# Method to delete a user
+@users.route('/user/<user_id>', subdomain='<domain_name>', methods=["DELETE"])
+@jwt.jwt_required()
+@jwt_services.admin_required()
+def delete_user(user_id, domain_name):
+    user = User.query.filter_by(id=user_id).first_or_404()
+    if user.is_owner or user.is_admin: # only owner can delete admin and owner should be deleted with domain
+        flask.abort(401)
+    db.session.delete(user)
     db.session.commit()
     return flask.jsonify(UserSchema().dump(user))

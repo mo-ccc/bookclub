@@ -9,4 +9,4 @@ class FacilitySchema(ma.SQLAlchemyAutoSchema):
         ordered=True
 
     name = fields.String(required=True, validate=validate.Length(min=1, max=20))
-    availabilities = fields.Nested(AvailabilitySchema)
+    availabilities = fields.Nested(AvailabilitySchema())

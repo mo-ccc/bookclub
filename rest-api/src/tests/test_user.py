@@ -10,14 +10,14 @@ class Test_user(Test_base):
         self.assertEqual(response.status_code, 200)
         self.assertIn("created_at", response.json[0])
 
-    def test_create_admin_user(self):
+    def test_create_user(self):
         response = self.client.post(
             "http://tenant1.localhost:5000/user",
             headers={"Authorization":f"Bearer {self.get_token_for_user(1)}"},
             json={
-                "name": "admin user",
+                "name": "user",
                 "email":"testcreate@test.com",
-                "password":"123456", "is_admin":True,
+                "password":"123456"
             }
         )
         self.assertEqual(response.status_code, 201)

@@ -70,7 +70,7 @@ const UsersTable = ({users, setUsers, setSuccess}) => {
                     <FormBase fields={permissions.is_owner ? ["name", ["is_admin",1], ["expires_in",2]] : ["name", "expires_in"]} useForm={useform} defaultData={{"name":user.name, "is_admin": user.is_admin, "expires_in": processExpireOn(user.expires_on)}} onSubmit={d => onSubmit(d, user.id)}/>
                     <hr />
                     <ModalCustom label="delete" title={`are you sure you want to delete ${user.email}?`}>
-                      <Button variant="danger" onClick={e => handleDelete(e, user.id)} />
+                      <Button variant="danger" onClick={e => handleDelete(e, user.id)}>Yes. Delete!</Button>
                     </ModalCustom>
                   </ModalCustom>
                 </td>

@@ -1,6 +1,8 @@
 from main import ma
 from models.Booking import Booking
 from marshmallow import fields, validate, ValidationError, validates_schema
+from .UserSchema import UserSchema
+from .FacilitySchema import FacilitySchema
 import datetime
 
 def convert_time(date, timeslot):
@@ -14,6 +16,7 @@ class BookingSchema(ma.SQLAlchemyAutoSchema):
         include_fk = True
 
     timeslot = fields.Integer(required=True, validate=validate.Range(min=0, max=48))
+
     fid = fields.Raw()
     
 
@@ -36,3 +39,6 @@ class BookingSchema(ma.SQLAlchemyAutoSchema):
         if facility.availabilities.__dict__[weekday_strings[1]]:
             if data["timeslot"] > facility.availabilities.__dict__[weekday_strings[1]]:
                 raise ValidationError("above range")
+
+class BookingSchemaWithNested(BookingSchema):
+    user = fields.Nested(UserSchema())
