@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import { Route, Switch, useHistory } from 'react-router-dom';
 
-import {createDispatchHook, useSelector} from 'react-redux'
+import {useSelector} from 'react-redux'
 import store from './redux/store.js'
 import {setTenant} from './redux'
 
@@ -13,6 +13,7 @@ import UserPage from './views/UserPage.js'
 import FacilitiesPage from './views/FacilitiesPage.js'
 import BookingPage from './views/BookingPage.js'
 import MyBookingsPage from './views/MyBookingsPage.js'
+import BookingsPage from './views/BookingsPage.js'
 
 import RecentlyBooked from './layouts/RecentlyBooked.js'
 
@@ -72,9 +73,15 @@ const Main = () =>{
           <Route exact path="/history">
             <MyBookingsPage facilities={Facilities}/>
           </Route>
-          
+          {token.is_admin && 
+            <Route exact path="/bookings">
+              <BookingsPage facilities={Facilities}/>
+            </Route>
+          }
           </>
         }
+        
+
         <Route path="/404" render={() => <h1>404</h1>}/>
       </Switch>
     </div>

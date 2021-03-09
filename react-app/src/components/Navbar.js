@@ -26,6 +26,9 @@ const NavBar = ({tenantInfo, token}) => {
       <Navbar.Collapse id="basic-navbar-nav">
         <Nav className="mr-auto">
           {!token && modal}
+          {token && token.is_admin &&
+            <NavLink to="/bookings"><a className="nav-link">Bookings</a></NavLink>
+          }
           {token &&
           <>
             <NavLink to="/history"><a className="nav-link">My Bookings</a></NavLink>
