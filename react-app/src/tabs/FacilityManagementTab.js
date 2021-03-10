@@ -75,8 +75,9 @@ const FacilityManagementTab = () => {
       <div className="container">
         <h1>Facility Management</h1>
         <hr/>
-        <div className="row p-5 w-75">
+        <div className="row">
           {facilities && facilities.map((item, i) => (
+            <div className="col-12 col-md-3">
             <Facility key={i} data={item} edit={true}>
               <ModalCustom label="edit" title={item.name} size="lg">
                 <FormBase fields={["name", "description", ["disabled", 1], ["max_capacity", 2]]} useForm={patchForm} defaultData={item} nestedData={[["availabilities", item.availabilities, availabilitiesJson]]} onSubmit={d => patchSubmit(d, item.id)}/>
@@ -93,17 +94,20 @@ const FacilityManagementTab = () => {
                 </ModalCustom>
               </ModalCustom>
             </Facility>
+            </div>
           ))}
-          <ModalCustom label="+" title="adding new facility" variant="outline-dark" size="lg" >
-            <FormBase fields={["name", "description", ["disabled", 1], ["max_capacity", 2]]} useForm={postForm} nestedData={[["availabilities", false, availabilitiesJson]]} is_post={true} onSubmit={postSubmit}/>
-            {postSuccess &&
-            <Alert variant="primary" onClose={() => setPostSuccess("")} dismissible>
-              <p>
-                {postSuccess}
-              </p>
-            </Alert>
-            }
-          </ModalCustom>
+          <div className="col-12 col-md-3">
+            <ModalCustom label="+" title="adding new facility" variant="outline-dark" size="lg" >
+              <FormBase fields={["name", "description", ["disabled", 1], ["max_capacity", 2]]} useForm={postForm} nestedData={[["availabilities", false, availabilitiesJson]]} is_post={true} onSubmit={postSubmit}/>
+              {postSuccess &&
+              <Alert variant="primary" onClose={() => setPostSuccess("")} dismissible>
+                <p>
+                  {postSuccess}
+                </p>
+              </Alert>
+              }
+            </ModalCustom>
+          </div>
         </div>
         
       </div>

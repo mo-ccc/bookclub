@@ -8,8 +8,7 @@ import {setTenant} from './redux'
 import NavBar from './components/Navbar.js'
 
 import Landing from './views/Landing.js'
-import AdminPage from './views/AdminPage.js'
-import UserPage from './views/UserPage.js'
+import SettingsPage from './views/SettingsPage.js'
 import FacilitiesPage from './views/FacilitiesPage.js'
 import BookingPage from './views/BookingPage.js'
 import MyBookingsPage from './views/MyBookingsPage.js'
@@ -58,7 +57,7 @@ const Main = () =>{
         {token &&
           <>
           <Route exact path="/settings">
-            {token.is_admin ? <AdminPage permissions={token}/>:<UserPage/>}
+            {<SettingsPage permissions={token}/>}
           </Route>
           <Route exact path={["/book", "/book/:id"]}>
             <RecentlyBooked facilities={Facilities}>

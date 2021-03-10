@@ -6,7 +6,7 @@ import times from '../statics/json/times.json'
 const FormBase = ({defaultData, nestedData, onSubmit, useForm, fields, is_post}) => {
   const {register, handleSubmit, control, errors} = useForm
   const boolOptions = [
-    {value:true, label:"true" }, {value:"false", label:"false" }
+    {value:"true", label:"true" }, {value:"false", label:"false" }
   ]
 
   // function to render a true or false select

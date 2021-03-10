@@ -59,21 +59,21 @@ const BookingsPage = ({facilities}) => {
   return (
     <div className="container">
       <h1>bookings</h1>
-      <div className="row m-5">
+      <div className="row my-5">
         <form onSubmit={handleSubmit(fetchResults)} style={{"display": "contents"}}>
-          <div className="col text-center">
+          <div className="col-12 col-md text-center">
             <p>Date: {selectedDay ? selectedDay.toLocaleDateString() : 'select a day'}</p>
             <DayPickerInput inputProps={{style: {"padding": "6px 32px", "display": "block", "border": "1px solid grey"}}} showOverlay={false} hideOnDayClick={true} onDayChange={handleDayChange} />
           </div>
-          <div className="col text-center">
+          <div className="col-12 col-md text-center">
             <p>facility filter</p>
             <Controller as={Select} name="facility" options={parsedFacilities} control={control} ref={register()} defaultValue={def}/>
           </div>
-          <div className="col text-center">
+          <div className="col-12 col-md text-center">
             <p>member filter</p>
             <Controller as={Select} name="user" options={members} control={control} ref={register()} defaultValue={def} />
           </div>
-          <div className="col">
+          <div className="col-12 col-md">
             <Button variant="dark" onClick={resetClicked}>reset</Button>
             <input type="submit" className="btn btn-primary m-3"/>
           </div>

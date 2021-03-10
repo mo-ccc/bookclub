@@ -8,15 +8,13 @@ const ModalCustom = ({label, title, size, variant, children}) => {
   const handleShow = () => setShow(true);
 
   const buttonStyle = {
-    padding: 40,
-    paddingLeft:45,
-    paddingRight:45,
-    margin: 50,
-    marginTop: 10,
+    "padding": 50,
+    "width": "100%",
+    "height": "100%",
     display: "block",
   }
   return (
-    <div>
+    <div style={{paddingTop: 10}}>
       <Button style={variant && buttonStyle} variant={variant} onClick={handleShow}>
           {label}
       </Button>

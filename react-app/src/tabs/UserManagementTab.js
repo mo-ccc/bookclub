@@ -45,7 +45,7 @@ const UserManagementTab = () => {
           <FormBase fields={["name", "email", "password", ["expires_in",2]]} useForm={useform} onSubmit={onSubmit} is_post={true}/>
         </ModalCustom>
       </div>
-      <div>
+      <div className="table-responsive">
         <UsersTable users={users} setUsers={fetchUsers} setSuccess={setSuccess} />
       </div>
       {success &&

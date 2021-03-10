@@ -18,7 +18,7 @@ const SiteInfoTab = () => {
   const fetchData = () => {
     getWithToken('', token)
     .then(response => response.json())
-    .then(data => {setData(data); return data})
+    .then(data => {setData(data); console.log(data); return data})
     .catch(error => console.log(error))
   }
 
@@ -48,10 +48,10 @@ const SiteInfoTab = () => {
     })
   }
   return (
-    <div className="w-50 p-3 ml-5">
+    <div className="w-100">
       <h2>Edit site info</h2>
       <hr/>
-      <FormBase fields={["domain_name", "description", "statement", "location", ["open_registration", 1], "phone", "default_account_expiry_time"]} useForm={useform} defaultData={data} onSubmit={onSubmit}/>
+      <FormBase fields={["domain_name", "description", "statement", "location", "open_registration", "phone", ["default_account_expiry_time", 2]]} useForm={useform} defaultData={data} onSubmit={onSubmit}/>
       {success &&
         <Alert variant="primary" onClose={() => setSuccess("")} dismissible>
           <p>

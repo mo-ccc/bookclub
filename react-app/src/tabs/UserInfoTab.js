@@ -35,7 +35,7 @@ const UserInfoTab = () => {
     })}
 
   return (
-    <div className="w-50 p-3 ml-5">
+    <div className="w-100">
       <h2>Edit account info</h2>
       <hr/>
       <FormBase fields={["name", "email", "password"]} useForm={useform} defaultData={data} onSubmit={onSubmit}/>

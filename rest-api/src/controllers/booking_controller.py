@@ -32,7 +32,7 @@ def get_bookings(domain_name):
         if x[1]:
             queries.append(getattr(Booking, x[0]) == x[1])
     
-    bookings = Booking.query.filter(*queries).all()
+    bookings = Booking.query.join(User).filter(*queries).all()
     return flask.jsonify(BookingSchemaWithNested(many=True).dump(bookings))
 
 @bookings.route("/bookings-control/<id>", subdomain="<domain_name>", methods=["DELETE"])
