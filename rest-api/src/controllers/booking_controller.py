@@ -18,21 +18,28 @@ from schemas.BookingSchema import BookingSchemaWithNested, BookingSchema
 
 bookings = flask.Blueprint("bookings", __name__)
 
-@bookings.route("/bookingscontrol", subdomain="<domain_name>", methods=["GET"])
+@bookings.route("/bookings-control", subdomain="<domain_name>", methods=["GET"])
 @jwt.jwt_required()
 @jwt_services.admin_required()
 def get_bookings(domain_name):
+    tenant_id = jwt.current_user.tenant_id
     user_id = ["user_id", flask.request.args.get("user")]
     facility_id = ["facility_id", flask.request.args.get("facility")]
     date = ["date", flask.request.args.get("date")]
 
-    if not user_id and not facility_id:
-        flask.abort(405, description="a filter on user or facility is required") 
-
-    queries = []
+    queries = [User.tenant_id==tenant_id]
     for x in [user_id, facility_id, date]:
         if x[1]:
             queries.append(getattr(Booking, x[0]) == x[1])
     
     bookings = Booking.query.filter(*queries).all()
     return flask.jsonify(BookingSchemaWithNested(many=True).dump(bookings))
+
+@bookings.route("/bookings-control/<id>", subdomain="<domain_name>", methods=["DELETE"])
+@jwt.jwt_required()
+@jwt_services.admin_required()
+def delete_booking(domain_name, id):
+    booking = Booking.query.filter_by(id=id).first_or_404()
+    db.session.delete(booking)
+    db.session.commit()
+    return flask.jsonify(BookingSchemaWithNested().dump(booking))

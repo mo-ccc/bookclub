@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react'
 import getWithToken from '../api/getWithToken.js'
 import {useSelector} from 'react-redux'
-import UsersTable from '../components/UsersTable.js'
+import UsersTable from '../components/tables/UsersTable.js'
 import Alert from 'react-bootstrap/Alert'
 import ModalCustom from '../components/ModalCustom.js'
 import FormBase from '../components/FormBase.js'

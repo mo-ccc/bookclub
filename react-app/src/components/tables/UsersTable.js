@@ -1,11 +1,11 @@
 import React from 'react'
-import ModalCustom from './ModalCustom.js'
+import ModalCustom from '../ModalCustom.js'
 import {useForm} from 'react-hook-form'
-import FormBase from './FormBase.js'
-import patchWithToken from '../api/patchWithToken.js'
+import FormBase from '../FormBase.js'
+import patchWithToken from '../../api/patchWithToken.js'
 import {useSelector} from 'react-redux'
 import Button from 'react-bootstrap/Button'
-import deleteWithToken from '../api/deleteWithToken.js'
+import deleteWithToken from '../../api/deleteWithToken.js'
 
 const UsersTable = ({users, setUsers, setSuccess}) => {
 
