@@ -22,3 +22,25 @@ class Test_user(Test_base):
         )
         self.assertEqual(response.status_code, 201)
         self.assertIn("id", response.json)
+
+    def test_patch_user(self):
+        response = self.client.patch(
+            "http://tenant1.localhost:5000/user/2",
+            headers={"Authorization":f"Bearer {self.get_token_for_user(1)}"},
+            json={
+                "name": "new name",
+                "is_admin": True,
+                "expires_in": 50
+            }
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertIn("id", response.json)
+        self.assertEqual(response.json["is_admin"], True)
+
+    def test_delete_user(self):
+        response = self.client.delete(
+            "http://tenant1.localhost:5000/user/2",
+            headers={"Authorization":f"Bearer {self.get_token_for_user(1)}"}
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertIn("id", response.json)

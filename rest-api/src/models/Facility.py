@@ -19,7 +19,7 @@ class Facility(db.Model):
     )
 
     availabilities = db.relationship(
-        'Availability', uselist=False, backref='facility', cascade="all,delete-orphan"
+        'Availability', uselist=False, backref='facility', passive_deletes='all'
     )
 
     bookings = db.relationship("Booking", passive_deletes='all')

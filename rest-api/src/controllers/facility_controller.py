@@ -25,7 +25,11 @@ facilities = flask.Blueprint("facilities", __name__)
 def make_facility(domain_name):
     tenant = Tenant.query.filter_by(domain_name=domain_name).first_or_404()
     data = FacilitySchema().load(flask.request.json)
-    availability_data = data.pop("availabilities") # pops out the availability nested fields
+    
+    availability_data = {}
+    if "availabilities" in data:
+        availability_data = data.pop("availabilities") # pops out the availability nested fields
+
     facility = Facility(**data)
     facility.tenant_id = tenant.id
 
@@ -39,7 +43,7 @@ def make_facility(domain_name):
 
     db.session.commit()
 
-    return FacilitySchema().dump(facility)
+    return flask.jsonify(FacilitySchema().dump(facility)), 201
 
 # Method to retrieve all facilities in a subdomain
 @facilities.route('/facility', subdomain="<domain_name>", methods=["GET"])
@@ -54,7 +58,11 @@ def get_facilities(domain_name):
 def patch_facility(domain_name, id):
     facility = Facility.query.filter_by(id=id).first_or_404()
     data = FacilitySchema().load(flask.request.json)
-    availability_data = data.pop("availabilities") # pops out the availability nested fields
+
+    availability_data = None
+    if "availabilities" in data: # availabilities data should be optional
+        availability_data = data.pop("availabilities") # pops out the availability nested fields
+
     for key, value in data.items():
         setattr(facility, key, value)
 
@@ -74,7 +82,7 @@ def delete_facility(domain_name, id):
     facility = Facility.query.filter_by(id=id).first_or_404()
     db.session.delete(facility)
     db.session.commit()
-    return flask.jsonify(FacilitySchema().dump(facility))
+    return flask.jsonify(FacilitySchema(exclude=("availabilities",)).dump(facility))
 
 # Detail get method
 @facilities.route('/facility/<id>/<date>', subdomain="<domain_name>", methods=["GET"])
@@ -87,7 +95,7 @@ def detail_get_facility(domain_name, id, date):
     ).all()
 
     # this block adds up the number of bookings for each timeslot and stores them in a dict
-    # such as: {1: 8, 2: 5}. which means 8 bookings on the first timeslot of the day.
+    # example: {1: 8, 2: 5}. which means 8 bookings on the first timeslot of the day.
     counts = {}
     for x in bookings:
         if x.timeslot not in counts:

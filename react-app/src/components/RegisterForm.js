@@ -11,7 +11,7 @@ const RegisterForm = () => {
   const onSubmit = (data) => {
     postNoToken('register', data)
     .then(response => response.ok ? setSuccess("registered"):setSuccess("registration failed"))
-    .catch(() => setSuccess("error"))
+    .catch(error => setSuccess("error"))
   }
 
   return(

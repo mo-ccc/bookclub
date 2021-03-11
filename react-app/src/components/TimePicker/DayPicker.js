@@ -44,7 +44,7 @@ const DayPicker = ({fid}) => {
       `facility/${fid}`, 
       {"date": requestParam, "timeslot": timeslot}, token
       ).then(response => {
-      response.ok ? setSuccess("Booked"):setSuccess("Booking failed")
+      response.ok ? setSuccess("Booking succeeded"):setSuccess("Booking failed")
     }).catch(error => console.log(error))
   }
 

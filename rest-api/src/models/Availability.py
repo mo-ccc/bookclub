@@ -4,7 +4,7 @@ from main import db
 class Availability(db.Model):
     __tablename__ = "availabilities"
 
-    facility_id = db.Column(db.Integer, db.ForeignKey('facilities.id'),
+    facility_id = db.Column(db.Integer, db.ForeignKey('facilities.id', ondelete="CASCADE"),
         nullable=False, primary_key = True
     )
 

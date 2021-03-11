@@ -25,7 +25,7 @@ def get_self(domain_name):
 @actions.route("/myuser", subdomain="<domain_name>", methods=["PATCH"])
 @jwt.jwt_required()
 def patch_self(domain_name):
-    data = UserSchema(exclude=("is_admin", "expires_in")).load(flask.request.json)
+    data = UserSchema(exclude=("is_admin", "expires_in"), partial=True).load(flask.request.json)
     for key, value in data.items():
         setattr(jwt.current_user, key, value)
     db.session.commit()

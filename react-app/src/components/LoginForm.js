@@ -16,7 +16,7 @@ const LoginForm = () => {
       response.ok ? setSuccess("logged in"):setSuccess("invalid credentials")
       return response.json()
     }).then(data => store.dispatch(setAuth(data)))
-    .catch(error => console.log('invalid credentials'))
+    .catch(error => setSuccess("error"))
   }
 
   return(
