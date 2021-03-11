@@ -1,1 +1,1 @@
-web: gunicorn --pythonpath rest_api.src "main:create_app()"
+web: gunicorn --chdir ./rest_api/src "main:create_app()"
