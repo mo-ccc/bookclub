@@ -20,7 +20,7 @@ class Config():
 
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     RENDER_AS_BATCH = True
-    JWT_SECRET_KEY = get_from_env('SECRET_KEY')
+    JWT_SECRET_KEY = get_from_env('JWT_SECRET_KEY')
     
 class Development(Config):
     DEBUG = True

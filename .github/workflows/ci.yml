@@ -39,5 +39,7 @@ jobs:
         run: python -m unittest discover rest_api/src/
         env:
           FLASK_APP: main.py
-          FLASK_ENV: testing  
+          FLASK_ENV: testing
+          JWT_SECRET_KEY: ercret
+          DB_URI: postgres:postgres@localhost:5432
         
