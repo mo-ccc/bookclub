@@ -26,21 +26,21 @@ class Development(Config):
     DEBUG = True
     SQLALCHEMY_DATABASE_URI = f"postgresql+psycopg2://{get_from_env('DB_URI')}/development"
 
-    if os.get_env("DB_URL"):
+    if os.getenv("DB_URL"):
         SQLALCHEMY_DATABASE_URI = get_from_env('DB_URL')
 
 class Testing(Config):
     TESTING = True
     SQLALCHEMY_DATABASE_URI = f"postgresql+psycopg2://{get_from_env('DB_URI')}/testing" # a separate database for tests only
 
-    if os.get_env("DB_URL"):
+    if os.getenv("DB_URL"):
         SQLALCHEMY_DATABASE_URI = get_from_env('DB_URL')
 
 class Production(Config):
     SQLALCHEMY_DB_URI = f"postgresql+psycopg2://{get_from_env('DB_URI')}/production"
     # production postgresql database
 
-    if os.get_env("DB_URL"):
+    if os.getenv("DB_URL"):
         SQLALCHEMY_DATABASE_URI = get_from_env('DB_URL')
 
 
