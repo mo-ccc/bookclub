@@ -4,6 +4,14 @@ import os
 
 dotenv.load_dotenv()
 
+def get_from_env(var_name):
+    value = os.environ.get(var_name)
+
+    if not value:
+        raise ValueError(f"{var_name} is not set")
+
+    return value
+
 class Config():
     DEBUG = False
     TESTING = False
@@ -15,18 +23,18 @@ class Config():
     
 class Development(Config):
     DEBUG = True
-    SQLALCHEMY_DATABASE_URI = f"postgresql+psycopg2://{os.getenv('DB_URI')}/development" # a temporary sqlite database
+    SQLALCHEMY_DATABASE_URI = f"postgresql+psycopg2://{get_from_env('DB_URI')}/development" # a temporary sqlite database
 
 class Testing(Config):
     TESTING = True
-    SQLALCHEMY_DATABASE_URI = f"postgresql+psycopg2://{os.getenv('DB_URI')}/testing" # a separate database for tests only
+    SQLALCHEMY_DATABASE_URI = f"postgresql+psycopg2://{get_from_env('DB_URI')}/testing" # a separate database for tests only
 
 class Production(Config):
-    SQLALCHEMY_DB_URI = f"postgresql+psycopg2://{os.getenv('DB_URI')}/production"
+    SQLALCHEMY_DB_URI = f"postgresql+psycopg2://{get_from_env('DB_URI')}/production"
     # production postgresql database
 
 
-environment = os.getenv('FLASK_ENV')
+environment = get_from_env('FLASK_ENV')
 
 if environment == 'development':
     configuration = Development()
@@ -35,4 +43,4 @@ elif environment == 'testing':
 elif environment == 'production':
     configuration = Production()
 else:
-    raise Exception('FLASK_ENV is not set. use development, testing or production')
+    raise Exception('FLASK_ENV is not set properly. use development, testing or production')

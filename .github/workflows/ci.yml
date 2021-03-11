@@ -36,7 +36,7 @@ jobs:
           if [[ -f rest-api/src/requirements.txt ]]; then pip install -r rest_api/src/requirements.txt; fi
           
       - name: run unittest
-        run: python -m unittest discover rest-api/src/
+        run: python -m unittest discover rest_api/src/
         env:
           FLASK_APP: main.py
           FLASK_ENV: testing  
