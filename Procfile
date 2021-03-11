@@ -1,0 +1,1 @@
+web: gunicorn  "rest_api.src.main:create_app()"
