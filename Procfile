@@ -1,1 +1,1 @@
-web: gunicorn  "rest_api.src.main:create_app()"
+web: gunicorn --pythonpath rest_api "src.main:create_app()"
