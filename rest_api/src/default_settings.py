@@ -21,28 +21,24 @@ class Config():
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     RENDER_AS_BATCH = True
     JWT_SECRET_KEY = get_from_env('JWT_SECRET_KEY')
+
+    if os.getenv("DB_URL"):
+        SQLALCHEMY_DATABASE_URI = get_from_env('DB_URL')
     
 class Development(Config):
     DEBUG = True
-    SQLALCHEMY_DATABASE_URI = f"postgresql+psycopg2://{get_from_env('DB_URI')}/development"
-
-    if os.getenv("DB_URL"):
-        SQLALCHEMY_DATABASE_URI = get_from_env('DB_URL')
+    if os.getenv("DB_URI"):
+        SQLALCHEMY_DATABASE_URI = f"postgresql+psycopg2://{get_from_env('DB_URI')}/development"
 
 class Testing(Config):
     TESTING = True
-    SQLALCHEMY_DATABASE_URI = f"postgresql+psycopg2://{get_from_env('DB_URI')}/testing" # a separate database for tests only
-
-    if os.getenv("DB_URL"):
-        SQLALCHEMY_DATABASE_URI = get_from_env('DB_URL')
+    if os.getenv("DB_URI"):
+        SQLALCHEMY_DATABASE_URI = f"postgresql+psycopg2://{get_from_env('DB_URI')}/testing" # a separate database for tests only
 
 class Production(Config):
-    SQLALCHEMY_DB_URI = f"postgresql+psycopg2://{get_from_env('DB_URI')}/production"
+    if os.getenv("DB_URI"):
+        SQLALCHEMY_DB_URI = f"postgresql+psycopg2://{get_from_env('DB_URI')}/production"
     # production postgresql database
-
-    if os.getenv("DB_URL"):
-        SQLALCHEMY_DATABASE_URI = get_from_env('DB_URL')
-
 
 environment = get_from_env('FLASK_ENV')
 
