@@ -42,4 +42,5 @@ jobs:
           FLASK_ENV: testing
           JWT_SECRET_KEY: ercret
           DB_URI: postgres:postgres@localhost:5432
+          HOSTNAME: localhost:5000
         

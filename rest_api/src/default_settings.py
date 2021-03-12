@@ -15,13 +15,11 @@ def get_from_env(var_name):
 class Config():
     DEBUG = False
     TESTING = False
-
-    SERVER_NAME = 'localhost:5000'
-
     SQLALCHEMY_TRACK_MODIFICATIONS = False
-    RENDER_AS_BATCH = True
-    JWT_SECRET_KEY = get_from_env('JWT_SECRET_KEY')
 
+    SERVER_NAME = os.get_from_env("HOSTNAME")
+
+    JWT_SECRET_KEY = get_from_env('JWT_SECRET_KEY')
     if os.getenv("DB_URL"):
         SQLALCHEMY_DATABASE_URI = get_from_env('DB_URL')
     
