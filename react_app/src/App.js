@@ -24,12 +24,12 @@ const App = () => {
         body: JSON.stringify(body)
     }).then(response => {
       if (response.status === 201) {
-        window.location.replace(`http://${data.domain_name}.${window.location.hostname}/`)
+        window.location.replace(`http://${data.domain_name}.${process.env.REACT_APP_DOMAIN}/`)
       }
     }).catch(error => alert(error))
   }
-  console.log(window.location.hostname.split(".")[0], process.env.REACT_APP_DOMAIN)
-  if (window.location.hostname.split(".")[0] === process.env.REACT_APP_DOMAIN){
+  console.log(window.location.hostname, process.env.REACT_APP_DOMAIN)
+  if (window.location.hostname === process.env.REACT_APP_DOMAIN){
     return(
       <div className="bg-dark" style={{"height":"100vh"}}>
         <nav className="navbar navbar-expand-lg navbar-light bg-light">

@@ -43,9 +43,7 @@ const SiteInfoTab = () => {
     deleteWithToken('', token)
     .then(response => {
       if (response.status === 200) {
-        let splitted = window.location.hostname
-        let newString = splitted.substring(splitted.indexOf("."))
-        window.location.replace(`http://${newString}`)
+        window.location.replace(`http://${process.env.REACT_APP_HOST}`)
       }
     })
   }
