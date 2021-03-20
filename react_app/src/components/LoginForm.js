@@ -1,5 +1,4 @@
 import React, {useState} from 'react'
-import Alert from 'react-bootstrap/Alert'
 import {useForm} from 'react-hook-form'
 import {setAuth, setNotification} from '../redux'
 import store from '../redux/store.js'
@@ -7,7 +6,7 @@ import postNoToken from '../api/postWithToken'
 
 const LoginForm = () => {
   const { register, handleSubmit, errors } = useForm()
-  
+
   const onSubmit = (data) => {
     postNoToken('login', data)
     .then(response => {

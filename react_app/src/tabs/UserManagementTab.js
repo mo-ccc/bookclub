@@ -2,11 +2,13 @@ import React, {useState, useEffect} from 'react'
 import getWithToken from '../api/getWithToken.js'
 import {useSelector} from 'react-redux'
 import UsersTable from '../components/tables/UsersTable.js'
-import Alert from 'react-bootstrap/Alert'
 import ModalCustom from '../components/ModalCustom.js'
 import FormBase from '../components/FormBase.js'
 import postWithToken from '../api/postWithToken.js'
 import {useForm} from 'react-hook-form'
+
+import store from '../redux/store.js'
+import {setNotification} from '../redux'
 
 
 const UserManagementTab = () => {
@@ -23,12 +25,13 @@ const UserManagementTab = () => {
 
   const onSubmit = (data) => {
     data.expires_in = parseInt(data.expires_in)
-    data.is_admin = data.is_admin.value
     postWithToken("user", data, token)
     .then(response => {
-      setSuccess(response.status)
-      if (response.status === 201) {
+      if (response.ok) {
+        store.dispatch(setNotification("user added", "primary"))
         fetchUsers() // refreshes table with latest get data
+      }else {
+        store.dispatch(setNotification("an error occurred", "danger"))
       }
       return response
     })
@@ -48,13 +51,6 @@ const UserManagementTab = () => {
       <div className="table-responsive">
         <UsersTable users={users} setUsers={fetchUsers} setSuccess={setSuccess} />
       </div>
-      {success &&
-        <Alert variant="primary" onClose={() => setSuccess("")} dismissible>
-          <p>
-            {success}
-          </p>
-        </Alert>
-      }
     </div>
   )
 }

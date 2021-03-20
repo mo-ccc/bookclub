@@ -60,7 +60,7 @@ const Main = () =>{
         {permissions &&
           <>
           <Route exact path="/settings">
-            {<SettingsPage permissions={permissions}/>}
+            {<SettingsPage permissions={permissions} triggerFetchFacility={fetchFacilityInfo} triggerFetchTenant={fetchTenantInfo} facilities={Facilities}/>}
           </Route>
           <Route exact path={["/book", "/book/:id"]}>
             <RecentlyBooked facilities={Facilities}>

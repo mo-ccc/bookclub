@@ -6,6 +6,8 @@ import patchWithToken from '../../api/patchWithToken.js'
 import {useSelector} from 'react-redux'
 import Button from 'react-bootstrap/Button'
 import deleteWithToken from '../../api/deleteWithToken.js'
+import store from '../../redux/store.js'
+import {setNotification} from '../../redux'
 
 const UsersTable = ({users, setUsers, setSuccess}) => {
 
@@ -16,11 +18,14 @@ const UsersTable = ({users, setUsers, setSuccess}) => {
     const onSubmit = (data, idOfUser) => {
       data.expires_in = parseInt(data.expires_in)
       data.is_admin = data.is_admin.value
-      patchWithToken(`user/${idOfUser}`, data ,token)
+      patchWithToken(`user/${idOfUser}`, data, token)
       .then(response => {
         setSuccess(response.status)
-        if (response.status === 200) {
+        if (response.ok) {
           setUsers() // refreshes table with latest get data
+          store.dispatch(setNotification("successfully updated user", "primary"))
+        }else{
+          store.dispatch(setNotification("an error occurred", "danger"))
         }
         return response
     })}
@@ -35,7 +40,6 @@ const UsersTable = ({users, setUsers, setSuccess}) => {
         })
     }
 
-
     const processExpireOn = (date) => {
       return Math.round((new Date(date) - new Date())/(24 * 60 * 60 * 1000))
     }
@@ -44,7 +48,6 @@ const UsersTable = ({users, setUsers, setSuccess}) => {
       <table className="table table-bordered table-sm table-hover">
         <thead className="thead-dark">
           <tr>
-            <th scope="col">Id</th>
             <th scope="col">Email</th>
             <th scope="col">Name</th>
             <th scope="col">is_admin</th>
@@ -58,7 +61,6 @@ const UsersTable = ({users, setUsers, setSuccess}) => {
           { users &&
             users.map((user, i) => (
               <tr key={user.id}>
-                <th scope="row">{user.id}</th>
                 <td>{user.email}</td>
                 <td>{user.name}</td>
                 <td>{user.is_admin.toString()}</td>

@@ -35,7 +35,7 @@ class Testing(Config):
 
 class Production(Config):
     if os.getenv("DB_URI"):
-        SQLALCHEMY_DB_URI = f"postgresql+psycopg2://{get_from_env('DB_URI')}/production"
+        SQLALCHEMY_DATABASE_URI = f"postgresql+psycopg2://{get_from_env('DB_URI')}/production"
     # production postgresql database
 
 environment = get_from_env('FLASK_ENV')

@@ -5,18 +5,18 @@ import SiteInfoTab from '../tabs/SiteInfoTab.js'
 import UserManagementTab from '../tabs/UserManagementTab.js'
 import FacilityManagementTab from '../tabs/FacilityManagementTab.js'
 
-const SettingsPage = ({permissions}) => {
+const SettingsPage = ({permissions, triggerFetchFacility, triggerFetchTenant, facilities}) => {
   let pages = [
     [ "Account", <UserInfoTab/> ],
   ]
 
   if (permissions.is_admin || permissions.is_owner) {
     pages.push(["User Management", <UserManagementTab/> ])
-    pages.push([ "Facility Management", <FacilityManagementTab/> ])
+    pages.push([ "Facility Management", <FacilityManagementTab triggerFetchFacility={triggerFetchFacility} facilities={facilities} /> ])
   }
 
   if (permissions.is_owner) {
-    pages.push([ "Site Management", <SiteInfoTab/> ])
+    pages.push([ "Site Management", <SiteInfoTab triggerFetchTenant={triggerFetchTenant} /> ])
   }
 
 
