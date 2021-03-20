@@ -6,7 +6,7 @@ import SortSelector from '../components/SortSelector.js'
 
 
 const MyBookingsPage = ({facilities}) => {
-  const token = useSelector(state => state.token)
+  const token = useSelector(state => state.auth.token)
   const [activeBookings, setActiveBookings] = useState("")
   const [inActiveBookings, setInActiveBookings] = useState("")
 

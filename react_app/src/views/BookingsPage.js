@@ -13,7 +13,7 @@ const BookingsPage = ({facilities}) => {
   const {register, handleSubmit, control, errors, reset} = useForm()
   const [members, setMembers] = useState()
   const [tableData, setTableData] = useState()
-  const token = useSelector(state => state.token)
+  const token = useSelector(state => state.auth.token)
   const def = {value:"", label:"No filter"}
   const parsedFacilities = [def].concat(Array.from(facilities.map((f, i) => ({value:f, label:f.name})))) // first value is no filter - empty. then concat the options.
 

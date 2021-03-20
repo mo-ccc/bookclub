@@ -7,7 +7,7 @@ import deleteWithToken from '../../api/deleteWithToken.js'
 import times from '../../statics/json/times.json'
 
 const BookingsTable = ({facilities, tableData, resetData}) => {
-  const token = useSelector(state => state.token)
+  const token = useSelector(state => state.auth.token)
   const [success, setSuccess] = useState()
   const getFacilityNameFromId = (id) => {
     for (let facility of facilities) {

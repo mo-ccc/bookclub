@@ -5,7 +5,7 @@ import deleteWithToken from '../api/deleteWithToken.js'
 import {useSelector} from 'react-redux'
 
 const Booking = ({name, data, showCancelButton, getData}) => {
-    const token = useSelector(state => state.token)
+    const token = useSelector(state => state.auth.token)
     
     const deleteBooking = () => { 
         deleteWithToken(`booking/${data.id}`, token)

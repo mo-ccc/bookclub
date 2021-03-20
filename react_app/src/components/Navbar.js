@@ -8,7 +8,7 @@ import store from '../redux/store.js'
 import {setAuth} from '../redux'
 
 
-const NavBar = ({tenantInfo, token}) => {
+const NavBar = ({tenantInfo, permissions}) => {
   let modal;
   if (tenantInfo.open_registration) {
     modal = <ModalTabbed name="register/login" children={[["Login", <LoginForm/>], ["Register",<RegisterForm/>]]}/>
@@ -25,11 +25,11 @@ const NavBar = ({tenantInfo, token}) => {
       <Navbar.Toggle aria-controls="basic-navbar-nav" />
       <Navbar.Collapse id="basic-navbar-nav">
         <Nav className="mr-auto">
-          {!token && modal}
-          {token && token.is_admin &&
+          {!permissions && modal}
+          {permissions && permissions.is_admin &&
             <NavLink to="/bookings"><a className="nav-link">Bookings</a></NavLink>
           }
-          {token &&
+          {permissions &&
           <>
             <NavLink to="/history"><a className="nav-link">My Bookings</a></NavLink>
             <NavLink to="/book"><a className="nav-link">New booking</a></NavLink>

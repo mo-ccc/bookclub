@@ -2,10 +2,11 @@ import React, {useState, useEffect} from 'react';
 import { Route, Switch, useHistory } from 'react-router-dom';
 
 import {useSelector} from 'react-redux'
-import store from './redux/store.js'
-import {setTenant} from './redux'
 
 import NavBar from './components/Navbar.js'
+import Notification from './components/Notification.js'
+
+import getNoToken from './api/getNoToken.js'
 
 import Landing from './views/Landing.js'
 import SettingsPage from './views/SettingsPage.js'
@@ -21,26 +22,28 @@ const Main = () =>{
   const [Facilities, setFacilities] = useState("")
   const history = useHistory()
 
-  const x = window.location.hostname.split(".")[0]
-  useEffect(() => {
-    fetch(`http://${x}.${process.env.REACT_APP_HOST}/`)
+  const fetchTenantInfo = () => {
+    getNoToken('')
     .then(response => response.json())
-    .then(json => {
-      store.dispatch(setTenant(json))
-      setTenantInfo(json)
-    }).catch(error => history.push('/404'));
+    .then(json => {setTenantInfo(json)})
+    .catch(error => history.push('/404'))
+  }
 
-    fetch(`http://${x}.${process.env.REACT_APP_HOST}/facility`)
+  const fetchFacilityInfo = () => {
+    getNoToken('facility')
     .then(response => response.json())
-    .then(json => {
-      console.log(json)
-      setFacilities(json)
-    })
+    .then(json => {setFacilities(json)})
+    .catch(error => console.log(error))
+  }
+
+  useEffect(() => {
+    fetchTenantInfo()
+    fetchFacilityInfo()
   }, [])
 
-  const token = useSelector(state => {
+  const permissions = useSelector(state => {
     try {
-      return JSON.parse(atob(state.token.split('.')[1]))
+      return JSON.parse(atob(state.auth.token.split('.')[1]))
     }catch(e) {
       return ""
     }
@@ -49,15 +52,15 @@ const Main = () =>{
 
   return (
     <div>
-      <NavBar tenantInfo={TenantInfo} token={token}/>
+      <NavBar tenantInfo={TenantInfo} permissions={permissions}/>
       <Switch>
         <Route exact path="/">
           <Landing tenantInfo={TenantInfo} facilities={Facilities}/>
         </Route>
-        {token &&
+        {permissions &&
           <>
           <Route exact path="/settings">
-            {<SettingsPage permissions={token}/>}
+            {<SettingsPage permissions={permissions}/>}
           </Route>
           <Route exact path={["/book", "/book/:id"]}>
             <RecentlyBooked facilities={Facilities}>
@@ -72,7 +75,7 @@ const Main = () =>{
           <Route exact path="/history">
             <MyBookingsPage facilities={Facilities}/>
           </Route>
-          {token.is_admin && 
+          {permissions.is_admin && 
             <Route exact path="/bookings">
               <BookingsPage facilities={Facilities}/>
             </Route>
@@ -83,6 +86,7 @@ const Main = () =>{
 
         <Route path="/404" render={() => <h1>404</h1>}/>
       </Switch>
+      <Notification/>
     </div>
   )
 }

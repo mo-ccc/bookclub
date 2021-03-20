@@ -10,7 +10,7 @@ import deleteWithToken from '../../api/deleteWithToken.js'
 const UsersTable = ({users, setUsers, setSuccess}) => {
 
     const useform = useForm()
-    const token = useSelector(state => state.token)
+    const token = useSelector(state => state.auth.token)
     const permissions = JSON.parse(atob(token.split('.')[1]))
 
     const onSubmit = (data, idOfUser) => {

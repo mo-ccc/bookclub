@@ -14,7 +14,7 @@ const SiteInfoTab = () => {
   const [ success, setSuccess ] = useState()
   const useform = useForm()
 
-  const token = useSelector(state => state.token)
+  const token = useSelector(state => state.auth.token)
   const fetchData = () => {
     getWithToken('', token)
     .then(response => response.json())
@@ -52,13 +52,6 @@ const SiteInfoTab = () => {
       <h2>Edit site info</h2>
       <hr/>
       <FormBase fields={["domain_name", "description", "statement", "location", "open_registration", "phone", ["default_account_expiry_time", 2]]} useForm={useform} defaultData={data} onSubmit={onSubmit}/>
-      {success &&
-        <Alert variant="primary" onClose={() => setSuccess("")} dismissible>
-          <p>
-            {success}
-          </p>
-        </Alert>
-      }
       <hr/>
       <ModalCustom label="delete domain" title="are you sure you want to delete?">
         <Button variant="danger" onClick={handleDelete}>Yes</Button>

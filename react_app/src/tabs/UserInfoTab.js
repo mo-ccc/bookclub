@@ -11,7 +11,7 @@ const UserInfoTab = () => {
   const [ success, setSuccess ] = useState()
   const useform = useForm()
 
-  const token = useSelector(state => state.token)
+  const token = useSelector(state => state.auth.token)
   const fetchData = () => {
     getWithToken('myuser', token)
     .then(response => response.json())

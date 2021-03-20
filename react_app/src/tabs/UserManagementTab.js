@@ -11,7 +11,7 @@ import {useForm} from 'react-hook-form'
 
 const UserManagementTab = () => {
   const [users, setUsers] = useState()
-  const token = useSelector(state => state.token)
+  const token = useSelector(state => state.auth.token)
   const [success, setSuccess] = useState()
   const useform = useForm()
 

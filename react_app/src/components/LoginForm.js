@@ -1,22 +1,23 @@
 import React, {useState} from 'react'
 import Alert from 'react-bootstrap/Alert'
 import {useForm} from 'react-hook-form'
-import {setAuth} from '../redux'
+import {setAuth, setNotification} from '../redux'
 import store from '../redux/store.js'
 import postNoToken from '../api/postWithToken'
 
 const LoginForm = () => {
   const { register, handleSubmit, errors } = useForm()
-  const [ success, setSuccess ] = useState("")
-
-  const domain = window.location.hostname.split(".")[0]
+  
   const onSubmit = (data) => {
     postNoToken('login', data)
     .then(response => {
-      response.ok ? setSuccess("logged in"):setSuccess("invalid credentials")
+      response.ok ? store.dispatch(setNotification("logged in", "primary")):store.dispatch(setNotification("invalid credentials", "danger"))
       return response.json()
-    }).then(data => store.dispatch(setAuth(data)))
-    .catch(error => setSuccess("error"))
+    }).then(data => {
+      store.dispatch(setAuth(data))
+      console.log(store.getState())
+    })
+    .catch(error => store.dispatch(setNotification("invalid credentials", "danger")))
   }
 
   return(
@@ -32,13 +33,6 @@ const LoginForm = () => {
         {errors.password && <small className="form-text text-muted">Password is required</small>}
       </div>
       <input type="submit" className="btn btn-primary"/>
-      {success &&
-      <Alert variant="primary" onClose={() => setSuccess("")} dismissible>
-        <p>
-          {success}
-        </p>
-      </Alert>
-      }
     </form>
   )
 }

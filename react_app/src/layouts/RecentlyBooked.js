@@ -6,7 +6,7 @@ import Button from 'react-bootstrap/Button'
 import {Link} from 'react-router-dom'
 
 const RecentlyBooked = (props) => {
-  const token = useSelector(state => state.token)
+  const token = useSelector(state => state.auth.token)
   const [lastThree, setLastThree] = useState("")
 
   

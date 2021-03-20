@@ -16,7 +16,7 @@ const FacilityManagementTab = () => {
   const [facilities, setFacilities] = useState()
   const patchForm = useForm()
   const postForm = useForm()
-  const token = useSelector(state => state.token)
+  const token = useSelector(state => state.auth.token)
   const [patchSuccess, setPatchSuccess] = useState()
   const [postSuccess, setPostSuccess] = useState()
 

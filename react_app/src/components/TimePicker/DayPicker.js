@@ -12,7 +12,7 @@ const DayPicker = ({fid}) => {
   const [fetchData, setFetchData] = useState("")
   const [timeslot, setTimeslot] = useState("")
   const [success, setSuccess] = useState("")
-  const token = useSelector(state => state.token)
+  const token = useSelector(state => state.auth.token)
 
   const handleSetTimeslot = (selected) => {
       setTimeslot(selected)
