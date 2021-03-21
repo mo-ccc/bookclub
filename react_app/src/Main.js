@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import { Route, Switch, useHistory } from 'react-router-dom';
+import { Route, Switch, useHistory, Redirect } from 'react-router-dom';
 
 import {useSelector} from 'react-redux'
 
@@ -86,9 +86,12 @@ const Main = () =>{
           }
           </>
         }
-        
-
-        <Route path="/404" render={() => <h1>404</h1>}/>
+        {permissions ? 
+          <Route exact path="/404" render={() => <h1 className="p-5">This subdomain does not exist.</h1>}/>
+          :
+          <Route><Redirect to="/"/></Route>
+        }
+        <Route><Redirect to="/"/></Route>
       </Switch>
       <Notification/>
     </div>
