@@ -43,8 +43,7 @@ const MyBookingsPage = ({facilities}) => {
     }
     return "unknown"
   }
-  const sortBookings = (event, [state, stateSetter]) => {
-    getData()
+  const sortBookings = (event, state, stateSetter) => {
     let method = Number(event.target.value)
     let list = [...state]
     switch (method) {
@@ -77,7 +76,7 @@ const MyBookingsPage = ({facilities}) => {
     <div className="container">
       <div className="row m-4">
         <h2 className="mr-5">active bookings</h2>
-        <SortSelector onChangeFunc={(event) => sortBookings(event, [activeBookings, setActiveBookings])}/>
+        <SortSelector onChangeFunc={(event) => sortBookings(event, activeBookings, setActiveBookings)}/>
       </div>
       <div className="row">
         {activeBookings && activeBookings.map((item, i)=>{
@@ -87,7 +86,7 @@ const MyBookingsPage = ({facilities}) => {
       <hr/>
       <div className="row m-4">
         <h2 className="mr-5">inactive bookings</h2>
-        <SortSelector onChangeFunc={(event) => sortBookings(event, [inActiveBookings, setInActiveBookings])}/>
+        <SortSelector onChangeFunc={(event) => sortBookings(event, inActiveBookings, setInActiveBookings)}/>
       </div>
       <div className="row">
         {inActiveBookings && inActiveBookings.map((item, i)=>{
