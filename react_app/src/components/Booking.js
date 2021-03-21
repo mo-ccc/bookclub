@@ -3,6 +3,8 @@ import Button from 'react-bootstrap/Button'
 import times from '../statics/json/times.json'
 import deleteWithToken from '../api/deleteWithToken.js'
 import {useSelector} from 'react-redux'
+import store from '../redux/store.js'
+import {setNotification} from '../redux'
 
 const Booking = ({name, data, showCancelButton, getData}) => {
     const token = useSelector(state => state.auth.token)
@@ -10,11 +12,15 @@ const Booking = ({name, data, showCancelButton, getData}) => {
     const deleteBooking = () => { 
         deleteWithToken(`booking/${data.id}`, token)
         .then(response => { 
-            if (response.status === 200){
+            if (response.ok){
                 getData()
-            } 
+                store.dispatch(setNotification("deleted booking", "primary"))
+            }else {
+                store.dispatch(setNotification("an error occurred", "danger"))
+            }
             return response
-        }).catch(errors => console.log(errors))}
+        })
+    }
     
     return(
         <div className="card w-100 m-1 mb-4 p-3">

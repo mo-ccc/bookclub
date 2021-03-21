@@ -60,17 +60,21 @@ const Main = () =>{
         {permissions &&
           <>
           <Route exact path="/settings">
-            {<SettingsPage permissions={permissions} triggerFetchFacility={fetchFacilityInfo} triggerFetchTenant={fetchTenantInfo} facilities={Facilities}/>}
+            {<SettingsPage permissions={permissions} triggerFetchFacility={fetchFacilityInfo} tenantInfo={TenantInfo} facilities={Facilities}/>}
           </Route>
           <Route exact path={["/book", "/book/:id"]}>
-            <RecentlyBooked facilities={Facilities}>
-              <Route exact path="/book">
-                <FacilitiesPage facilities={Facilities}/>
-              </Route>
-              <Route exact path="/book/:id">
-                <BookingPage/>
-              </Route>
-            </RecentlyBooked>
+            <RecentlyBooked facilities={Facilities} render={
+              getLastThree => (
+                <>
+                <Route exact path="/book">
+                  <FacilitiesPage facilities={Facilities}/>
+                </Route>
+                <Route exact path="/book/:id">
+                  <BookingPage getLastThree={getLastThree}/>
+                </Route>
+                </>
+              )
+            }/>
           </Route>
           <Route exact path="/history">
             <MyBookingsPage facilities={Facilities}/>

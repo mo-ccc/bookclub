@@ -35,6 +35,9 @@ const UsersTable = ({users, setUsers, setSuccess}) => {
         .then(response => {
           if (response.status === 200) {
             setUsers()
+            store.dispatch(setNotification("user deleted", "primary"))
+          }else {
+            store.dispatch(setNotification("An error occurred"))
           }
           return response
         })

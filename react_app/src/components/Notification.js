@@ -16,15 +16,17 @@ const Notification = () => {
     "z-index": "99999"
   }
 
-  if (success) {return(
-    <div style={style}>
-      <Alert variant={status ?? "primary"} onClose={() => store.dispatch(setNotification("", ""))} dismissible>
-        <p>
-          {success}
-        </p>
-      </Alert>
-    </div>
-  )}else {
+  if (success) {
+    setTimeout(() => {store.dispatch(setNotification(""))}, 2000)
+    return(
+      <div style={style}>
+        <Alert variant={status ?? "primary"} onClose={() => store.dispatch(setNotification("", ""))} dismissible>
+          <p>
+            {success}
+          </p>
+        </Alert>
+      </div>
+    )}else {
     return(null)
   }
 }

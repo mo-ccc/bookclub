@@ -7,7 +7,7 @@ import getNoToken from '../../api/getNoToken.js'
 import postWithToken from '../../api/postWithToken.js'
 import {useSelector} from 'react-redux'
 
-const DayPicker = ({fid}) => {
+const DayPicker = ({fid, getLastThree}) => {
   const [selectedDay, setSelectedDay] = useState(new Date())
   const [fetchData, setFetchData] = useState("")
   const [timeslot, setTimeslot] = useState("")
@@ -15,23 +15,26 @@ const DayPicker = ({fid}) => {
   const token = useSelector(state => state.auth.token)
 
   const handleSetTimeslot = (selected) => {
-      setTimeslot(selected)
+    setTimeslot(selected)
+  }
+
+  const updateTimePicker = (rquest, setT) => {
+    getNoToken(rquest)
+    .then(request => request.json())
+    .then(data => {
+      setFetchData(data)
+
+      setT && setTimeslot(data.facility.availabilities.open)
+
+      return data
+    })
   }
 
   const handleDayChange = (day) =>{
     setSelectedDay(day)
     const iso = day.toISOString()
     const requestParam = iso.substring(0, iso.indexOf("T"))
-    getNoToken(`facility/${fid}/${requestParam}`)
-    .then(request => request.json())
-    .then(data => {
-      console.log(data)
-      setFetchData(data)
-
-      setTimeslot(data.facility.availabilities.open)
-
-      return data
-    })
+    updateTimePicker(`facility/${fid}/${requestParam}`, true)
   }
 
   const handleSubmit = () => {
@@ -44,8 +47,14 @@ const DayPicker = ({fid}) => {
       `facility/${fid}`, 
       {"date": requestParam, "timeslot": timeslot}, token
       ).then(response => {
-      response.ok ? setSuccess("Booking succeeded"):setSuccess("Booking failed")
-    }).catch(error => console.log(error))
+      if (response.ok) {
+        setSuccess("Booking succeeded")
+        getLastThree()
+        updateTimePicker(`facility/${fid}/${requestParam}`, false)
+      }else {
+        setSuccess("Booking failed")
+      }
+    })
   }
 
 
@@ -57,7 +66,7 @@ const DayPicker = ({fid}) => {
         <DayPickerInput showOverlay={true} hideOnDayClick={false} onDayChange={handleDayChange} dayPickerProps={{disabledDays:{before: new Date()}}}/>
       </div>
       <div className="col-10 col-md-5 mb-2">
-        <TimePicker data={fetchData} timeslot={timeslot} setTimeSlot={handleSetTimeslot}/>
+        <TimePicker data={fetchData} timeslot={timeslot} setTimeSlot={handleSetTimeslot} selectedDay={selectedDay}/>
         <Button className="mt-3" onClick={handleSubmit}>Book</Button>
         <h4>{success}</h4>
       </div>

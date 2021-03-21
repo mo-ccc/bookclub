@@ -19,21 +19,24 @@ const RecentlyBooked = (props) => {
     return "unknown"
   }
 
-  useEffect(() => {
+  const getLastThree = () => {
     getWithToken('booking-history/3', token)
+    .then(response => (response.json()))
     .then(
-      response => (response.json())
-    ).then(
       data => {
         setLastThree(data)
-        return data
-  })}, [])
+    })
+  }
+
+  useEffect(() => {
+    getLastThree()
+  }, [])
 
   return(
     <div className="container">
       <div className="row">
         <div className="col-12 col-md-8">
-          {props.children}
+          {props.render(getLastThree)}
         </div>
         <div className="col-11 col-md-4 border-left border-top mt-2">
           <h4 className="mb-3 mt-3">Recently Booked</h4>

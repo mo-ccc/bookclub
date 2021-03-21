@@ -4,46 +4,35 @@ import getWithToken from '../api/getWithToken.js'
 import FormBase from '../components/FormBase.js'
 import deleteWithToken from '../api/deleteWithToken.js'
 import patchWithToken from '../api/patchWithToken.js'
-import Alert from 'react-bootstrap/Alert'
 import {useForm} from 'react-hook-form'
 import ModalCustom from '../components/ModalCustom.js'
 import Button from 'react-bootstrap/Button'
+import store from '../redux/store.js'
+import {setNotification} from '../redux'
 
-const SiteInfoTab = () => {
-  const [ data, setData ] = useState()
-  const [ success, setSuccess ] = useState()
+const SiteInfoTab = ({data}) => {
   const useform = useForm()
 
   const token = useSelector(state => state.auth.token)
-  const fetchData = () => {
-    getWithToken('', token)
-    .then(response => response.json())
-    .then(data => {setData(data); console.log(data); return data})
-    .catch(error => console.log(error))
-  }
-
-  useEffect(() =>{
-    fetchData()
-  }, [])
 
   const onSubmit = (data) => {
     data.open_registration = data.open_registration.value
     patchWithToken('', data, token)
     .then(response => response.json()
-    .then(data => {
-      setSuccess(response.status)
+    .then(new_data => {
       useform.reset()
-      if (response.status === 200) {
-        setData(data)
+      if (response.ok) {
+        window.location.replace(`http://${new_data.domain_name}.${process.env.REACT_APP_DOMAIN}`)
+      }else{
+        store.dispatch(setNotification("an error occurred", "danger"))
       }
-      return response
   }))}
 
   const handleDelete = () => {
     deleteWithToken('', token)
     .then(response => {
       if (response.status === 200) {
-        window.location.replace(`http://${process.env.REACT_APP_HOST}`)
+        window.location.replace(`http://${process.env.REACT_APP_DOMAIN}`)
       }
     })
   }

@@ -4,7 +4,7 @@ import DayPicker from '../components/TimePicker/DayPicker.js'
 import placeholder from '../statics/images/placeholder.jpg'
 
 
-const BookingPage = () => {
+const BookingPage = ({getLastThree}) => {
   let {id} = useParams()
   let {state} = useLocation()
 
@@ -58,7 +58,7 @@ const BookingPage = () => {
               </div>
           </div>
           <hr/>
-          <DayPicker fid={id}/>
+          <DayPicker fid={id} getLastThree={getLastThree}/>
       </div>
   )
 }
