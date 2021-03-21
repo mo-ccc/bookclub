@@ -9,14 +9,19 @@ Superusers will be able add and remove facilities/members/bookings through the i
 **Target Audience:** The application will be multipurpose and so the target audience can be virtually anyone with internet connectivity. The application will provide the tools needed so that facility owners can set up their own domains. They and the users that they serve are the target audience.
 
 **Tech stack:** 
-frontend - react
-backend - flask (python) + gunicorn + nginx
-databases - postgresql, S3
-additional - aws, terraform, kubernetes, docker
+- frontend - react
+- backend - flask (python) + gunicorn + nginx
+- databases - postgresql, S3
+- additional - aws, terraform, kubernetes, docker
+
+---
+### preview
+<img src="./docs/preview.png">
 
 ---
 ### data flow diagram
 <img src="./docs/dfd.png" width="85%"/>
 
+---
 ### application architecture diagram
 ![aad](./docs/aad.png)

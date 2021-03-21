@@ -6,8 +6,6 @@ import {BrowserRouter} from 'react-router-dom'
 import FormBase from './components/FormBase'
 import {useForm} from 'react-hook-form'
 
-import postNoToken from './api/postNoToken.js'
-
 const App = () => {
   const useform = useForm()
   const handleSubmit = (data) => {
@@ -23,8 +21,10 @@ const App = () => {
         },
         body: JSON.stringify(body)
     }).then(response => {
-      if (response.status === 201) {
+      if (response.ok) {
         window.location.replace(`http://${data.domain_name}.${process.env.REACT_APP_DOMAIN}/`)
+      }else{
+        alert("Could not successfully create subdomain. Please limit domain_name length to 10 characters. password must be at least 6 characters. use a valid email. and make sure subdomain does not already exist")
       }
     }).catch(error => alert(error))
   }
@@ -40,10 +40,14 @@ const App = () => {
             </li>
           </ul>
         </nav>
-        <div className="bg-dark p-4">
+        <div className="bg-dark p-1">
           <div className="d-flex justify-content-center align-items-center">
-            <div className="card text-black-50 bg-light p-5 m-4">
+            <div className="card text-black-50 bg-light p-4 m-4">
+              <h6>Create a new subdomain</h6>
+              
               <FormBase fields={["domain_name", "name", "email", "password"]} is_post={true} useForm={useform} onSubmit={handleSubmit}/>
+
+              <h6 className="mt-5">or visit the demo subdomain: <a href={`http://demo.${process.env.REACT_APP_DOMAIN}`}>http://demo.{process.env.REACT_APP_DOMAIN}</a></h6>
             </div>
           </div>
         </div>

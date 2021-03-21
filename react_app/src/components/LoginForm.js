@@ -16,7 +16,6 @@ const LoginForm = () => {
       store.dispatch(setAuth(data))
       console.log(store.getState())
     })
-    .catch(error => store.dispatch(setNotification("invalid credentials", "danger")))
   }
 
   return(
