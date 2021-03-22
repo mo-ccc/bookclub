@@ -9,26 +9,26 @@ import {useForm} from 'react-hook-form'
 const App = () => {
   const useform = useForm()
   const handleSubmit = (data) => {
-    const body = {
-      tenant: {"domain_name": data.domain_name}, 
-      user: {"name": data.name, "password": data.password, "email": data.email}
-    }
     return fetch(`http://${process.env.REACT_APP_HOST}/`, {
         method: 'POST',
         headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify(body)
+        body: JSON.stringify(data)
     }).then(response => {
       if (response.ok) {
         window.location.replace(`http://${data.domain_name}.${process.env.REACT_APP_DOMAIN}/`)
       }else{
-        alert("Could not successfully create subdomain. Please limit domain_name length to 10 characters. password must be at least 6 characters. use a valid email. and make sure subdomain does not already exist")
+        alert("Could not successfully create subdomain")
       }
     }).catch(error => alert(error))
   }
-  console.log(window.location.hostname, process.env.REACT_APP_DOMAIN)
+
+  const former = [
+    {"name": "domain_name", "label": "domain name", "placeholder": "enter a name for a new domain", "inputType": "text", "validation": {"maxLength": 10} },
+  ]
+
   if (window.location.hostname === process.env.REACT_APP_DOMAIN){
     return(
       <div className="bg-dark" style={{"height":"100vh"}}>
@@ -45,7 +45,7 @@ const App = () => {
             <div className="card text-black-50 bg-light p-4 m-4">
               <h6>Create a new subdomain</h6>
               
-              <FormBase fields={["domain_name", "name", "email", "password"]} is_post={true} useForm={useform} onSubmit={handleSubmit}/>
+              <FormBase fields={former} useForm={useform} onSubmit={handleSubmit}/>
 
               <h6 className="mt-5">or visit the demo subdomain: <a href={`http://demo.${process.env.REACT_APP_DOMAIN}`}>http://demo.{process.env.REACT_APP_DOMAIN}</a></h6>
             </div>
