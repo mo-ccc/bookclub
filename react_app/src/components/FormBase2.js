@@ -13,14 +13,6 @@ const FormBase = ({defaultData, onSubmit, useForm, fields}) => {
   return (
     <form onSubmit={handleSubmit(onSubmit)} >
       {fields.map((item, i) => {
-        const errorMessages = {
-          "maxLength": `length must be less than ${item.validation?.maxLength}`,
-          "minLength": `length must be greater than ${item.validation?.minLength}`,
-          "required": "field is required"
-        }
-        console.log(errors)
-      
-
         switch (item.inputType) {
           case "select": return (
             <Controller as={Select} name={item.name} options={item.options} defaultValue={defaultData?.[item.name]} control={control} ref={register(item.validation)}/>
@@ -33,10 +25,11 @@ const FormBase = ({defaultData, onSubmit, useForm, fields}) => {
           default: return (
             <div className="form-group" key={i}>
               <label>{item.label}</label>
-              <input className="form-control" name={item.name} placeholder={item.placeholder} type={item.inputType} defaultValue={defaultData?.[item.name]} ref={register(item.validation)} />
-              {_.get(errors, item.name) &&
-                <small className="form-text text-muted">{_.get(errors, item.name).message || errorMessages[_.get(errors, item.name).type]}</small>
+              {_.has(errors, item.name) &&
+                <small className="form-text text-muted">{_.get(errors, item.name).message}</small>
               }
+              <input className="form-control" name={item.name} placeholder={item.placeholder} type={item.inputType} defaultValue={defaultData?.[item.name]} ref={register(item.validation)} />
+              
             </div>
           )
         }

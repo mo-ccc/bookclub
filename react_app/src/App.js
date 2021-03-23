@@ -1,26 +1,52 @@
-import React, {useState, useEffect} from 'react';
+import React from 'react';
 import {Provider} from 'react-redux'
 import store from './redux/store.js'
 import Main from './Main.js'
 import {BrowserRouter} from 'react-router-dom'
 import FormBase2 from './components/FormBase2'
 import {useForm} from 'react-hook-form'
+import { yupResolver } from '@hookform/resolvers/yup'
+import * as yup from "yup"
+import rootPost from './api/rootPost'
 
 const App = () => {
-  const useform = useForm()
+  const schema = yup.object().shape({
+    tenant: yup.object({
+      domain_name: yup.string().max(10).required().matches(/^[a-zA-z0-9 ]*$/, "domain name must not contain any special characters").label("domain name")
+    }),
+    user: yup.object({
+      name: yup.string().max(30).required().matches(/^[a-zA-Z ]*$/, "name must contain only letters and whitespaces").label("name"),
+      email: yup.string().max(30).required().label("email"),
+      password: yup.string().min(6).required().label("password")
+    })
+  })
+
+  const useform = useForm({resolver: yupResolver(schema), })
+
+  
+
   const handleSubmit = (data) => {
-    console.log(data)
+    rootPost(data).then(response => {
+      if (response.ok) {
+        window.location.replace(`http://${data.tenant.domain_name}.${process.env.REACT_APP_DOMAIN}/`)
+      }else{
+        alert("Could not successfully create domain")
+      }
+    })
   }
 
   const formFields = [
-    {name: "domain.domain_name", label: "domain name", placeholder: "enter a name for a new domain", inputType: "text", validation: {maxLength: 10, required: true} },
+    // domain name field
+    {name: "tenant.domain_name", label: "domain name", placeholder: "enter a name for a new domain", inputType: "text"},
 
-    {name: "user.name", label: "name", placeholder: "enter a name for the root user", inputType: "test", validation: {required: true, pattern: {value: /^[a-zA-Z ]*$/, message: "name must only contain letters and white spaces"}}},
+    // name field
+    {name: "user.name", label: "name", placeholder: "enter a name for the root user", inputType: "test"},
 
-    {name: "user.email", label: "email", placeholder: "enter an email for the root user", inputType: "email", validation: {required: true}},
+    // email field
+    {name: "user.email", label: "email", placeholder: "enter an email for the root user", inputType: "email"},
 
-    {name: "user.password", label: "password", placeholder: "enter a password for the root user", inputType: "password", validation: {required: true, minLength: 6}}
-    
+    // password field
+    {name: "user.password", label: "password", placeholder: "enter a password for the root user", inputType: "password"}  
   ]
 
   if (window.location.hostname === process.env.REACT_APP_DOMAIN){
