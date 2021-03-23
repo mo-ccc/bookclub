@@ -1,7 +1,7 @@
 import React from 'react'
 import ModalCustom from '../ModalCustom.js'
 import {useForm} from 'react-hook-form'
-import FormBase from '../FormBase.js'
+import FormBase2 from '../FormBase2.js'
 import patchWithToken from '../../api/patchWithToken.js'
 import {useSelector} from 'react-redux'
 import Button from 'react-bootstrap/Button'
@@ -11,9 +11,18 @@ import {setNotification} from '../../redux'
 
 const UsersTable = ({users, setUsers, setSuccess}) => {
 
-    const useform = useForm()
-    const token = useSelector(state => state.auth.token)
-    const permissions = JSON.parse(atob(token.split('.')[1]))
+  const fields = [
+    {name: "name", label: "name", placeholder: "name of account", inputType: "text"},
+    {name: "expires_in", label: "days until membership expiry", placeholder: "days", inputType: "number"},
+  ]
+  const token = useSelector(state => state.auth.token)
+  const permissions = JSON.parse(atob(token.split('.')[1]))
+  if (permissions.is_admin) {
+    fields.push({name: "is_admin", label: "is an admin user", inputType: "bool"})
+  }
+
+  const useform = useForm()
+  
 
     const onSubmit = (data, idOfUser) => {
       data.expires_in = parseInt(data.expires_in)
@@ -72,7 +81,7 @@ const UsersTable = ({users, setUsers, setSuccess}) => {
                 <td>{user.expires_on.substring(0, user.expires_on.indexOf("T"))}</td>
                 <td className="text-center">
                   <ModalCustom label="edit" title={user.email}>
-                    <FormBase fields={permissions.is_owner ? ["name", ["is_admin",1], ["expires_in",2]] : ["name", "expires_in"]} useForm={useform} defaultData={{"name":user.name, "is_admin": user.is_admin, "expires_in": processExpireOn(user.expires_on)}} onSubmit={d => onSubmit(d, user.id)}/>
+                    <FormBase2 fields={fields} useForm={useform} defaultData={{"name":user.name, "is_admin": user.is_admin, "expires_in": processExpireOn(user.expires_on)}} onSubmit={d => onSubmit(d, user.id)}/>
                     <hr />
                     <ModalCustom label="delete" title={`are you sure you want to delete ${user.email}?`}>
                       <Button variant="danger" onClick={e => handleDelete(e, user.id)}>Yes. Delete!</Button>
