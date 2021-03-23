@@ -13,7 +13,7 @@ const Notification = () => {
     "bottom": "0px",
     "left": "10px",
     "right": "10px",
-    "z-index": "99999"
+    "zIndex": "99999"
   }
 
   if (success) {

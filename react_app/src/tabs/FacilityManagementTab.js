@@ -35,9 +35,12 @@ const FacilityManagementTab = ({triggerFetchFacility, facilities}) => {
       })
   }
   const postSubmit = (data) => {
+    console.log(data)
+    /*
     data.disabled = data.disabled.value
     Object.keys(data.availabilities).forEach(item => data.availabilities[item] = data.availabilities[item].value)
-    console.log(data)
+
+    
     postWithToken("facility", data, token)
       .then(response => {
         if (response.ok) {
@@ -49,11 +52,12 @@ const FacilityManagementTab = ({triggerFetchFacility, facilities}) => {
         }
         return response
       })
+    */
   }
   const handleDelete = (e, id) => {
     deleteWithToken(`facility/${id}`, token)
       .then(response => {
-        if (response.status === 200) {
+        if (response.ok) {
           triggerFetchFacility()
           store.dispatch(setNotification("deleted facility", "primary"))
         }else {
