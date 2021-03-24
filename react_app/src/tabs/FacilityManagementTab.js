@@ -4,6 +4,7 @@ import getNoToken from '../api/getNoToken.js'
 import Facility from '../components/Facility.js'
 import ModalCustom from '../components/ModalCustom.js'
 import FormBase from '../components/FormBase.js'
+import FormBase2 from '../components/FormBase2.js'
 import patchWithToken from '../api/patchWithToken.js'
 import postWithToken from '../api/postWithToken.js'
 import deleteWithToken from '../api/deleteWithToken.js'
@@ -12,10 +13,38 @@ import {useSelector} from 'react-redux'
 import availabilitiesJson from '../statics/json/availabilities.json'
 import store from '../redux/store.js'
 import {setNotification} from '../redux'
+import times from '../statics/json/times.json'
+
+import * as yup from 'yup'
+import {yupResolver} from '@hookform/resolvers/yup'
+import * as flatten from 'flat'
 
 const FacilityManagementTab = ({triggerFetchFacility, facilities}) => {
+  console.log(facilities)
+  const days = ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"]
+  const fields = [
+    {name: "name", label: "facility name", placeholder: "enter a name for the facility", inputType: "text"},
+    {name: "description", label: "facility description", placeholder: "enter a nice description for the facility", inputType: "text"},
+    {name: "disabled", label: "is disabled (no bookings allowed)", inputType: "bool"},
+  ]
+  const availabilitiesSchema = {}
+  for (let day of days) { // adds the day opening/closing select fields
+    fields.push({inputType: "flex", fields:[
+        {name: `availabilities.${day}Start`, label: `${day} opening time`, inputType: "select", options: times.concat(["11:59 PM"]).map(time => ({label: time}))},
+        {name: `availabilities.${day}End`, label: `${day} closing time`, inputType: "select", options: times.concat(["11:59 PM"]).map(time => ({label: time}))}
+      ]
+    })
+    availabilitiesSchema[`${day}Start`] = yup.number().min(0).max(48)
+    availabilitiesSchema[`${day}End`] = yup.number().min(0).max(48)
+  }
+
+  const schema = yup.object().shape({
+    availabilities: yup.object().shape(
+      availabilitiesSchema // lazy way to generate the schema
+    )})
+
   const patchForm = useForm()
-  const postForm = useForm()
+  const postForm = useForm({resolver: yupResolver(schema), })
   const token = useSelector(state => state.auth.token)
   
   const patchSubmit = (data, id) => {
@@ -36,11 +65,7 @@ const FacilityManagementTab = ({triggerFetchFacility, facilities}) => {
   }
   const postSubmit = (data) => {
     console.log(data)
-    /*
-    data.disabled = data.disabled.value
-    Object.keys(data.availabilities).forEach(item => data.availabilities[item] = data.availabilities[item].value)
 
-    
     postWithToken("facility", data, token)
       .then(response => {
         if (response.ok) {
@@ -52,7 +77,6 @@ const FacilityManagementTab = ({triggerFetchFacility, facilities}) => {
         }
         return response
       })
-    */
   }
   const handleDelete = (e, id) => {
     deleteWithToken(`facility/${id}`, token)
@@ -74,21 +98,21 @@ const FacilityManagementTab = ({triggerFetchFacility, facilities}) => {
         <hr/>
         <div className="row">
           {facilities && facilities.map((item, i) => (
-            <div className="col-12 col-md-3">
-            <Facility key={i} data={item} edit={true}>
-              <ModalCustom label="edit" title={item.name} size="lg">
-                <FormBase fields={["name", "description", ["disabled", 1], ["max_capacity", 2]]} useForm={patchForm} defaultData={item} nestedData={[["availabilities", item.availabilities, availabilitiesJson]]} onSubmit={d => patchSubmit(d, item.id)}/>
-                <hr />
-                <ModalCustom label="delete facility" title={`Are you sure you want to delete ${item.name}?`}>
-                  <Button variant="danger" onClick={e => handleDelete(e, item.id)}>Yes. Delete!</Button>
+            <div className="col-12 col-md-3" key={item.name}>
+              <Facility  data={item} edit={true}>
+                <ModalCustom label="edit" title={item.name} size="lg">
+                  <FormBase2 fields={fields} useForm={patchForm} defaultData={flatten(item)} onSubmit={d => patchSubmit(d, item.id)}/>
+                  <hr />
+                  <ModalCustom label="delete facility" title={`Are you sure you want to delete ${item.name}?`}>
+                    <Button variant="danger" onClick={e => handleDelete(e, item.id)}>Yes. Delete!</Button>
+                  </ModalCustom>
                 </ModalCustom>
-              </ModalCustom>
-            </Facility>
+              </Facility>
             </div>
           ))}
           <div className="col-12 col-md-3">
             <ModalCustom label="+" title="adding new facility" variant="outline-dark" size="lg" >
-              <FormBase fields={["name", "description", ["disabled", 1], ["max_capacity", 2]]} useForm={postForm} nestedData={[["availabilities", false, availabilitiesJson]]} is_post={true} onSubmit={postSubmit}/>
+              <FormBase2 fields={fields} useForm={postForm} onSubmit={postSubmit} defaultData={{"availabilities.mondayEnd": 48, "availabilities.tuesdayEnd": 48, "availabilities.wednesdayEnd": 48, "availabilities.thursdayEnd": 48, "availabilities.fridayEnd": 48, "disabled": "false"}}/>
             </ModalCustom>
           </div>
         </div>

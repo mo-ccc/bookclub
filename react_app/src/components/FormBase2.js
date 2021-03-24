@@ -4,34 +4,39 @@ import _ from 'lodash';
 const FormBase = ({defaultData, onSubmit, useForm, fields}) => {
   const {register, handleSubmit, control, errors} = useForm
 
+  // if no values are given for an option. values will default to i
+  // if no labels are given for an option. labels will default to values
+  // either labels or values are required
   const renderInput = {
     "select": (item) => (
-      <div>
+      <>
         <select className="form-control" name={item.name} ref={register(item.validation)} defaultValue={defaultData?.[item.name]}>
-          {item.options.map((option, i) => <option key={option} value={option}>{option}</option>)}
+          {item.options.map((option, i) => <option key={option.value ?? option.label} value={option.value ?? i}>{option.label ?? option.value}</option>)} 
         </select>
-      </div>
+      </>
     ),
     "bool": (item) => (
-      <div>
+      <>
         <select className="form-control" name={item.name} ref={register(item.validation)} defaultValue={defaultData?.[item.name]}>
           <option key="true" value="true">true</option>
           <option key="false" value="false">false</option>
         </select>
-      </div>
+      </>
     ),
     "flex": (item) => (
-      <div>
-        {item.fields.map((item, i) => {
-          return renderer(item, i)
-        })}
+      <div className="row">
+        {item.fields.map((item, i) => (
+          <div className="col-6 col-md-4">
+            {renderer(item, i, true)}
+          </div>
+        ))}
       </div>
     )
   }
   
-  const renderer = (item, i) => (
-    <div className="form-group" key={item.name}>
-      <label>{item.label}</label>
+  const renderer = (item, i, noBot) => (
+    <div className="form-group" key={item.name} style={noBot && {marginBottom: 0}}>
+      {item.label && <label>{item.label}</label>}
       {_.has(errors, item.name) &&
         <small className="form-text text-muted">{_.get(errors, item.name).message}</small>
       }
