@@ -47,10 +47,6 @@ jobs:
   s3-deployment:
     runs-on: ubuntu-latest
 
-    env:
-      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-
     steps:
       - uses: actions/checkout@v2
 
@@ -65,14 +61,19 @@ jobs:
           REACT_APP_DOMAIN: ${{ secrets.REACT_APP_DOMAIN }}
         run: CI=false yarn build # builds the react app
 
-      - name: Deploy
-        uses: reggionick/s3-deploy@v3.1.0
+      - name: s3 Sync
+        uses: jakejarvis/s3-sync-action@v0.5.1
         with:
-          folder: ./react_app/build
-          bucket: ${{ secrets.S3_BUCKET }}
-          bucket-region: ${{ secrets.S3_BUCKET_REGION }}
-          dist-id: ${{ secrets.CLOUDFRONT_DISTRIBUTION_ID }}
-          invalidation: / # need to invalidate cloudfront root so that cache is updated
-          delete-removed: true # will delete any files on s3 that aren't present in build
-          private: true
+          args: --acl public-read --follow-symlinks --delete
+        env:
+          AWS_S3_BUCKET: ${{ secrets.S3_BUCKET }}
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_REGION: ${{ secrets.S3_BUCKET_REGION }}
+          SOURCE_DIR: ./react_app/build
+
+          # dist-id: ${{ secrets.CLOUDFRONT_DISTRIBUTION_ID }}
+          # invalidation: / # need to invalidate cloudfront root so that cache is updated
+          # delete-removed: true # will delete any files on s3 that aren't present in build
+          # private: true
         
