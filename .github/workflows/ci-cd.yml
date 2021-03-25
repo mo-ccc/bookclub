@@ -47,27 +47,25 @@ jobs:
   s3-deployment:
     runs-on: ubuntu-latest
 
-    working-directory: ./react_app # change working directory to the react_app
-
     env:
       AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
       AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-
-    
 
     steps:
       - uses: actions/checkout@v2
 
       - name: Install dependencies
+        working-directory: ./react_app # change working directory to the react_app
         run: yarn # initializes yarn
 
       - name: Build
+        working-directory: ./react_app # change working directory to the react_app
         run: yarn build # builds the react app
 
       - name: Deploy
         uses: reggionick/s3-deploy@v3
         with:
-          folder: build
+          folder: ./react_app/build
           bucket: ${{ secrets.S3_BUCKET }}
           bucket-region: ${{ secrets.S3_BUCKET_REGION }}
           dist-id: ${{ secrets.CLOUDFRONT_DISTRIBUTION_ID }}
