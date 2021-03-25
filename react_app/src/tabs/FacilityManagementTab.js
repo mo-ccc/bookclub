@@ -41,7 +41,10 @@ const FacilityManagementTab = ({triggerFetchFacility, facilities}) => {
   const schema = yup.object().shape({
     availabilities: yup.object().shape(
       availabilitiesSchema // lazy way to generate the schema
-    )})
+    ),
+    name: yup.string().max(20),
+    description: yup.string().max(20)
+  })
 
   const patchForm = useForm()
   const postForm = useForm({resolver: yupResolver(schema), })

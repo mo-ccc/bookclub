@@ -25,3 +25,6 @@ Superusers will be able add and remove facilities/members/bookings through the i
 ---
 ### application architecture diagram
 ![aad](./docs/aad.png)
+
+### erd
+![erd](./docs/erd.png)
