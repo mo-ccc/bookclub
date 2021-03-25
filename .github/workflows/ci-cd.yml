@@ -47,19 +47,12 @@ jobs:
   s3-deployment:
     runs-on: ubuntu-latest
 
-    env:
-      AWS_S3_BUCKET: ${{ secrets.AWS_S3_BUCKET }}
-      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-      AWS_REGION: ${{ secrets.AWS_REGION }}
-      SOURCE_DIR: ./react_app/build
-
     steps:
       - uses: actions/checkout@v2
 
       - name: Install dependencies
         working-directory: ./react_app # change working directory to the react_app
-        run: yarn # initializes yarn
+        run: yarn install # initializes yarn
 
       - name: Build
         working-directory: ./react_app # change working directory to the react_app
@@ -69,9 +62,16 @@ jobs:
         run: CI=false yarn build # builds the react app
 
       - name: s3 Sync
-        uses: jakejarvis/s3-sync-action@v0.5.1
+        uses: jakejarvis/s3-sync-action@master
         with:
           args: --acl public-read --follow-symlinks --delete
+        env:
+          AWS_S3_BUCKET: ${{ secrets.AWS_S3_BUCKET }}
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_REGION: ${{ secrets.AWS_REGION }}
+          SOURCE_DIR: ./react_app/build
+
         
 
           # dist-id: ${{ secrets.CLOUDFRONT_DISTRIBUTION_ID }}
