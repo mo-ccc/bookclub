@@ -66,7 +66,7 @@ jobs:
         run: CI=false yarn build # builds the react app
 
       - name: Deploy
-        uses: reggionick/s3-deploy@v3
+        uses: reggionick/s3-deploy@v3.1.0
         with:
           folder: ./react_app/build
           bucket: ${{ secrets.S3_BUCKET }}
