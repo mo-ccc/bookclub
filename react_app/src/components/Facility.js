@@ -23,7 +23,7 @@ const Facility = ({data, edit, children}) => {
       <div className="text-center">
         <h4>{data.name}</h4>
         <p>{data.description}</p>
-        {!edit && <Link to={{pathname:linkto, state:data}}><Button>Book</Button></Link>}
+        {!edit && <Link to={{pathname:linkto, state:data}}><Button variant={data.disabled ? "dark":"primary"} disabled={data.disabled}>{data.disabled ? "Unavailable":"Book"}</Button></Link>}
         {children}
       </div>
     </div>

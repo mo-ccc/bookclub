@@ -65,7 +65,7 @@ const UserManagementTab = () => {
         </ModalCustom>
       </div>
       <div className="table-responsive">
-        <UsersTable users={users} setUsers={fetchUsers} setSuccess={setSuccess} />
+        <UsersTable users={users} setUsers={fetchUsers} setSuccess={setSuccess} schema={schema} />
       </div>
     </div>
   )

@@ -8,8 +8,9 @@ import Button from 'react-bootstrap/Button'
 import deleteWithToken from '../../api/deleteWithToken.js'
 import store from '../../redux/store.js'
 import {setNotification} from '../../redux'
+import {yupResolver} from '@hookform/resolvers/yup'
 
-const UsersTable = ({users, setUsers, setSuccess}) => {
+const UsersTable = ({users, setUsers, setSuccess, schema}) => {
 
   const fields = [
     {name: "name", label: "name", placeholder: "name of account", inputType: "text"},
@@ -17,11 +18,11 @@ const UsersTable = ({users, setUsers, setSuccess}) => {
   ]
   const token = useSelector(state => state.auth.token)
   const permissions = JSON.parse(atob(token.split('.')[1]))
-  if (permissions.is_admin) {
+  if (permissions.is_owner) {
     fields.push({name: "is_admin", label: "is an admin user", inputType: "bool"})
   }
 
-  const useform = useForm()
+  const useform = useForm({resolver: yupResolver(schema)})
   
 
     const onSubmit = (data, idOfUser) => {

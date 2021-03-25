@@ -20,7 +20,6 @@ import {yupResolver} from '@hookform/resolvers/yup'
 import * as flatten from 'flat'
 
 const FacilityManagementTab = ({triggerFetchFacility, facilities}) => {
-  console.log(facilities)
   const days = ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"]
   const fields = [
     {name: "name", label: "facility name", placeholder: "enter a name for the facility", inputType: "text"},
@@ -51,7 +50,6 @@ const FacilityManagementTab = ({triggerFetchFacility, facilities}) => {
   const token = useSelector(state => state.auth.token)
   
   const patchSubmit = (data, id) => {
-    data.disabled = data.disabled.value
     Object.keys(data.availabilities).forEach(item => data.availabilities[item] = data.availabilities[item].value)
 
     patchWithToken(`facility/${id}`, data, token)

@@ -54,7 +54,9 @@ const UserInfoTab = () => {
     <div className="w-100">
       <h2>Edit account info</h2>
       <hr/>
-      <FormBase2 fields={fields} useForm={useform} defaultData={data} onSubmit={onSubmit}/>
+      <div className="container" style={{maxWidth: 800}}>
+        <FormBase2 fields={fields} useForm={useform} defaultData={data} onSubmit={onSubmit}/>
+      </div>
       <div className="card p-2 m-4 mt-5">
         <h6>Your membership expires: {data?.expires_on.substring(0, data?.expires_on.indexOf("T"))}</h6>
       </div>
