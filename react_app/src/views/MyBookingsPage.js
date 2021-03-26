@@ -80,7 +80,7 @@ const MyBookingsPage = ({facilities}) => {
       </div>
       <div className="row">
         {activeBookings && activeBookings.map((item, i)=>{
-          return (<div className="col-12 col-md-4"><Booking key={i} name={locateFacility(item.facility_id)} data={item} showCancelButton={true} getData={getData} /></div>)
+          return (<div className="col-12 col-md-4"><Booking key={item.id} name={locateFacility(item.facility_id)} data={item} showCancelButton={true} getData={getData} /></div>)
         })}
       </div>
       <hr/>
@@ -90,7 +90,7 @@ const MyBookingsPage = ({facilities}) => {
       </div>
       <div className="row">
         {inActiveBookings && inActiveBookings.map((item, i)=>{
-          return (<div className="col-12 col-md-4"><Booking key={i} name={locateFacility(item.facility_id)} data={item} getData={getData} /></div>)
+          return (<div className="col-12 col-md-4"><Booking key={item.id} name={locateFacility(item.facility_id)} data={item} getData={getData} /></div>)
         })}
       </div>
     </div>
