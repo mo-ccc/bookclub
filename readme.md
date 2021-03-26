@@ -6,9 +6,6 @@ A while back one of my educators at CoderAcademy suggested I make an app that ma
 **Functionality/Features:** The web application will make use of multitenancy to allow anyone to create their own domain and serve their customers. The customers will be able to register, login, select a facility they wish to book, select a date from a graphical calendar and a time slot from a graphical timetable. When a booking is made a confirmation email will be mailed to the booker.
 Superusers will be able add and remove facilities/members/bookings through the interface.
 
-**User Stories:**
-![user stories](./docs/user_stories_revised.png)
-
 **Target Audience:** The application will be multipurpose and so the target audience can be virtually anyone with internet connectivity. The application will provide the tools needed so that facility owners can set up their own domains. They and the users that they serve are the target audience.
 
 **Tech stack:** 
@@ -56,7 +53,7 @@ That completes the setup of the flask app. Now for the react app.
 * rename the .env.example file to .env
 * run `yarn start`
 
-# planning
+# Planning
 ### User stories
 User stories helped me define what I needed out of the project early on. With clear goals defined from the start I would be less likely to subject myself to scope creep and would be able to focus on the things that mattered most.
 ![user-stories](./docs/user_stories_revised.png)
@@ -75,3 +72,23 @@ For the execution of the KANBAN planning I have been using Jira.
 
 I used the labels easy/medium/hard as a way to keep track of the amount of effort and time needed to move a card from the in-progress column to the done column. I would factor in variables such as what I would need to learn, how much I already know and whether i've completed something similar in the past. As a general guideline a card labeled easy should have a timeframe between a few minutes to a few hours work. A card labeled medium should have a timeframe of a couple of hours (greater than 3 and less than 7) and a card labeled hard should have a timeframe between several hours and a couple of days. 
 
+# Testing
+For testing I ran both automated unittests in my continuous integration pipeline as well as manual testing. The automated tests are run by github actions. 
+
+### Automated testing
+I configured github actions to setup a postgresql service and upgrade the database created by that service so that the unittests can be run on it.
+https://github.com/mo-ccc/bookclub/actions
+
+I'm yet to have any frontend tests.
+
+### Manual testing
+To achieve greater coverage I perform manual tests on both the api and the client. I maintain a spreadsheet to ensure that I am testing all requirements and that I am keeping a log of what has passed and what has failed.
+
+![spreadsheet](./docs/testing.png)
+
+#### Api testing
+I perform tests on the api through the use of the insomnia app. I've attempted to create a structure that allows me to test each endpoint in a consecutive order. 
+![api-testing](./docs/testing_api.png)
+
+#### Client testing
+For the client I simply use the site as intended while also attempting to fill out forms with values that I believe will cause issues.
