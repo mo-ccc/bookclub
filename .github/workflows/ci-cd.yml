@@ -55,6 +55,7 @@ jobs:
         env:
           REACT_APP_HOST: ${{ secrets.REACT_APP_HOST }}
           REACT_APP_DOMAIN: ${{ secrets.REACT_APP_DOMAIN }}
+          REACT_APP_PROTOCOL: ${{ secrets.REACT_APP_PROTOCOL }}
 
       - name: Install dependencies
         working-directory: ./react_app # change working directory to the react_app
