@@ -3,7 +3,7 @@ import ModalCustom from '../ModalCustom.js'
 import {useSelector} from 'react-redux'
 import Button from 'react-bootstrap/Button'
 import Alert from 'react-bootstrap/Alert'
-import deleteWithToken from '../../api/deleteWithToken.js'
+import { deleteWithToken } from '../../api/api_utils.js'
 import times from '../../statics/json/times.json'
 
 const BookingsTable = ({facilities, tableData, resetData}) => {

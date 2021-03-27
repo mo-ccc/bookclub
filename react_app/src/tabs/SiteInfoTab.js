@@ -1,9 +1,8 @@
-import React, {useState, useEffect} from 'react'
+import React from 'react'
 import {useSelector} from 'react-redux'
-import getWithToken from '../api/getWithToken.js'
 import FormBase2 from '../components/FormBase2.js'
-import deleteWithToken from '../api/deleteWithToken.js'
-import patchWithToken from '../api/patchWithToken.js'
+import { deleteWithToken } from '../api/api_utils.js'
+import { patchWithToken } from '../api/api_utils.js'
 import {useForm} from 'react-hook-form'
 import ModalCustom from '../components/ModalCustom.js'
 import Button from 'react-bootstrap/Button'
@@ -42,7 +41,7 @@ const SiteInfoTab = ({data}) => {
     .then(new_data => {
       useform.reset()
       if (response.ok) {
-        window.location.replace(`http://${new_data.domain_name}.${process.env.REACT_APP_DOMAIN}`)
+        window.location.replace(`${process.env.REACT_APP_PROTOCOL}://${new_data.domain_name}.${process.env.REACT_APP_DOMAIN}`)
       }else{
         store.dispatch(setNotification("an error occurred", "danger"))
       }
@@ -52,7 +51,7 @@ const SiteInfoTab = ({data}) => {
     deleteWithToken('', token)
     .then(response => {
       if (response.ok) {
-        window.location.replace(`http://${process.env.REACT_APP_DOMAIN}`)
+        window.location.replace(`${process.env.REACT_APP_PROTOCOL}://${process.env.REACT_APP_DOMAIN}`)
       }
     })
   }

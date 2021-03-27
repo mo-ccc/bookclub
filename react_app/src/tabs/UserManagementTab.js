@@ -1,10 +1,11 @@
 import React, {useState, useEffect} from 'react'
-import getWithToken from '../api/getWithToken.js'
+import {getWithToken} from '../api/api_utils.js'
+import { postWithToken } from '../api/api_utils.js'
 import {useSelector} from 'react-redux'
 import UsersTable from '../components/tables/UsersTable.js'
 import ModalCustom from '../components/ModalCustom.js'
 import FormBase2 from '../components/FormBase2.js'
-import postWithToken from '../api/postWithToken.js'
+
 import {useForm} from 'react-hook-form'
 
 import * as yup from 'yup'

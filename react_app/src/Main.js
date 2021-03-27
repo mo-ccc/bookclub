@@ -6,7 +6,7 @@ import {useSelector} from 'react-redux'
 import NavBar from './components/Navbar.js'
 import Notification from './components/Notification.js'
 
-import getNoToken from './api/getNoToken.js'
+import { getNoToken } from './api/api_utils.js'
 
 import Landing from './views/Landing.js'
 import SettingsPage from './views/SettingsPage.js'

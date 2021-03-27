@@ -1,6 +1,6 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect} from 'react'
 import {useSelector} from 'react-redux'
-import getWithToken from '../api/getWithToken.js'
+import { getWithToken } from '../api/api_utils.js'
 import Booking from '../components/Booking.js'
 import SortSelector from '../components/SortSelector.js'
 

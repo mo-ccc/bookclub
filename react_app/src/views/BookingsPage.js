@@ -3,7 +3,7 @@ import Button from 'react-bootstrap/Button'
 import {useSelector} from 'react-redux'
 import DayPickerInput from 'react-day-picker/DayPickerInput'
 import Select from 'react-select'
-import getWithToken from '../api/getWithToken.js'
+import { getWithToken}  from '../api/api_utils.js'
 import BookingsTable from '../components/tables/BookingsTable.js'
 import {useForm, Controller} from 'react-hook-form'
 

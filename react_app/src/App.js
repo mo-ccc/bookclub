@@ -7,7 +7,7 @@ import FormBase2 from './components/FormBase2'
 import {useForm} from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from "yup"
-import rootPost from './api/rootPost'
+import { rootPost } from './api/api_utils'
 
 const App = () => {
   const schema = yup.object().shape({
@@ -28,7 +28,7 @@ const App = () => {
   const handleSubmit = (data) => {
     rootPost(data).then(response => {
       if (response.ok) {
-        window.location.replace(`http://${data.tenant.domain_name}.${process.env.REACT_APP_DOMAIN}/`)
+        window.location.replace(`${process.env.REACT_APP_PROTOCOL}://${data.tenant.domain_name}.${process.env.REACT_APP_DOMAIN}/`)
       }else{
         alert("Could not successfully create domain")
       }
@@ -67,7 +67,7 @@ const App = () => {
               
               <FormBase2 fields={formFields} useForm={useform} onSubmit={handleSubmit}/>
 
-              <h6 className="mt-5">or visit the demo subdomain: <a href={`http://demo.${process.env.REACT_APP_DOMAIN}`}>http://demo.{process.env.REACT_APP_DOMAIN}</a></h6>
+              <h6 className="mt-5">or visit the demo subdomain: <a href={`${process.env.REACT_APP_PROTOCOL}://demo.${process.env.REACT_APP_DOMAIN}`}>{process.env.REACT_APP_PROTOCOL}://demo.{process.env.REACT_APP_DOMAIN}</a></h6>
             </div>
           </div>
         </div>

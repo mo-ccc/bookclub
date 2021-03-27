@@ -10,7 +10,7 @@ import FormBase2 from './FormBase2.js'
 import * as yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
 
-import postNoToken from '../api/postNoToken.js'
+import { postNoToken } from '../api/api_utils.js'
 
 
 const NavBar = ({tenantInfo, permissions}) => {

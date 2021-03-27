@@ -1,8 +1,9 @@
 import React, {useState, useEffect} from 'react'
 import {useSelector} from 'react-redux'
-import getWithToken from '../api/getWithToken.js'
+import { getWithToken } from '../api/api_utils.js'
+import { patchWithToken } from '../api/api_utils.js'
 import FormBase2 from '../components/FormBase2.js'
-import patchWithToken from '../api/patchWithToken.js'
+
 import {useForm} from 'react-hook-form'
 import store from '../redux/store.js'
 import {setNotification} from '../redux'

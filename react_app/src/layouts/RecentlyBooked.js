@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react'
-import getWithToken from '../api/getWithToken.js'
+import { getWithToken } from '../api/api_utils.js'
 import {useSelector} from 'react-redux'
 import Booking from '../components/Booking.js'
 import Button from 'react-bootstrap/Button'
