@@ -1,37 +1,3 @@
-<details open="open">
-  <summary>Table of Contents</summary>
-  <ol>
-    <li>
-      <a href="#about-the-project">About The Project</a>
-    </li>
-    <li>
-      <>Diagrams</>
-      <ul>
-        <li><a href="#Data Flow Diagram">Data Flow Diagram</a></li>
-        <li><a href="#Application Architecture Diagram">Application Architecture Diagram</a></li>
-        <li><a href="#Erd">Erd</a></li>
-      </ul>
-    </li>
-    <li>
-      <a href="#Deployment Instructions">Deployment Instructions</a>
-    </li>
-    <li>
-      <a href="#Planning">Planning</a>
-      <ul>
-        <li><a href="User Stories">User Stories</a></li>
-        <li><a href="#Project Management">Project Management</a></li>
-      </ul>
-    </li>
-    <li>
-      <a href="#Testing">Testing</a>
-      <ul>
-        <li><a href="Automated Testing">Automated Testing</a></li>
-        <li><a href="Manual Testing">Manual Testing</a></li>
-      </ul>
-    </li>
-  </ol>
-</details>
-
 # About the project
 A while back one of my educators at CoderAcademy suggested I make an app that makes use of multitenancy to provide anyone the ability to make their own little site. This app will allow anyone to register a subdomain and provide their customers the ability to book their facilities/services from the comfort of their home.
 
