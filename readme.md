@@ -1,3 +1,37 @@
+<details open="open">
+  <summary>Table of Contents</summary>
+  <ol>
+    <li>
+      <a href="#about-the-project">About The Project</a>
+    </li>
+    <li>
+      <>Diagrams</>
+      <ul>
+        <li><a href="#Data Flow Diagram">Data Flow Diagram</a></li>
+        <li><a href="#Application Architecture Diagram">Application Architecture Diagram</a></li>
+        <li><a href="#Erd">Erd</a></li>
+      </ul>
+    </li>
+    <li>
+      <a href="#Deployment Instructions">Deployment Instructions</a>
+    </li>
+    <li>
+      <a href="#Planning">Planning</a>
+      <ul>
+        <li><a href="User Stories">User Stories</a></li>
+        <li><a href="#Project Management">Project Management</a></li>
+      </ul>
+    </li>
+    <li>
+      <a href="#Testing">Testing</a>
+      <ul>
+        <li><a href="Automated Testing">Automated Testing</a></li>
+        <li><a href="Manual Testing">Manual Testing</a></li>
+      </ul>
+    </li>
+  </ol>
+</details>
+
 # About the project
 A while back one of my educators at CoderAcademy suggested I make an app that makes use of multitenancy to provide anyone the ability to make their own little site. This app will allow anyone to register a subdomain and provide their customers the ability to book their facilities/services from the comfort of their home.
 
@@ -15,18 +49,18 @@ Superusers will be able add and remove facilities/members/bookings through the i
 - additional - aws, terraform, kubernetes, docker
 
 ---
-### preview
+### Preview
 <img src="./docs/preview.png">
 
 ---
-### data flow diagram
+### Data Flow Diagram
 <img src="./docs/dfd.png" width="85%"/>
 
 ---
-### application architecture diagram
+### Application Architecture Diagram
 ![aad](./docs/aad.png)
 
-### erd
+### Erd
 ![erd](./docs/erd.png)
 
 ### Deployment Instructions
@@ -54,7 +88,7 @@ That completes the setup of the flask app. Now for the react app.
 * run `yarn start`
 
 # Planning
-### User stories
+### User Stories
 User stories helped me define what I needed out of the project early on. With clear goals defined from the start I would be less likely to subject myself to scope creep and would be able to focus on the things that mattered most.
 ![user-stories](./docs/user_stories_revised.png)
 
@@ -68,27 +102,26 @@ Later on when things started to become more complex and the fine details started
  
 For the execution of the KANBAN planning I have been using Jira.
 ![jira](./docs/jira.png)
-![jira-backlog](./docs/jira-backlog.png)
 
 I used the labels easy/medium/hard as a way to keep track of the amount of effort and time needed to move a card from the in-progress column to the done column. I would factor in variables such as what I would need to learn, how much I already know and whether i've completed something similar in the past. As a general guideline a card labeled easy should have a timeframe between a few minutes to a few hours work. A card labeled medium should have a timeframe of a couple of hours (greater than 3 and less than 7) and a card labeled hard should have a timeframe between several hours and a couple of days. 
 
 # Testing
 For testing I ran both automated unittests in my continuous integration pipeline as well as manual testing. The automated tests are run by github actions. 
 
-### Automated testing
+### Automated Testing
 I configured github actions to setup a postgresql service and upgrade the database created by that service so that the unittests can be run on it.
 https://github.com/mo-ccc/bookclub/actions
 
 I'm yet to have any frontend tests.
 
-### Manual testing
+### Manual Testing
 To achieve greater coverage I perform manual tests on both the api and the client. I maintain a spreadsheet to ensure that I am testing all requirements and that I am keeping a log of what has passed and what has failed.
 
 ![spreadsheet](./docs/testing.png)
 
-#### Api testing
-I perform tests on the api through the use of the insomnia app. I've attempted to create a structure that allows me to test each endpoint in a consecutive order. 
+#### Manual Api Testing
+I perform manual tests on the api through the use of the insomnia app. I've attempted to create a structure that allows me to test each endpoint in a consecutive order. 
 ![api-testing](./docs/testing_api.png)
 
-#### Client testing
+#### Manual Client Testing
 For the client I simply use the site as intended while also attempting to fill out forms with values that I believe will cause issues.
