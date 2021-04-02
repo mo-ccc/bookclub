@@ -24,16 +24,19 @@ const Main = () =>{
 
   const fetchTenantInfo = () => {
     getNoToken('')
-    .then(response => response.json())
-    .then(json => {setTenantInfo(json)})
-    .catch(error => history.push('/404'))
+    .then(response => response.json()
+      .then(json => {
+        if (!response.ok) {
+          history.push('/404')
+        }
+        else{setTenantInfo(json)}
+      }))
   }
 
   const fetchFacilityInfo = () => {
     getNoToken('facility')
     .then(response => response.json())
     .then(json => {setFacilities(json)})
-    .catch(error => console.log(error))
   }
 
   useEffect(() => {
