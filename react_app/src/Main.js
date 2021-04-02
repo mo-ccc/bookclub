@@ -26,7 +26,7 @@ const Main = () =>{
     getNoToken('')
     .then(response => response.json()
       .then(json => {
-        if (!response.ok) {
+        if (!(response.ok)) {
           history.push('/404')
         }
         else{setTenantInfo(json)}
