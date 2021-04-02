@@ -24,14 +24,12 @@ const Main = () =>{
 
   const fetchTenantInfo = () => {
     getNoToken('')
-    .then(response => response.json()
-      .then(json => {
-        console.log(response.ok)
+    .then(response => {
         if (response.ok) {
-          setTenantInfo(json)
+          response.json().then(json => {setTenantInfo(json)})
         }
         else{history.push('/404')}
-      }))
+    })
   }
 
   const fetchFacilityInfo = () => {
