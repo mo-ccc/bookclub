@@ -99,8 +99,8 @@ jobs:
             python3 -m venv ./venv
             source ./venv/bin/activate
             pip install -r requirements.txt
-            echo "DB_URI=$DB_URI" >> .env
-            echo "JWT_SECRET_KEY=$JWT_SECRET_KEY" >> .env
+            echo "DB_URI=${DB_URI}" >> .env
+            echo "JWT_SECRET_KEY=${JWT_SECRET_KEY}" >> .env
             echo "HOSTNAME=bookclub-api.ml" >> .env
             echo "FLASK_ENV=production" >> .env
             echo "FLASK_APP=main.py" >> .env
