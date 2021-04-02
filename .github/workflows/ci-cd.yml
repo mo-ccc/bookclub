@@ -77,3 +77,32 @@ jobs:
           delete-removed: true # will delete any files on s3 that aren't present in build
           private: true
         
+  backend-deployment:
+    runs-on: ubuntu-latest
+    steps:
+      - name: SSH
+        uses: appleboy/ssh-action@master
+        env:
+          DB_URI: $${{ secrets.DB_URI }}
+          JWT_SECRET_KEY: $${{ secrets.JWT_SECRET_KEY }}
+          HOST_NAME: $${{ secrets.HOST_NAME }}
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.KEY }}
+          envs: DB_URI, JWT_SECRET_KEY, HOST_NAME
+          script: |
+            sudo systemctl stop bookclub.service
+            cd ~
+            rm -rf bookclub
+            git clone https://github.com/mo-ccc/bookclub.git
+            cd ./bookclub/rest_api/src
+            python3 -m venv ./venv
+            source ./venv/bin/activate
+            pip install -r requirements.txt
+            echo "DB_URI=$DB_URI" >> .env
+            echo "JWT_SECRET_KEY=$JWT_SECRET_KEY" >> .env
+            echo "HOSTNAME=bookclub-api.ml" >> .env
+            echo "FLASK_ENV=production" >> .env
+            echo "FLASK_APP=main.py" >> .env
+            sudo systemctl start bookclub.service
