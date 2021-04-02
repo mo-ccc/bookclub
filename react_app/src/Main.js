@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import { Route, Switch, useHistory, Redirect } from 'react-router-dom';
+import { Route, Switch, useHistory, useLocation, Redirect } from 'react-router-dom';
 
 import {useSelector} from 'react-redux'
 
@@ -21,11 +21,15 @@ const Main = () =>{
   const [TenantInfo, setTenantInfo] = useState("")
   const [Facilities, setFacilities] = useState("")
   const history = useHistory()
+  const location = useLocation()
 
   const fetchTenantInfo = () => {
     getNoToken('')
     .then(response => {
         if (response.ok) {
+          if (location.pathname === "/404") {
+            history.push('/')
+          }
           response.json().then(json => {setTenantInfo(json)})
         }
         else{history.push('/404')}
@@ -89,9 +93,9 @@ const Main = () =>{
           </>
         }
         {permissions ? 
-          <Route exact path="/404" render={() => <h1 className="p-5">This subdomain does not exist.</h1>}/>
-          :
           <Route><Redirect to="/"/></Route>
+          :
+          <Route exact path="/404" render={() => <div className="p-5 m-5"><h1>This subdomain does not exist.</h1><a href={`http://${process.env.REACT_DOMAIN}`}>return to home?</a></div>}/>
         }
         <Route><Redirect to="/"/></Route>
       </Switch>
