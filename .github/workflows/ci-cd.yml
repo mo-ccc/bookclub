@@ -85,11 +85,13 @@ jobs:
         env:
           DB_URI: ${{ secrets.DB_URI }}
           JWT_SECRET_KEY: ${{ secrets.JWT_SECRET_KEY }}
+          IMAGE_BUCKET_NAME: ${{ secrets.IMAGE_BUCKET_NAME }}
+          IMAGE_BUCKET_REGION: ${{ secrets.IMAGE_BUCKET_REGION }}
         with:
           host: ${{ secrets.HOST }}
           username: ${{ secrets.USERNAME }}
           key: ${{ secrets.KEY }}
-          envs: DB_URI,JWT_SECRET_KEY
+          envs: DB_URI,JWT_SECRET_KEY,IMAGE_BUCKET_NAME,IMAGE_BUCKET_REGION
           script: |
             sudo systemctl stop bookclub.service
             cd ~
@@ -104,4 +106,6 @@ jobs:
             echo "HOSTNAME=bookclub-api.ml" >> .env
             echo "FLASK_ENV=production" >> .env
             echo "FLASK_APP=main.py" >> .env
+            echo "BUCKET_NAME=${IMAGE_BUCKET_NAME}" >> .env
+            echo "BUCKET_REGION=${IMAGE_BUCKET_REGION}" >> .env
             sudo systemctl start bookclub.service

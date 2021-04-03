@@ -106,7 +106,7 @@ def update_image(domain_name):
             aws_secret_access_key=os.getenv("AWS_SECRET_ACCESS_KEY")
         )
     else:
-        bucket = boto3.resource('s3', region_name=os.getenv("AWS_REGION"))
+        bucket = boto3.resource('s3', region_name=os.getenv("BUCKET_REGION"))
 
     object = bucket.Object(os.getenv("BUCKET_NAME"), f"tenant/{secure}")
     object.put(Body=image)
