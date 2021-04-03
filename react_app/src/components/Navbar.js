@@ -30,7 +30,6 @@ const NavBar = ({tenantInfo, permissions}) => {
       return response.json()
     }).then(data => {
       store.dispatch(setAuth(data))
-      console.log(store.getState())
     })
   }
   const useLogin = useForm({resolver: yupResolver(loginSchema), })

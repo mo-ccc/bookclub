@@ -3,6 +3,7 @@ import {useSelector} from 'react-redux'
 import FormBase2 from '../components/FormBase2.js'
 import { deleteWithToken } from '../api/api_utils.js'
 import { patchWithToken } from '../api/api_utils.js'
+import { postWithToken } from '../api/api_utils.js'
 import {useForm} from 'react-hook-form'
 import ModalCustom from '../components/ModalCustom.js'
 import Button from 'react-bootstrap/Button'
@@ -55,6 +56,20 @@ const SiteInfoTab = ({data}) => {
       }
     })
   }
+
+  const uploadForm = useForm()
+  const handleUpload = (data) => {
+    let form_data = new FormData()
+    form_data.append('image', data.image[0])
+    postWithToken('image', form_data, token)
+    .then(response => {
+      if (response.ok) {
+        store.dispatch(setNotification("successfully updated image", "primary"))
+      }else{
+        store.dispatch(setNotification("an error occurred", "danger"))
+      }
+    })
+  }
   return (
     <div className="w-100">
       <h2>Edit site info</h2>
@@ -63,6 +78,12 @@ const SiteInfoTab = ({data}) => {
         <FormBase2 fields={fields} useForm={useform} defaultData={data} onSubmit={onSubmit}/>
       </div>
       <hr/>
+      <div className="container" style={{maxWidth: 800}}>
+        <form onSubmit={uploadForm.handleSubmit(handleUpload)}>
+          <input type="file" ref={uploadForm.register} name="image"/>
+          <input type="submit" className="btn btn-primary"/>
+        </form>
+      </div>
       <ModalCustom label="delete domain" title="are you sure you want to delete?">
         <Button variant="danger" onClick={handleDelete}>Yes</Button>
       </ModalCustom>

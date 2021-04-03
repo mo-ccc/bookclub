@@ -15,7 +15,7 @@ const Landing = ({tenantInfo, facilities}) => {
         <Button variant="outline-dark">Contact</Button>
       </div>
       <div className="col-12 col-md-4 mb-5">
-        {tenantInfo.img ? <img className="float-right mw-100" src={tenantInfo.img}/> : <img className="float-right mw-100" src={placeholder}/>}
+        <img className="float-right mw-100" src={`${process.env.REACT_APP_CDN_URL}/tenant/${tenantInfo.domain_name}.png`} onError={(e) => {e.target.onerror=null; e.target.src=placeholder; }} />
       </div>
     </div>
     <hr/>

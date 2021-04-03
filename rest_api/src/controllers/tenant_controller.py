@@ -15,8 +15,11 @@ from services import jwt_services
 
 import dotenv
 import os
-dotenv.load_dotenv()
+from io import BytesIO
 import boto3
+from PIL import Image as PIL_Image
+
+dotenv.load_dotenv()
 
 tenants = flask.Blueprint('tenants', __name__)
 
@@ -91,13 +94,15 @@ def update_image(domain_name):
 
     # checks request to see if image is in files
     image = flask.request.files["image"]
-    file_extension = os.path.splitext(image.filename)[1] # rips extension from filename
-    if file_extension not in [".jpg", ".png", ".jpeg"]: # check extension is a jpg, png or jpeg
+    # rips extension from filename
+    file_extension = os.path.splitext(image.filename)[1]
+    # check extension is a jpg, png or jpeg
+    if file_extension not in [".jpg", ".png", ".jpeg"]: 
         flask.abort(400, description="Not an image")
 
     # sanitise domain name to ensure that filename is not going to cause issues
     from werkzeug.utils import secure_filename
-    secure = secure_filename(f"{tenant.domain_name}{file_extension}")
+    secure = secure_filename(f"{tenant.domain_name}.png")
     
     if os.getenv("AWS_ACCESS_KEY_ID"):
         bucket = boto3.resource(
@@ -109,7 +114,12 @@ def update_image(domain_name):
         bucket = boto3.resource('s3', region_name=os.getenv("BUCKET_REGION"))
 
     object = bucket.Object(os.getenv("BUCKET_NAME"), f"tenant/{secure}")
-    object.put(Body=image)
+
+    # All formats converted to png
+    pillow_image = PIL_Image.open(image) # open image in pillow
+    with BytesIO() as f: # bytesIO is used to save the image bytes in f variable
+        pillow_image.save(f, format='PNG') # saved as png
+        object.put(Body=f.getvalue()) # putting the bytes on s3
 
     return flask.jsonify("uploaded image")
 
