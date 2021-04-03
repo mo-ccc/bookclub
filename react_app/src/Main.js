@@ -95,7 +95,7 @@ const Main = () =>{
         {permissions ? 
           <Route><Redirect to="/"/></Route>
           :
-          <Route exact path="/404" render={() => <div className="p-5 m-5"><h1>This subdomain does not exist.</h1><a href={`http://${process.env.REACT_DOMAIN}`}>return to home?</a></div>}/>
+          <Route exact path="/404" render={() => <div className="p-5 m-5"><h1>This subdomain does not exist.</h1><a href={`http://${process.env.REACT_APP_DOMAIN}`}>return to home?</a></div>}/>
         }
         <Route><Redirect to="/"/></Route>
       </Switch>

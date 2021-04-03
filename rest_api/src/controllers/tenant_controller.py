@@ -13,6 +13,11 @@ from schemas.FacilitySchema import FacilitySchema
 import flask_jwt_extended as jwt
 from services import jwt_services
 
+import dotenv
+import os
+dotenv.load_dotenv()
+import boto3
+
 tenants = flask.Blueprint('tenants', __name__)
 
 @tenants.route('/', methods=["GET"])
@@ -75,3 +80,37 @@ def delete_subdomain(domain_name):
     db.session.delete(tenant)
     db.session.commit()
     return flask.jsonify("deleted")
+
+@tenants.route("/image", subdomain="<domain_name>", methods=["POST"])
+@jwt.jwt_required()
+@jwt_services.owner_required()
+def update_image(domain_name):
+    tenant = Tenant.query.filter_by(domain_name=domain_name).first_or_404()
+    if 'image' not in flask.request.files:
+        flask.abort(400, description='No image') 
+
+    # checks request to see if image is in files
+    image = flask.request.files["image"]
+    file_extension = os.path.splitext(image.filename)[1] # rips extension from filename
+    if file_extension not in [".jpg", ".png", ".jpeg"]: # check extension is a jpg, png or jpeg
+        flask.abort(400, description="Not an image")
+
+    # sanitise domain name to ensure that filename is not going to cause issues
+    from werkzeug.utils import secure_filename
+    secure = secure_filename(f"{tenant.domain_name}{file_extension}")
+    
+    if os.getenv("AWS_ACCESS_KEY_ID"):
+        bucket = boto3.resource(
+            's3', region_name=os.getenv("AWS_REGION"),
+            aws_access_key_id=os.getenv("AWS_ACCESS_KEY_ID"),
+            aws_secret_access_key=os.getenv("AWS_SECRET_ACCESS_KEY")
+        )
+    else:
+        bucket = boto3.resource('s3', region_name=os.getenv("AWS_REGION"))
+
+    object = bucket.Object(os.getenv("BUCKET_NAME"), f"tenant/{secure}")
+    object.put(Body=image)
+
+    return flask.jsonify("uploaded image")
+
+    
