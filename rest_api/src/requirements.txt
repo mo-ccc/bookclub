@@ -22,6 +22,7 @@ MarkupSafe==1.1.1
 marshmallow==3.10.0
 marshmallow-sqlalchemy==0.24.2
 packaging==20.9
+Pillow==8.2.0
 pluggy==0.13.1
 psycopg2-binary==2.8.6
 py==1.10.0
