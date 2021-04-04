@@ -90,7 +90,7 @@ def delete_subdomain(domain_name):
 def update_image(domain_name):
     tenant = Tenant.query.filter_by(domain_name=domain_name).first_or_404()
     if 'image' not in flask.request.files:
-        flask.abort(400, description='No image') 
+        flask.abort(400, description="No image") 
 
     # checks request to see if image is in files
     image = flask.request.files["image"]
@@ -106,7 +106,7 @@ def update_image(domain_name):
     
     if os.getenv("AWS_ACCESS_KEY_ID"):
         bucket = boto3.resource(
-            's3', region_name=os.getenv("AWS_REGION"),
+            's3', region_name=os.getenv("BUCKET_REGION"),
             aws_access_key_id=os.getenv("AWS_ACCESS_KEY_ID"),
             aws_secret_access_key=os.getenv("AWS_SECRET_ACCESS_KEY")
         )

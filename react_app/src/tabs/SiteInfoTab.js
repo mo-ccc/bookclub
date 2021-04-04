@@ -59,13 +59,20 @@ const SiteInfoTab = ({data}) => {
 
   const uploadForm = useForm()
   const handleUpload = (data) => {
-    let form_data = new FormData()
-    form_data.append('image', data.image[0])
-    postWithToken('image', form_data, token)
-    .then(response => {
+    console.log(data)
+    let formData = new FormData()
+    formData.append('image', data.image[0])
+    const domain = window.location.hostname.split(".")[0]
+    fetch(`${process.env.REACT_APP_PROTOCOL}://${domain}.${process.env.REACT_APP_HOST}/image`, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${token}`
+        },
+        body: formData
+    }).then(response => {
       if (response.ok) {
         store.dispatch(setNotification("successfully updated image", "primary"))
-      }else{
+      }else {
         store.dispatch(setNotification("an error occurred", "danger"))
       }
     })
@@ -80,7 +87,7 @@ const SiteInfoTab = ({data}) => {
       <hr/>
       <div className="container" style={{maxWidth: 800}}>
         <form onSubmit={uploadForm.handleSubmit(handleUpload)}>
-          <input type="file" ref={uploadForm.register} name="image"/>
+          <input type="file" ref={uploadForm.register} name="image" accept="image/*"/>
           <input type="submit" className="btn btn-primary"/>
         </form>
       </div>

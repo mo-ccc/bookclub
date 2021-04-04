@@ -1,4 +1,5 @@
 import flask
+from werkzeug.exceptions import HTTPException
 
 import flask_sqlalchemy
 db = flask_sqlalchemy.SQLAlchemy()
@@ -36,6 +37,13 @@ def create_app():
     from controllers import blueprints
     for bp in blueprints:
         app.register_blueprint(bp)
+
+    @app.errorhandler(Exception)
+    def handle_error(e):
+        code = 500
+        if isinstance(e, HTTPException):
+            code = e.code
+        return flask.jsonify(error=str(e)), code
 
     return app
 

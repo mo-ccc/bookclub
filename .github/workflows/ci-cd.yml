@@ -64,6 +64,7 @@ jobs:
           REACT_APP_HOST: ${{ secrets.REACT_APP_HOST }}
           REACT_APP_DOMAIN: ${{ secrets.REACT_APP_DOMAIN }}
           REACT_APP_PROTOCOL: ${{ secrets.REACT_APP_PROTOCOL }}
+          REACT_APP_CDN_URL: ${{ secrets.REACT_APP_CDN_URL }}
 
 
       - name: Deploy
@@ -78,6 +79,7 @@ jobs:
           private: true
         
   backend-deployment:
+    needs: test-suite
     runs-on: ubuntu-latest
     steps:
       - name: SSH
