@@ -78,12 +78,14 @@ const SiteInfoTab = ({data}) => {
     })
   }
   return (
-    <div className="w-100">
+    <div className="container">
       <h2>Edit site info</h2>
       <hr/>
       <div className="container" style={{maxWidth: 800}}>
         <FormBase2 fields={fields} useForm={useform} defaultData={data} onSubmit={onSubmit}/>
       </div>
+      <br/>
+      <h2>Update Homepage Image</h2>
       <hr/>
       <div className="container" style={{maxWidth: 800}}>
         <form onSubmit={uploadForm.handleSubmit(handleUpload)}>
@@ -91,6 +93,7 @@ const SiteInfoTab = ({data}) => {
           <input type="submit" className="btn btn-primary"/>
         </form>
       </div>
+      <hr/>
       <ModalCustom label="delete domain" title="are you sure you want to delete?">
         <Button variant="danger" onClick={handleDelete}>Yes</Button>
       </ModalCustom>

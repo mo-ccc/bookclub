@@ -52,7 +52,7 @@ const UserInfoTab = () => {
     })}
 
   return (
-    <div className="w-100">
+    <div className="container">
       <h2>Edit account info</h2>
       <hr/>
       <div className="container" style={{maxWidth: 800}}>
