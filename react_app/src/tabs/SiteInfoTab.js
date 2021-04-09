@@ -1,9 +1,7 @@
 import React from 'react'
 import {useSelector} from 'react-redux'
 import FormBase2 from '../components/FormBase2.js'
-import { deleteWithToken } from '../api/api_utils.js'
-import { patchWithToken } from '../api/api_utils.js'
-import { postWithToken } from '../api/api_utils.js'
+import { deleteWithToken, patchWithToken } from '../api/api_utils.js'
 import {useForm} from 'react-hook-form'
 import ModalCustom from '../components/ModalCustom.js'
 import Button from 'react-bootstrap/Button'
@@ -13,7 +11,7 @@ import {setNotification} from '../redux'
 import * as yup from 'yup'
 import {yupResolver} from '@hookform/resolvers/yup'
 
-const SiteInfoTab = ({data}) => {
+const SiteInfoTab = ({tabData}) => {
   const fields = [
     {name: "domain_name", label: "domain name", placeholder: "a domain name is needed for users to visit this site", inputType: "text"},
     {name: "description", label: "description", placeholder: "a description helps introduce users to this site", inputType: "text"},
@@ -82,7 +80,7 @@ const SiteInfoTab = ({data}) => {
       <h2>Edit site info</h2>
       <hr/>
       <div className="container" style={{maxWidth: 800}}>
-        <FormBase2 fields={fields} useForm={useform} defaultData={data} onSubmit={onSubmit}/>
+        <FormBase2 fields={fields} useForm={useform} defaultData={tabData} onSubmit={onSubmit}/>
       </div>
       <br/>
       <h2>Update Homepage Image</h2>

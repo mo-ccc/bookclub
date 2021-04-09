@@ -2,7 +2,6 @@ import React from 'react'
 import Button from 'react-bootstrap/Button'
 import placeholder from '../statics/images/placeholder.jpg'
 import {Link} from 'react-router-dom'
-import ModalCustom from './ModalCustom.js'
 
 const Facility = ({data, edit, children}) => {
   const style = {

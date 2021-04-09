@@ -3,9 +3,8 @@ import DayPickerInput from 'react-day-picker/DayPickerInput';
 import 'react-day-picker/lib/style.css';
 import TimePicker from './TimePicker.js'
 import Button from 'react-bootstrap/Button'
-import { getNoToken } from '../../api/api_utils.js'
-import { postWithToken } from '../../api/api_utils.js'
-import {useSelector} from 'react-redux'
+import { getNoToken, postWithToken } from '../../api/api_utils.js'
+import { useSelector } from 'react-redux'
 
 const DayPicker = ({fid, getLastThree}) => {
   const [selectedDay, setSelectedDay] = useState(new Date())

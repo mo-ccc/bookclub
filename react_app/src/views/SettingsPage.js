@@ -16,7 +16,7 @@ const SettingsPage = ({permissions, triggerFetchFacility, facilities, tenantInfo
   }
 
   if (permissions.is_owner) {
-    pages.push([ "Site Management", <SiteInfoTab data={tenantInfo} /> ])
+    pages.push([ "Site Management", <SiteInfoTab tabData={tenantInfo} /> ])
   }
 
 

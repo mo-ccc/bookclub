@@ -2,7 +2,7 @@ import React from 'react'
 import _ from 'lodash';
 
 const FormBase = ({defaultData, onSubmit, useForm, fields}) => {
-  const {register, handleSubmit, control, errors} = useForm
+  const {register, handleSubmit, errors} = useForm
 
   // if no values are given for an option. values will default to i
   // if no labels are given for an option. labels will default to values
@@ -25,9 +25,9 @@ const FormBase = ({defaultData, onSubmit, useForm, fields}) => {
     ),
     "flex": (item) => (
       <div className="row">
-        {item.fields.map((item, i) => (
+        {item.fields.map((nestedItem, i) => (
           <div className="col-6 col-md-4">
-            {renderer(item, i, true)}
+            {renderer(nestedItem, i, true)}
           </div>
         ))}
       </div>

@@ -28,8 +28,8 @@ const NavBar = ({tenantInfo, permissions}) => {
     .then(response => {
       response.ok ? store.dispatch(setNotification("logged in", "primary")):store.dispatch(setNotification("invalid credentials", "danger"))
       return response.json()
-    }).then(data => {
-      store.dispatch(setAuth(data))
+    }).then(jsonData => {
+      store.dispatch(setAuth(jsonData))
     })
   }
   const useLogin = useForm({resolver: yupResolver(loginSchema), })

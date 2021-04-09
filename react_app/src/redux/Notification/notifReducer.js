@@ -6,12 +6,12 @@ const initialState = {
 }
 
 const notifReducer = (state = initialState, action) => {
-    switch(action.type) {
-        case SET_NOTIFICATION: return {
+    if (action.type == SET_NOTIFICATION){
+         return {
             text: action.text,
             status: action.status
         }
-        default: return state
     }
+    return state
 }
 export default notifReducer

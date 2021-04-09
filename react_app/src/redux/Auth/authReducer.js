@@ -5,11 +5,11 @@ const initialState = {
 }
 
 const authReducer = (state = initialState, action) => {
-    switch(action.type) {
-        case SET_AUTH: return {
+    if (action.type == SET_AUTH) {
+        return {
             token: action.token
         }
-        default: return state
     }
+    return state
 }
 export default authReducer
