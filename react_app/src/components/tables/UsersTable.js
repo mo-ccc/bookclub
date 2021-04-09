@@ -9,7 +9,7 @@ import store from '../../redux/store.js'
 import {setNotification} from '../../redux'
 import {yupResolver} from '@hookform/resolvers/yup'
 
-const UsersTable = ({users, setUsers, setSuccess, schema}) => {
+const UsersTable = ({users, setUsers, schema}) => {
 
   const fields = [
     {name: "name", label: "name", placeholder: "name of account", inputType: "text"},
@@ -25,11 +25,8 @@ const UsersTable = ({users, setUsers, setSuccess, schema}) => {
   
 
     const onSubmit = (data, idOfUser) => {
-      data.expires_in = parseInt(data.expires_in)
-      data.is_admin = data.is_admin.value
       patchWithToken(`user/${idOfUser}`, data, token)
       .then(response => {
-        setSuccess(response.status)
         if (response.ok) {
           setUsers() // refreshes table with latest get data
           store.dispatch(setNotification("successfully updated user", "primary"))

@@ -1,6 +1,5 @@
 import React, {useState, useEffect} from 'react'
-import {getWithToken} from '../api/api_utils.js'
-import { postWithToken } from '../api/api_utils.js'
+import {getWithToken, postWithToken} from '../api/api_utils.js'
 import {useSelector} from 'react-redux'
 import UsersTable from '../components/tables/UsersTable.js'
 import ModalCustom from '../components/ModalCustom.js'
@@ -18,7 +17,6 @@ import {setNotification} from '../redux'
 const UserManagementTab = () => {
   const [users, setUsers] = useState()
   const token = useSelector(state => state.auth.token)
-  const [success, setSuccess] = useState()
 
   const fields = [
     {name: "name", label: "name", placeholder: "name for new user", inputType: "text"},
@@ -66,7 +64,7 @@ const UserManagementTab = () => {
         </ModalCustom>
       </div>
       <div className="table-responsive">
-        <UsersTable users={users} setUsers={fetchUsers} setSuccess={setSuccess} schema={schema} />
+        <UsersTable users={users} setUsers={fetchUsers} schema={schema} />
       </div>
     </div>
   )

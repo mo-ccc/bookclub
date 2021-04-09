@@ -1,5 +1,6 @@
 import React, {useState} from 'react'
 import {Button, Modal, Tab, Nav, Row, Col} from 'react-bootstrap'
+import Tabbed from './Tabbed.js'
 
 const ModalTabbed = ({children, name}) => {
   const [show, setShow] = useState(false);
@@ -17,28 +18,7 @@ const ModalTabbed = ({children, name}) => {
           <Modal.Title>{name}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <Tab.Container defaultActiveKey="Login">
-            <Col>
-              <Row>
-                <Nav variant="tabs" className="flex-row" style={{width: "100%"}}>
-                  {children.map(i => (
-                    <Nav.Item key={i[0]}>
-                      <Nav.Link eventKey={i[0]} style={{padding: "10px 20px"}}>{i[0]}</Nav.Link>
-                    </Nav.Item>
-                  ))}
-                </Nav>
-              </Row>
-              <Row>
-                  <Tab.Content style={{padding: "10px", width: "100%"}}>
-                    {children.map(i => (
-                      <Tab.Pane key={i[0]} eventKey={i[0]} style={{width: "100%"}}>
-                        {i[1]}
-                      </Tab.Pane>
-                    ))}
-                  </Tab.Content>
-              </Row>
-            </Col>
-          </Tab.Container>
+          <Tabbed children={children}/>
         </Modal.Body>
       </Modal>
     </div>

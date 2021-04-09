@@ -5,7 +5,7 @@ const initialState = {
     status: ""
 }
 
-const notifReducer = (state = initialState, action) => {
+const notifReducer = (action, state = initialState) => {
     if (action.type == SET_NOTIFICATION){
          return {
             text: action.text,

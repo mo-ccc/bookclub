@@ -1,7 +1,6 @@
 import React, {useState, useEffect} from 'react'
 import {useSelector} from 'react-redux'
-import { getWithToken } from '../api/api_utils.js'
-import { patchWithToken } from '../api/api_utils.js'
+import { getWithToken, patchWithToken } from '../api/api_utils.js'
 import FormBase2 from '../components/FormBase2.js'
 
 import {useForm} from 'react-hook-form'
@@ -12,12 +11,12 @@ import * as yup from 'yup'
 import {yupResolver} from '@hookform/resolvers/yup'
 
 const UserInfoTab = () => {
-  const [ data, setData ] = useState()
+  const [ userData, setUserData ] = useState()
   const token = useSelector(state => state.auth.token)
   const fetchData = () => {
     getWithToken('myuser', token)
     .then(response => response.json())
-    .then(data => {setData(data); return data})
+    .then(data => {setUserData(data); return data})
   }
 
   useEffect(() =>{
@@ -46,7 +45,7 @@ const UserInfoTab = () => {
       response.ok ? store.dispatch(setNotification("updated succesfully", "primary")) : store.dispatch(setNotification("an issue occurred", "danger"))
       useform.reset()
       if (response.ok) {
-        response.json().then(jsond => setData(jsond))
+        response.json().then(jsond => setUserData(jsond))
       }
       return response
     })}
@@ -56,10 +55,10 @@ const UserInfoTab = () => {
       <h2>Edit account info</h2>
       <hr/>
       <div className="container" style={{maxWidth: 800}}>
-        <FormBase2 fields={fields} useForm={useform} defaultData={data} onSubmit={onSubmit}/>
+        <FormBase2 fields={fields} useForm={useform} defaultData={userData} onSubmit={onSubmit}/>
       </div>
       <div className="card p-2 m-4 mt-5">
-        <h6>Your membership expires: {data?.expires_on.substring(0, data?.expires_on.indexOf("T"))}</h6>
+        <h6>Your membership expires: {userData?.expires_on.substring(0, userData?.expires_on.indexOf("T"))}</h6>
       </div>
     </div>
   )
