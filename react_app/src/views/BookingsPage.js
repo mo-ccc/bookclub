@@ -44,7 +44,7 @@ const BookingsPage = ({facilities}) => {
     }
     getWithToken(requestUrl, token)
       .then(response => response.json())
-      .then(data => setTableData(data))
+      .then(jsonData => setTableData(jsonData))
   }
 
   useEffect(() => {

@@ -8,8 +8,9 @@ import Button from 'react-bootstrap/Button'
 import store from '../../redux/store.js'
 import {setNotification} from '../../redux'
 import {yupResolver} from '@hookform/resolvers/yup'
+import * as yup from 'yup'
 
-const UsersTable = ({users, setUsers, schema}) => {
+const UsersTable = ({users, setUsers}) => {
 
   const fields = [
     {name: "name", label: "name", placeholder: "name of account", inputType: "text"},
@@ -19,38 +20,43 @@ const UsersTable = ({users, setUsers, schema}) => {
   const permissions = JSON.parse(atob(token.split('.')[1]))
   if (permissions.is_owner) {
     fields.push({name: "is_admin", label: "is an admin user", inputType: "bool"})
-  }
+  } // if owner account is logged in allow admin status of users to be edited
 
-  const useform = useForm({resolver: yupResolver(schema)})
+  const schema = yup.object().shape({
+    name: yup.string().required().max(30).matches(/^[a-zA-z ]*$/, "name must contain only letters and whitespaces"),
+    expires_in: yup.number().integer().positive().label("days until expiry")
+  })
+
+  const useform = useForm({resolver: yupResolver(schema),})
   
+  const onSubmit = (data, idOfUser) => {
+    console.log(data)
+    patchWithToken(`user/${idOfUser}`, data, token)
+    .then(response => {
+      if (response.ok) {
+        setUsers() // refreshes table with latest get data
+        store.dispatch(setNotification("successfully updated user", "primary"))
+      }else{
+        store.dispatch(setNotification("an error occurred", "danger"))
+      }
+      return response
+  })}
 
-    const onSubmit = (data, idOfUser) => {
-      patchWithToken(`user/${idOfUser}`, data, token)
+  const handleDelete = (e, idOfUser) => {
+    deleteWithToken(`user/${idOfUser}`, token)
       .then(response => {
-        if (response.ok) {
-          setUsers() // refreshes table with latest get data
-          store.dispatch(setNotification("successfully updated user", "primary"))
-        }else{
-          store.dispatch(setNotification("an error occurred", "danger"))
+        if (response.status === 200) {
+          setUsers()
+          store.dispatch(setNotification("user deleted", "primary"))
+        }else {
+          store.dispatch(setNotification("An error occurred"))
         }
         return response
-    })}
-
-    const handleDelete = (e, idOfUser) => {
-      deleteWithToken(`user/${idOfUser}`, token)
-        .then(response => {
-          if (response.status === 200) {
-            setUsers()
-            store.dispatch(setNotification("user deleted", "primary"))
-          }else {
-            store.dispatch(setNotification("An error occurred"))
-          }
-          return response
-        })
-    }
+      })
+  }
 
     const processExpireOn = (date) => {
-      return Math.round((new Date(date) - new Date())/(24 * 60 * 60 * 1000))
+      return Math.round((new Date(date) - new Date())/(24 * 60 * 60 * 1000)) // used to convert a date to days from today
     }
 
     return (
@@ -78,7 +84,7 @@ const UsersTable = ({users, setUsers, schema}) => {
                 <td>{user.expires_on.substring(0, user.expires_on.indexOf("T"))}</td>
                 <td className="text-center">
                   <ModalCustom label="edit" title={user.email}>
-                    <FormBase2 fields={fields} useForm={useform} defaultData={{"name":user.name, "is_admin": user.is_admin, "expires_in": processExpireOn(user.expires_on)}} onSubmit={d => onSubmit(d, user.id)}/>
+                    <FormBase2 fields={fields} useForm={useform} onSubmit={e => onSubmit(e, user.id)} defaultData={{"name":user.name, "is_admin": user.is_admin, "expires_in": processExpireOn(user.expires_on)}} />
                     <hr />
                     <ModalCustom label="delete" title={`are you sure you want to delete ${user.email}?`}>
                       <Button variant="danger" onClick={e => handleDelete(e, user.id)}>Yes. Delete!</Button>

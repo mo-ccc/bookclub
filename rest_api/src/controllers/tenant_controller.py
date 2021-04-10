@@ -113,13 +113,13 @@ def update_image(domain_name):
     else:
         bucket = boto3.resource('s3', region_name=os.getenv("BUCKET_REGION"))
 
-    object = bucket.Object(os.getenv("BUCKET_NAME"), f"tenant/{secure}")
+    s3_object = bucket.Object(os.getenv("BUCKET_NAME"), f"tenant/{secure}")
 
     # All formats converted to png
     pillow_image = PIL_Image.open(image) # open image in pillow
     with BytesIO() as f: # bytesIO is used to save the image bytes in f variable
         pillow_image.save(f, format='PNG') # saved as png
-        object.put(Body=f.getvalue()) # putting the bytes on s3
+        s3_object.put(Body=f.getvalue()) # putting the bytes on s3
 
     return flask.jsonify("uploaded image")
 

@@ -51,8 +51,6 @@ def login(domain_name):
         } 
         # adds is_admin and is_owner claims to jwt token
     )
-    # response = flask.Response()
-    # jwt.set_access_cookies(response, token) # using cookie is unpreffered
     return flask.jsonify(token)
 
     

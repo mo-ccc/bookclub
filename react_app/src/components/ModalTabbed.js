@@ -1,5 +1,5 @@
 import React, {useState} from 'react'
-import {Button, Modal, Tab, Nav, Row, Col} from 'react-bootstrap'
+import {Button, Modal} from 'react-bootstrap'
 import Tabbed from './Tabbed.js'
 
 const ModalTabbed = ({children, name}) => {
