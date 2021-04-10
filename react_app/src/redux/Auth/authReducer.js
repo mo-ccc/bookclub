@@ -4,7 +4,7 @@ const initialState = {
     token: ""
 }
 
-const authReducer = (action, state = initialState) => {
+const authReducer = (state = initialState, action) => {
     if (action.type == SET_AUTH) {
         return {
             token: action.token

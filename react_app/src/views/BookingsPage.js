@@ -10,7 +10,7 @@ import {useForm, Controller} from 'react-hook-form'
 
 const BookingsPage = ({facilities}) => {
   const [selectedDay, setSelectedDay] = useState()
-  const {register, handleSubmit, control, errors, reset} = useForm()
+  const {register, handleSubmit, control, reset} = useForm()
   const [members, setMembers] = useState()
   const [tableData, setTableData] = useState()
   const token = useSelector(state => state.auth.token)
@@ -19,8 +19,6 @@ const BookingsPage = ({facilities}) => {
 
   const handleDayChange = (day) => {
     setSelectedDay(day)
-    //const iso = day.toISOString()
-    //const requestParam = iso.substring(0, iso.indexOf("T"))
   }
 
   const resetClicked = () => {
